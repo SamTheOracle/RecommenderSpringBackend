@@ -34,6 +34,9 @@ ext {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-zuul
+    implementation("org.springframework.boot:spring-boot-starter-hateoas")
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+    implementation('org.mongodb:mongodb-driver-async:3.9.0')
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-zuul', version: '1.4.6.RELEASE'
     implementation('org.springframework.cloud:spring-cloud-starter-netflix-eureka-server')
     implementation('org.springframework.boot:spring-boot-starter-web')

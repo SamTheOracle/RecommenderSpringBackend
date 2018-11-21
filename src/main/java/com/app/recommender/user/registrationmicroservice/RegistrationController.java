@@ -1,33 +1,36 @@
 package com.app.recommender.user.registrationmicroservice;
 
-import org.springframework.cloud.client.discovery.DiscoveryClient;
+import com.app.recommender.user.registrationmicroservice.Model.User;
+import com.app.recommender.user.registrationmicroservice.Persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.Random;
 
 @RestController
 public class RegistrationController {
 
     @Autowired
-    private DiscoveryClient discoveryClient;
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
+    private UserRepository repository;
 
-    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,
-            method = RequestMethod.GET,
-            value = "/greeting")
-    public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
+    @GetMapping("/testing")
+    public int testing(@RequestParam(value = "name", defaultValue = "World") String name) {
 
 
-        return new Greeting(counter.incrementAndGet(),
-                String.format(template, name));
+        return new Random().nextInt();
     }
 
+    @PostMapping("/signup")
+    public User signUp(@RequestBody User user) {
+
+        repository.insert(user);
+        return user;
+    }
+
+
 //    @RequestMapping("/service-instances/{applicationName}")
-//    public int serviceInstancesByApplicationName(
+//    public List<ServiceInstance> serviceInstancesByApplicationName(
 //            @PathVariable String applicationName) {
-//        return this.discoveryClient.getInstances(applicationName).stream().findFirst().get().getPort();
+//        return this.discoveryClient.getInstances(applicationName);
 //    }
 }
