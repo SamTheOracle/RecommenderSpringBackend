@@ -25,6 +25,16 @@ public class RegistrationController {
         return new Random().nextInt();
     }
 
+    @GetMapping(value = "registrations/{userId}")
+    public ResponseEntity getUser(@PathVariable(value = "userId") String userId){
+        try {
+            return ResponseEntity.status(200).body(userService.getUserById(userId));
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(400).body(e.getErrorMessage());
+        } catch (ServerErrorException e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
     @PostMapping(value = "/registrations/signup")
     @ResponseBody
     public ResponseEntity signUp(@RequestBody User user) {
@@ -39,7 +49,7 @@ public class RegistrationController {
             userService.saveNewUser(user);
             return ResponseEntity.status(201).headers(responseHeaders).body(user);
         } catch (UserAlreadyExistException e) {
-            return ResponseEntity.status(422).body(e.getErrorMessage());
+            return ResponseEntity.status(400).body(e.getErrorMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }
@@ -47,7 +57,7 @@ public class RegistrationController {
     }
 
     @GetMapping(value = "registrations/signin/{email}")
-    public ResponseEntity logIn(@PathVariable("email") String email) throws UsernameNotFoundException {
+    public ResponseEntity logIn(@PathVariable("email") String email) {
         System.out.println("FETCHING FOR USER AT ID: " + email);
         try {
             User user = userService.getUser(email);
