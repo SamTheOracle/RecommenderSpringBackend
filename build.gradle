@@ -34,12 +34,7 @@ ext {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-zuul
-    implementation group: 'com.typesafe.akka', name: 'akka-actor_2.12', version: '2.5.19'
-    // https://mvnrepository.com/artifact/com.typesafe.akka/akka-remote
-    implementation group: 'com.typesafe.akka', name: 'akka-remote_2.12', version: '2.5.19'
-
-    compile 'org.springframework.amqp:spring-rabbit:2.1.2.RELEASE'
-    implementation("org.springframework.boot:spring-boot-starter-hateoas")
+        implementation("org.springframework.boot:spring-boot-starter-hateoas")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation('org.mongodb:mongodb-driver-async:3.9.0')
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-zuul', version: '1.4.6.RELEASE'
