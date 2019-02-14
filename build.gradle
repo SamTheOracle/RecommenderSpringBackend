@@ -31,7 +31,9 @@ repositories {
 ext {
     springCloudVersion = 'Greenwich.BUILD-SNAPSHOT'
 }
-
+springBoot {
+    mainClass = "com.app.recommender.EurekaServerDiscovery"
+}
 dependencies {
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-zuul
         implementation("org.springframework.boot:spring-boot-starter-hateoas")
