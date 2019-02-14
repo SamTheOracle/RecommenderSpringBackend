@@ -15,7 +15,7 @@ public class PhysicalActivitiesController {
     public ResponseEntity getPhysicalActivity(@PathVariable(value = "physicalActivityName") String physicalActivityName) {
         return ResponseEntity.status(200).body(new Cycling());
     }
-    @GetMapping(value = "/test")
+    @GetMapping(value = "/uniquetestmapping")
     public int test(){
         return 2;
     }
