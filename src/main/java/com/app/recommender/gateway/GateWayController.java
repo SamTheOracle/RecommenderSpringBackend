@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -85,6 +82,10 @@ public class GateWayController {
         }
         return ResponseEntity.status(200).body(result.get());
 
+    }
+    @GetMapping(value = "/services")
+    public List<String> getServices(){
+        return discoveryClient.getServices();
     }
 
 
