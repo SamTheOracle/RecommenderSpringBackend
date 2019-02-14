@@ -32,7 +32,7 @@ ext {
     springCloudVersion = 'Greenwich.BUILD-SNAPSHOT'
 }
 springBoot {
-    mainClassName = "com.app.recommender.EurekaServerDiscovery"
+    mainClassName = "com.app.recommender.user.RegistrationServer"
 }
 dependencies {
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-zuul

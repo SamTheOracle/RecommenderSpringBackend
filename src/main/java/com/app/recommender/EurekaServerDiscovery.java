@@ -18,6 +18,4 @@ public class EurekaServerDiscovery {
 		System.setProperty("spring.config.name", "eureka-server");
 		SpringApplication.run(EurekaServerDiscovery.class, args);
 	}
-
-
 }
