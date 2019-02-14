@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @RestController
 public class GateWayController {
@@ -84,9 +85,9 @@ public class GateWayController {
 
     }
     @GetMapping(value = "/services")
-    public List<ServiceInstance> getServices(){
+    public List<String> getServices(){
 
-        return discoveryClient.getInstances("registrations-microservice");
+        return discoveryClient.getInstances("registrations-microservice").stream().map(serviceInstance -> serviceInstance.getUri()+"\n "+serviceInstance.getHost()).collect(Collectors.toList());
     }
 
 
