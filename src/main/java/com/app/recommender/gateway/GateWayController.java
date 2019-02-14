@@ -84,8 +84,9 @@ public class GateWayController {
 
     }
     @GetMapping(value = "/services")
-    public List<String> getServices(){
-        return discoveryClient.getServices();
+    public List<ServiceInstance> getServices(){
+
+        return discoveryClient.getInstances("registrations-microservice");
     }
 
 
