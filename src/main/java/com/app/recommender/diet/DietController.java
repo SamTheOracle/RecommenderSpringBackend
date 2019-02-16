@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.rmi.UnexpectedException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -47,37 +48,46 @@ public class DietController {
                                           @PathVariable String day,
                                           @RequestBody Food food,
                                           @RequestParam(value = "userId") String userId) {
-        Diet diet;
-        try {
-            diet = this.dietService.getDietByDietName(dietName, userId);
-            Map<String, List<Meal>> foodEntries = diet.getDailyFood();
-
-            List<Meal> meals = foodEntries.get(day);
-            Optional<Meal> m = meals.stream().filter(mealToCheck -> mealToCheck.getMealType().equals(mealType)).findAny();
-            if (m.isPresent()) {
-                Meal mealToUpdate = m.get();
-
-                meals.remove(mealToUpdate);
-
-                mealToUpdate.getAllFoodEntries().add(food);
-
-                meals.add(mealToUpdate);
-
-                foodEntries.put(day, meals);
-
-                diet.setDailyFood(foodEntries);
-
-                diet.updateCalories(day);
-
-                dietService.updateDiet(diet);
-                return ResponseEntity.status(201).body(mealToUpdate)
-                        ;
-
-            }
-            return ResponseEntity.status(403).body(diet);
-        } catch (DietNotFoundException | NoDietHistoryException e) {
-            return ResponseEntity.status(403).body(e.getMessage());
+//        Diet diet;
+//        try {
+//            diet = this.dietService.getDietByDietName(dietName, userId);
+//            Map<String, List<Meal>> foodEntries = diet.getDailyFood();
+//
+//            List<Meal> meals = foodEntries.get(day);
+//            Optional<Meal> m = meals.stream().filter(mealToCheck -> mealToCheck.getMealType().equals(mealType)).findAny();
+//            if (m.isPresent()) {
+//                Meal mealToUpdate = m.get();
+//
+//                meals.remove(mealToUpdate);
+//
+//                mealToUpdate.getAllFoodEntries().add(food);
+//
+//                meals.add(mealToUpdate);
+//
+//                foodEntries.put(day, meals);
+//
+//                diet.setDailyFood(foodEntries);
+//
+//                diet.updateCalories(day);
+//
+//                dietService.updateDiet(food,dietName,userId);
+//                dietService.updateDiet(diet);
+//                return ResponseEntity.status(201).body(mealToUpdate)
+//                        ;
+//
+//            }
+//            return ResponseEntity.status(403).body(diet);
+//        } catch (DietNotFoundException | NoDietHistoryException e) {
+//            return ResponseEntity.status(403).body(e.getMessage());
+//        }
+        Meal updatedMeal;
+        try{
+            updatedMeal = dietService.updateDiet(food,dietName,userId,day,mealType);
         }
+       catch (DietNotFoundException | NoDietHistoryException | UnexpectedException e) {
+           return ResponseEntity.status(403).body(e.getMessage());
+        }
+        return ResponseEntity.status(201).body(updatedMeal);
 
     }
 

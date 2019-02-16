@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.rmi.UnexpectedException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
@@ -161,6 +162,39 @@ public class DietServiceImpl implements DietService {
         List<DietHistory> yearHistory = new ArrayList<>();
         yearDiets.forEach(diet -> yearHistory.add(new DietHistory(diet.getTimeStamp().toString(),diet.getName(),diet.getTotalCalories())));
         return yearHistory;
+    }
+
+    @Override
+    public Meal updateDiet(Food food, String dietName, String userId, String day,String mealType) throws UnexpectedException, NoDietHistoryException, DietNotFoundException {
+        Diet diet;
+        diet = getDietByDietName(dietName, userId);
+        Map<String, List<Meal>> foodEntries = diet.getDailyFood();
+
+        List<Meal> meals = foodEntries.get(day);
+        Optional<Meal> m = meals.stream().filter(mealToCheck -> mealToCheck.getMealType().equals(mealType)).findAny();
+        if (m.isPresent()) {
+            Meal mealToUpdate = m.get();
+
+            meals.remove(mealToUpdate);
+
+            mealToUpdate.getAllFoodEntries().add(food);
+
+            meals.add(mealToUpdate);
+
+            foodEntries.put(day, meals);
+
+            diet.setDailyFood(foodEntries);
+
+            diet.updateCalories(day);
+
+            this.dietRepository.save(diet);
+
+            return mealToUpdate;
+
+        }
+        else{
+            throw new UnexpectedException("Meal "+mealType+"was not found");
+        }
     }
 
 }
