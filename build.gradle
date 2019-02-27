@@ -28,7 +28,7 @@ repositories {
 }
 
 springBoot {
-    mainClassName = "package com.app.recommender.foodrecommender.FoodServer;"
+    mainClassName = "com.app.recommender.foodrecommender.FoodServer;"
 }
 ext {
     springCloudVersion = 'Greenwich.BUILD-SNAPSHOT'
