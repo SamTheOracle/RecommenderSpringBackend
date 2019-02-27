@@ -10,7 +10,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 public class FoodServer {
     public static void main(String[] args) {
         System.setProperty("spring.config.name", "foodrec-server");
-
         SpringApplication.run(FoodServer.class, args);
 
     }
