@@ -27,7 +27,9 @@ repositories {
     maven { url "https://repo.spring.io/milestone" }
 }
 
-
+springBoot {
+    mainClassName = "package com.app.recommender.foodrecommender.FoodServer;"
+}
 ext {
     springCloudVersion = 'Greenwich.BUILD-SNAPSHOT'
 }

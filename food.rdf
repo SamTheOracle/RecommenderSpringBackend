@@ -1,0 +1,10 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:food="http://temphost/ontologies/food#">
+  <rdf:Description rdf:about="http://temphost/ontologies/food#MilkandCoffe">
+    <food:proteins>13</food:proteins>
+    <food:fat>89</food:fat>
+    <food:carbs>67</food:carbs>
+    <food:caloriesPer100>123</food:caloriesPer100>
+  </rdf:Description>
+</rdf:RDF>
