@@ -1,7 +1,9 @@
 package com.app.recommender.foodrecommender;
 
 import com.app.recommender.Model.Food;
-public interface IFoodRepository {
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-   void createRdfFood(Food f);
+public interface IFoodRepository extends MongoRepository<Food, String> {
+
+    Food findFoodByName(String name);
 }
