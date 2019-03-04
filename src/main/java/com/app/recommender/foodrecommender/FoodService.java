@@ -1,6 +1,7 @@
 package com.app.recommender.foodrecommender;
 
 import com.app.recommender.Model.Food;
+import com.app.recommender.Model.FoodRdfNotFoundException;
 import org.apache.jena.rdf.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,17 @@ public class FoodService implements IFoodService {
     public void createFood(Food food) throws FileNotFoundException {
         rdfRepository.createRdfFood(food);
 
+    }
+
+    @Override
+    public void addStatementsGoodWith(String resourceSubjectName, List<String> resourcesObjectName) throws FoodRdfNotFoundException {
+        resourcesObjectName.forEach(resourceName -> {
+            try {
+                rdfRepository.addStatementGoodWith(resourceSubjectName, resourceName);
+            } catch (FoodRdfNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override

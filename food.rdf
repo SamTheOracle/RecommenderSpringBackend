@@ -1,28 +1,20 @@
 <rdf:RDF
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:food="http://temphost/ontologies/food#">
-  <rdf:Description rdf:about="http://temphost/ontologies/food#PolloFrittoGnamGnam">
-    <food:caloriesPer100>123</food:caloriesPer100>
-    <food:carbs>67</food:carbs>
-    <food:fat>89</food:fat>
-    <food:proteins>13</food:proteins>
-    <food:name>Pollo Fritto Gnam Gnam</food:name>
-  </rdf:Description>
   <rdf:Description rdf:about="http://temphost/ontologies/food#Salad">
-    <food:caloriesPer100>123</food:caloriesPer100>
-    <food:carbs>67</food:carbs>
-    <food:fat>89</food:fat>
-    <food:proteins>13</food:proteins>
+    <food:isGoodWith>
+      <rdf:Description rdf:about="http://temphost/ontologies/food#Apple">
+        <food:name>Apple</food:name>
+        <food:proteins>13</food:proteins>
+        <food:fat>89</food:fat>
+        <food:carbs>67</food:carbs>
+        <food:caloriesPer100>123</food:caloriesPer100>
+      </rdf:Description>
+    </food:isGoodWith>
     <food:name>Salad</food:name>
-    <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Salad"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://temphost/ontologies/food#Apple">
-    <food:caloriesPer100>123</food:caloriesPer100>
-    <food:carbs>67</food:carbs>
-    <food:fat>89</food:fat>
     <food:proteins>13</food:proteins>
-    <food:name>Apple</food:name>
-    <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Salad"/>
-    <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Apple"/>
+    <food:fat>89</food:fat>
+    <food:carbs>67</food:carbs>
+    <food:caloriesPer100>123</food:caloriesPer100>
   </rdf:Description>
 </rdf:RDF>

@@ -1,6 +1,8 @@
 package com.app.recommender.foodrecommender;
 
 import com.app.recommender.Model.Food;
+import com.app.recommender.Model.FoodRdfNotFoundException;
+import com.app.recommender.Model.GoodWithRdf;
 import org.apache.commons.io.IOUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -57,9 +59,25 @@ public class FoodController {
     }
 
     @GetMapping(value = "/recommendations", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getRecomendations(@RequestParam(value = "foodName") String foodName) throws IOException {
+    public ResponseEntity getRecomendations(@RequestParam(value = "foodName") String foodName) {
         List<Food> recommendedFood = service.recommendFood(foodName);
         return ResponseEntity.status(HttpStatus.OK).body(recommendedFood);
+    }
+
+    @PutMapping(value = "/recommendations/{foodName}/statements", produces = "text/plain")
+    public ResponseEntity addStatementGoodWith(@PathVariable("foodName") String subjectName,
+                                               @RequestBody GoodWithRdf goodWithRdf) {
+        String rdfContent;
+        try {
+            File file = new File("food.rdf");
+            FileReader reader = new FileReader(file);
+            service.addStatementsGoodWith(subjectName, goodWithRdf.getGoodWith());
+            rdfContent = IOUtils.toString(reader);
+        } catch (FoodRdfNotFoundException | IOException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(rdfContent);
     }
 
 
