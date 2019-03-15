@@ -49,7 +49,7 @@ public class DietService implements IDietService {
             }
             Optional<Diet> d = diets.stream().filter(userDiet -> userDiet.getName().equals(diet.getName())).findAny();
             if (d.isPresent()) {
-                throw new DietAlreadyExistException("Diet with name " + diet.getName() + " already exists");
+                throw new DietAlreadyExistException("Diet with nameRdf " + diet.getName() + " already exists");
             }
             System.out.println(LocalDate.now());
             diet.setTimeStamp(LocalDate.now());
@@ -74,7 +74,7 @@ public class DietService implements IDietService {
             return diet;
 
         } catch (IncorrectResultSizeDataAccessException e) {
-            throw new DietAlreadyExistException("Diet with name " + diet.getName() + " already exists");
+            throw new DietAlreadyExistException("Diet with nameRdf " + diet.getName() + " already exists");
 
         }
 
@@ -122,7 +122,7 @@ public class DietService implements IDietService {
         }
         Optional<Diet> diet = diets.stream().filter(d -> d.getName().equals(dietName)).findAny();
         if (!diet.isPresent()) {
-            throw new DietNotFoundException("No diet with name: " + dietName + " has been found for user " + userId);
+            throw new DietNotFoundException("No diet with nameRdf: " + dietName + " has been found for user " + userId);
         }
         return diet.get();
 

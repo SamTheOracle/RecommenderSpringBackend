@@ -23,12 +23,12 @@ public class DietController {
         return new Random().nextInt();
     }
 
-//    @GetMapping(value = "/food/{name}")
-//    public ResponseEntity getFood(@PathVariable String name) {
+//    @GetMapping(value = "/food/{nameRdf}")
+//    public ResponseEntity getFood(@PathVariable String nameRdf) {
 //
 ////        RestTemplate restTemplate = new RestTemplate();
 //
-//        String foodToLookFor = name.trim();
+//        String foodToLookFor = nameRdf.trim();
 //        System.out.println(foodToLookFor);
 //
 //        return ResponseEntity.status(200).body(foodToLookFor);
@@ -159,7 +159,7 @@ public class DietController {
                     foodToUpdate = food;
                     mealToUpdate.getAllFoodEntries().add(foodToUpdate);
                 } else {
-                    ResponseEntity.status(400).body("Bad request: no food with name " + foodName + " was found in day " + day + " for diet " + dietName);
+                    ResponseEntity.status(400).body("Bad request: no food with nameRdf " + foodName + " was found in day " + day + " for diet " + dietName);
                 }
                 meals.add(mealToUpdate);
                 foodEntries.put(day, meals);

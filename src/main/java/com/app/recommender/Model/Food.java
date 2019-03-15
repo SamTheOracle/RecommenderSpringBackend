@@ -12,8 +12,6 @@ public class Food {
 
     private Number carbs;
 
-    private String healthy;
-
     private String[] mealTypes;
 
     private Number quantity;
@@ -22,20 +20,18 @@ public class Food {
 
     private Number proteins;
 
-    private String[] goodWith;
 
-    public Food(String type, String name, Number calories, Number fat, Number carbs, String healthy, String[] mealTypes, Number quantity, Number caloriesPer100, Number proteins, String[] goodWith) {
+    public Food(String type, String name, Number calories, Number fat, Number carbs, String[] mealTypes, Number quantity, Number caloriesPer100, Number proteins) {
         this.type = type;
         this.name = name;
         this.calories = calories;
         this.fat = fat;
         this.carbs = carbs;
-        this.healthy = healthy;
         this.mealTypes = mealTypes;
         this.quantity = quantity;
         this.caloriesPer100 = caloriesPer100;
         this.proteins = proteins;
-        this.goodWith = goodWith;
+
     }
 
 
@@ -81,14 +77,6 @@ public class Food {
         this.carbs = carbs;
     }
 
-    public String getHealthy() {
-        return healthy;
-    }
-
-    public void setHealthy(String healthy) {
-        this.healthy = healthy;
-    }
-
     public String[] getMealTypes() {
         return mealTypes;
     }
@@ -121,11 +109,5 @@ public class Food {
         this.proteins = proteins;
     }
 
-    public String[] getGoodWith() {
-        return goodWith;
-    }
 
-    public void setGoodWith(String[] goodWith) {
-        this.goodWith = goodWith;
-    }
 }

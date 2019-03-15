@@ -1,20 +1,127 @@
 <rdf:RDF
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:food="http://temphost/ontologies/food#">
-  <rdf:Description rdf:about="http://temphost/ontologies/food#Salad">
+  <rdf:Description rdf:about="http://temphost/ontologies/food#Cocomero">
+    <food:carbs>0</food:carbs>
+    <food:name>Cocomero</food:name>
+    <food:fats>0</food:fats>
     <food:isGoodWith>
-      <rdf:Description rdf:about="http://temphost/ontologies/food#Apple">
-        <food:name>Apple</food:name>
-        <food:proteins>13</food:proteins>
-        <food:fat>89</food:fat>
-        <food:carbs>67</food:carbs>
-        <food:caloriesPer100>123</food:caloriesPer100>
+      <rdf:Description rdf:about="http://temphost/ontologies/food#Banana">
+        <food:fats>0</food:fats>
+        <food:isGoodWith>
+          <rdf:Description rdf:about="http://temphost/ontologies/food#Lattuga">
+            <food:timeStamp>1552482400366</food:timeStamp>
+            <food:caloriesPer100>21</food:caloriesPer100>
+            <food:name>Lattuga</food:name>
+            <food:salts>0</food:salts>
+            <food:fats>0</food:fats>
+            <food:imageUrl>https://api.adorable.io/avatars/120/0.1220655732689917.png</food:imageUrl>
+            <food:vitamins>0</food:vitamins>
+            <food:type>Vegetables</food:type>
+            <food:description>Lool</food:description>
+            <food:carbs>0</food:carbs>
+            <food:proteins>30</food:proteins>
+          </rdf:Description>
+        </food:isGoodWith>
+        <food:carbs>0</food:carbs>
+        <food:type>Fruits</food:type>
+        <food:salts>0</food:salts>
+        <food:timeStamp>1552559872605</food:timeStamp>
+        <food:imageUrl>https://api.adorable.io/avatars/120/0.6493003279292184.png</food:imageUrl>
+        <food:isGoodWith>
+          <rdf:Description rdf:about="http://temphost/ontologies/food#Arancia">
+            <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Lunch"/>
+            <food:type>Fruits</food:type>
+            <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Jogging"/>
+            <food:caloriesPer100>20</food:caloriesPer100>
+            <food:description>Un buon frutto devo dire</food:description>
+            <food:proteins>0</food:proteins>
+            <food:fats>0</food:fats>
+            <food:salts>10</food:salts>
+            <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Lattuga"/>
+            <food:imageUrl>https://api.adorable.io/avatars/120/0.14419907516817765.png</food:imageUrl>
+            <food:carbs>0</food:carbs>
+            <food:vitamins>0</food:vitamins>
+            <food:timeStamp>1552558991042</food:timeStamp>
+            <food:name>Arancia</food:name>
+          </rdf:Description>
+        </food:isGoodWith>
+        <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Breakfast"/>
+        <food:description>Il frutto dell'amor</food:description>
+        <food:proteins>0</food:proteins>
+        <food:vitamins>0</food:vitamins>
+        <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Jogging"/>
+        <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Lunch"/>
+        <food:caloriesPer100>0</food:caloriesPer100>
+        <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Dinner"/>
+        <food:name>Banana</food:name>
       </rdf:Description>
     </food:isGoodWith>
-    <food:name>Salad</food:name>
-    <food:proteins>13</food:proteins>
-    <food:fat>89</food:fat>
-    <food:carbs>67</food:carbs>
-    <food:caloriesPer100>123</food:caloriesPer100>
+    <food:type>Fruits</food:type>
+    <food:proteins>0</food:proteins>
+    <food:description>Il frutto dell' estate</food:description>
+    <food:salts>0</food:salts>
+    <food:timeStamp>1552573341025</food:timeStamp>
+    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Breakfast"/>
+    <food:caloriesPer100>0</food:caloriesPer100>
+    <food:vitamins>0</food:vitamins>
+    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Lunch"/>
+    <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Jogging"/>
+    <food:imageUrl>https://api.adorable.io/avatars/120/0.4330809103561437.png</food:imageUrl>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://temphost/ontologies/food#Kiwi">
+    <food:carbs>0</food:carbs>
+    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Dinner"/>
+    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Breakfast"/>
+    <food:vitamins>0</food:vitamins>
+    <food:imageUrl>https://api.adorable.io/avatars/120/0.865026822635004.png</food:imageUrl>
+    <food:timeStamp>1552573951289</food:timeStamp>
+    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Lunch"/>
+    <food:description>No, non è il famoso uccello australiano</food:description>
+    <food:type>Fruits</food:type>
+    <food:proteins>0</food:proteins>
+    <food:fats>0</food:fats>
+    <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Box"/>
+    <food:caloriesPer100>0</food:caloriesPer100>
+    <food:name>Kiwi</food:name>
+    <food:salts>0</food:salts>
+    <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Lattuga"/>
+    <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Arancia"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://temphost/ontologies/food#Mozzarella">
+    <food:proteins>0</food:proteins>
+    <food:isGoodWith>
+      <rdf:Description rdf:about="http://temphost/ontologies/food#Chicken">
+        <food:imageUrl>https://api.adorable.io/avatars/120/0.7027228096529647.png</food:imageUrl>
+        <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Breakfast"/>
+        <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Lattuga"/>
+        <food:proteins>0</food:proteins>
+        <food:timeStamp>1552653045181</food:timeStamp>
+        <food:caloriesPer100>0</food:caloriesPer100>
+        <food:fats>0</food:fats>
+        <food:salts>0</food:salts>
+        <food:description>Un ottimo uccello da mangiare</food:description>
+        <food:carbs>0</food:carbs>
+        <food:name>Chicken</food:name>
+        <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Dinner"/>
+        <food:vitamins>0</food:vitamins>
+        <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Lunch"/>
+        <food:type>Meat</food:type>
+        <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Treadmill"/>
+      </rdf:Description>
+    </food:isGoodWith>
+    <food:name>Mozzarella</food:name>
+    <food:timeStamp>1552654618738</food:timeStamp>
+    <food:description>Un ottimo formaggio per la pizza</food:description>
+    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Dinner"/>
+    <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Banana"/>
+    <food:carbs>0</food:carbs>
+    <food:type>Cheese and Milk</food:type>
+    <food:imageUrl>https://api.adorable.io/avatars/120/0.7449181605133783.png</food:imageUrl>
+    <food:fats>0</food:fats>
+    <food:caloriesPer100>0</food:caloriesPer100>
+    <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Treadmill"/>
+    <food:salts>0</food:salts>
+    <food:vitamins>0</food:vitamins>
   </rdf:Description>
 </rdf:RDF>
