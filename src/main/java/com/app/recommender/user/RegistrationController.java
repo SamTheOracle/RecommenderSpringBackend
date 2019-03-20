@@ -19,7 +19,7 @@ public class RegistrationController {
     private UserService userService;
 
     @GetMapping("/testing")
-    public int testing(@RequestParam(value = "name", defaultValue = "World") String name) {
+    public int testing(@RequestParam(value = "nameRdf", defaultValue = "World") String name) {
 
 
         return new Random().nextInt();

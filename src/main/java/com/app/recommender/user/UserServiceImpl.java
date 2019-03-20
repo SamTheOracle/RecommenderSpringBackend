@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
             if (user == null) {
                 throw new UsernameNotFoundException("Error. User not found for email: " + email);
             }
-            return repository.findUserByEmail(email);
+            return user;
         } catch (UsernameNotFoundException e) {
             throw new UsernameNotFoundException(e.getErrorMessage());
         } catch (Exception e) {

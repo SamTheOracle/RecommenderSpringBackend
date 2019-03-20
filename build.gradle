@@ -27,17 +27,18 @@ repositories {
     maven { url "https://repo.spring.io/milestone" }
 }
 
-springBoot {
-    mainClassName = "com.app.recommender.foodrecommender.FoodServer"
-}
+
 ext {
     springCloudVersion = 'Greenwich.BUILD-SNAPSHOT'
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-zuul
-    implementation group: 'org.apache.jena', name: 'jena-rdfconnection', version: '3.10.0'
-    implementation group: 'org.apache.jena', name: 'jena-arq', version: '3.10.0'
+    implementation 'com.github.javadev:underscore:1.42'
+    implementation group: 'org.apache.jena', name: 'apache-jena-libs', version: '3.10.0'
+    implementation("org.springframework.boot:spring-boot-starter-activemq")
+    implementation("org.apache.activemq:activemq-broker")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+
     implementation("org.springframework.boot:spring-boot-starter-hateoas")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation('org.mongodb:mongodb-driver-async:3.9.0')

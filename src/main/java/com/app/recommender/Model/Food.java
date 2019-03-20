@@ -2,19 +2,22 @@ package com.app.recommender.Model;
 
 public class Food {
 
+    private String id;
+
     private String type;
 
     private String name;
 
     private Number calories;
 
-    private Number fat;
+    private Number fats;
+
+    private Number vitamins;
+
+    private Number salts;
 
     private Number carbs;
 
-    private String healthy;
-
-    private String[] mealTypes;
 
     private Number quantity;
 
@@ -22,29 +25,31 @@ public class Food {
 
     private Number proteins;
 
-    public Food(String type, String name, Number calories, Number fat, Number carbs, String healthy, String[] mealTypes, Number quantity, Number caloriesPer100,Number proteins) {
-        this.type = type;
-        this.name = name;
-        this.calories = calories;
-        this.fat = fat;
-        this.carbs = carbs;
-        this.healthy = healthy;
-        this.mealTypes = mealTypes;
-        this.quantity = quantity;
-        this.caloriesPer100 = caloriesPer100;
-        this.proteins = proteins;
 
-    }
     public Food(){}
 
-    public Number getProteins() {
-        return proteins;
+    public String getId() {
+        return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
+    public Number getVitamins() {
+        return vitamins;
+    }
 
-    public void setProteins(Number proteins) {
-        this.proteins = proteins;
+    public void setVitamins(Number vitamins) {
+        this.vitamins = vitamins;
+    }
+
+    public Number getSalts() {
+        return salts;
+    }
+
+    public void setSalts(Number salts) {
+        this.salts = salts;
     }
 
     public String getType() {
@@ -71,12 +76,12 @@ public class Food {
         this.calories = calories;
     }
 
-    public Number getFat() {
-        return fat;
+    public Number getFats() {
+        return fats;
     }
 
-    public void setFat(Number fat) {
-        this.fat = fat;
+    public void setFats(Number fats) {
+        this.fats = fats;
     }
 
     public Number getCarbs() {
@@ -85,22 +90,6 @@ public class Food {
 
     public void setCarbs(Number carbs) {
         this.carbs = carbs;
-    }
-
-    public String getHealthy() {
-        return healthy;
-    }
-
-    public void setHealthy(String healthy) {
-        this.healthy = healthy;
-    }
-
-    public String[] getMealTypes() {
-        return mealTypes;
-    }
-
-    public void setMealTypes(String[] mealTypes) {
-        this.mealTypes = mealTypes;
     }
 
     public Number getQuantity() {
@@ -118,4 +107,14 @@ public class Food {
     public void setCaloriesPer100(Number caloriesPer100) {
         this.caloriesPer100 = caloriesPer100;
     }
+
+    public Number getProteins() {
+        return proteins;
+    }
+
+    public void setProteins(Number proteins) {
+        this.proteins = proteins;
+    }
+
+
 }
