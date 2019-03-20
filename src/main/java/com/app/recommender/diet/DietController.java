@@ -48,38 +48,6 @@ public class DietController {
                                           @PathVariable String day,
                                           @RequestBody Food food,
                                           @RequestParam(value = "userId") String userId) {
-//        Diet diet;
-//        try {
-//            diet = this.IDietService.getDietByDietName(dietName, userId);
-//            Map<String, List<Meal>> foodEntries = diet.getDailyFood();
-//
-//            List<Meal> meals = foodEntries.get(day);
-//            Optional<Meal> m = meals.stream().filter(mealToCheck -> mealToCheck.getMealType().equals(mealType)).findAny();
-//            if (m.isPresent()) {
-//                Meal mealToUpdate = m.get();
-//
-//                meals.remove(mealToUpdate);
-//
-//                mealToUpdate.getAllFoodEntries().add(food);
-//
-//                meals.add(mealToUpdate);
-//
-//                foodEntries.put(day, meals);
-//
-//                diet.setDailyFood(foodEntries);
-//
-//                diet.updateCalories(day);
-//
-//                IDietService.updateDiet(food,dietName,userId);
-//                IDietService.updateDiet(diet);
-//                return ResponseEntity.status(201).body(mealToUpdate)
-//                        ;
-//
-//            }
-//            return ResponseEntity.status(403).body(diet);
-//        } catch (DietNotFoundException | NoDietHistoryException e) {
-//            return ResponseEntity.status(403).body(e.getMessage());
-//        }
         Meal updatedMeal;
         try{
             updatedMeal = IDietService.updateDiet(food,dietName,userId,day,mealType);

@@ -2,6 +2,7 @@ package com.app.recommender.diet;
 
 import com.app.recommender.Model.*;
 import com.app.recommender.diet.Persistence.DietRepository;
+import com.app.recommender.foodrecommender.FoodRdf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
@@ -129,43 +130,42 @@ public class DietService implements IDietService {
     }
 
     @Override
-    public List<DietHistory> getRecentDiets(String monthName, String userId, String year) throws NumberFormatException,NoDietHistoryException{
+    public List<DietHistory> getRecentDiets(String monthName, String userId, String year) throws NumberFormatException, NoDietHistoryException {
         List<Diet> diets = this.dietRepository.findByUserId(userId);
         List<Diet> monthlyDiets = diets.stream()
                 .filter(diet -> diet.getTimeStamp().getYear() == Integer.parseInt(year) && diet.getTimeStamp().getMonth().toString().equalsIgnoreCase(monthName)).collect(Collectors.toList());
         List<DietHistory> history = new ArrayList<>();
-        monthlyDiets.forEach(diet->{
+        monthlyDiets.forEach(diet -> {
             String timeStamp = diet.getTimeStamp().toString();
             String dietName = diet.getName();
-            history.add(new DietHistory(timeStamp,dietName,diet.getTotalCalories()));
+            history.add(new DietHistory(timeStamp, dietName, diet.getTotalCalories()));
         });
         history.sort(Comparator.comparing(DietHistory::getTimeStamp).reversed());
         return history;
     }
 
     @Override
-    public List<DietHistory> getDietsByYear(String userId, String year) throws NumberFormatException,NoDietHistoryException{
+    public List<DietHistory> getDietsByYear(String userId, String year) throws NumberFormatException, NoDietHistoryException {
         List<Diet> diets = this.dietRepository.findByUserId(userId);
-        if(diets.isEmpty()){
-            throw new NoDietHistoryException("No recorded diets for user "+userId);
+        if (diets.isEmpty()) {
+            throw new NoDietHistoryException("No recorded diets for user " + userId);
         }
         int yearToFetch = 0;
-        try{
+        try {
             yearToFetch = Integer.parseInt(year);
-        }
-        catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             throw new NumberFormatException("Error. Year is not correct");
         }
 
         int finalYearToFetch = yearToFetch;
         List<Diet> yearDiets = diets.stream().filter(diet -> diet.getTimeStamp().getYear() == finalYearToFetch).collect(Collectors.toList());
         List<DietHistory> yearHistory = new ArrayList<>();
-        yearDiets.forEach(diet -> yearHistory.add(new DietHistory(diet.getTimeStamp().toString(),diet.getName(),diet.getTotalCalories())));
+        yearDiets.forEach(diet -> yearHistory.add(new DietHistory(diet.getTimeStamp().toString(), diet.getName(), diet.getTotalCalories())));
         return yearHistory;
     }
 
     @Override
-    public Meal updateDiet(Food food, String dietName, String userId, String day,String mealType) throws UnexpectedException, NoDietHistoryException, DietNotFoundException {
+    public Meal updateDiet(Food food, String dietName, String userId, String day, String mealType) throws UnexpectedException, NoDietHistoryException, DietNotFoundException {
         Diet diet;
         diet = getDietByDietName(dietName, userId);
         Map<String, List<Meal>> foodEntries = diet.getDailyFood();
@@ -176,6 +176,9 @@ public class DietService implements IDietService {
             Meal mealToUpdate = m.get();
 
             meals.remove(mealToUpdate);
+
+
+            mealToUpdate.getAllFoodEntries().removeIf(f -> f.getName().equalsIgnoreCase(food.getName()));
 
             mealToUpdate.getAllFoodEntries().add(food);
 
@@ -191,10 +194,53 @@ public class DietService implements IDietService {
 
             return mealToUpdate;
 
+        } else {
+            throw new UnexpectedException("Meal " + mealType + "was not found");
         }
-        else{
-            throw new UnexpectedException("Meal "+mealType+"was not found");
-        }
+    }
+
+    @Override
+    public void updateDietValues(FoodRdf foodToUpdate, String userId) {
+        List<Diet> diets = dietRepository.findByUserId(userId);
+        diets.forEach(diet -> {
+            diet.getDailyFood().forEach((day, meals) -> meals.forEach(meal -> {
+                Iterator<Food> iterator = meal.getAllFoodEntries().iterator();
+                while (iterator.hasNext()) {
+                    Food food = iterator.next();
+                    String mealType = meal.getMealType();
+                    Optional<String> mealRdf = new ArrayList<>(Arrays.asList(foodToUpdate.getBestEatenAt())).stream()
+                            .filter(mealName -> mealName.equalsIgnoreCase(mealType)).findFirst();
+
+                    if (food.getId().equalsIgnoreCase(foodToUpdate.getId()) && mealRdf.isPresent()) {
+                        System.out.println("CIAONE");
+                        food.setName(foodToUpdate.getName());
+                        food.setSalts(foodToUpdate.getSalts());
+                        food.setVitamins(foodToUpdate.getVitamins());
+                        food.setProteins(foodToUpdate.getProteins());
+                        food.setFats(foodToUpdate.getFats());
+                        food.setCaloriesPer100(foodToUpdate.getCaloriesPer100());
+                        food.setCarbs(foodToUpdate.getCarbs());
+                        food.setType(foodToUpdate.getType());
+                        food.setName(foodToUpdate.getName());
+                        food.setCalories((foodToUpdate.getCaloriesPer100().doubleValue() * food.getQuantity().doubleValue()) / 100);
+                    }
+                    if (food.getId().equalsIgnoreCase(foodToUpdate.getId()) && !mealRdf.isPresent()) {
+                        iterator.remove();
+                        System.out.println("CIAONE remove");
+                    }
+
+
+                }
+                meal.getAllFoodEntries().forEach(food -> {
+
+                });
+
+
+            }));
+
+            dietRepository.save(diet);
+
+        });
     }
 
 }

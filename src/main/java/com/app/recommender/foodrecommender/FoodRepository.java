@@ -1,6 +1,5 @@
 package com.app.recommender.foodrecommender;
 
-import com.app.recommender.Model.FoodRdfNotFoundException;
 import org.apache.jena.rdf.model.*;
 import org.springframework.stereotype.Repository;
 
@@ -17,8 +16,8 @@ public class FoodRepository implements IFoodRecommenderRepository {
 
 
     @Override
-    public FoodRdf createRdfFood(FoodRdf foodRDF) throws FileNotFoundException {
-        File file = new File("food.rdf");
+    public FoodRdf createRdfFood(FoodRdf foodRDF, String userId) throws FileNotFoundException {
+        File file = new File("food" + userId + ".rdf");
         Model model = ModelFactory.createDefaultModel();
         if (file.exists()) {
             FileReader reader = new FileReader(file);
@@ -28,7 +27,7 @@ public class FoodRepository implements IFoodRecommenderRepository {
         addResourceToModel(foodRDF, model);
 
 
-        try (OutputStream out = new FileOutputStream("food.rdf")) {
+        try (OutputStream out = new FileOutputStream("food" + userId + ".rdf")) {
             model.write(out, "RDF/XML");
         } catch (IOException e) {
             e.printStackTrace();
@@ -43,15 +42,22 @@ public class FoodRepository implements IFoodRecommenderRepository {
 
 
     @Override
-    public List<FoodRdf> getRdfFoodForRecommendation(String name) throws FileNotFoundException {
+    public List<FoodRdf> getRdfFoodForRecommendation(String foodId, String userId) throws FileNotFoundException {
         List<FoodRdf> recommendedFoods = new ArrayList<>();
 
         Model modelToQuery = ModelFactory.createDefaultModel();
 
-        File file = new File("food.rdf");
+        File file = new File("food" + userId + ".rdf");
         FileReader reader = new FileReader(file);
         modelToQuery.read(reader, null);
-        Resource r = modelToQuery.getResource(FoodRdf.foodUri + name);
+        Resource r = null;
+        ResIterator resIterator = modelToQuery.listResourcesWithProperty(FoodRdf.idRdf, foodId);
+        while (resIterator.hasNext()) {
+            r = resIterator.nextResource();
+        }
+        if (r == null) {
+            return null;
+        }
         StmtIterator stmtIterator = modelToQuery.listStatements(r, FoodRdf.isGoodWithRdf, (RDFNode) null);
 
         while (stmtIterator.hasNext()) {
@@ -66,10 +72,10 @@ public class FoodRepository implements IFoodRecommenderRepository {
     }
 
     @Override
-    public FoodRdf getFoodByName(String foodName) throws IOException {
+    public FoodRdf getFoodById(String foodId, String userId) throws IOException {
         Model modelToQuery = ModelFactory.createDefaultModel();
 
-        File file = new File("food.rdf");
+        File file = new File("food" + userId + ".rdf");
         if (file.exists()) {
             FileReader reader = new FileReader(file);
             modelToQuery.read(reader, null);
@@ -78,7 +84,14 @@ public class FoodRepository implements IFoodRecommenderRepository {
         }
 
 
-        Resource r = modelToQuery.getResource(FoodRdf.foodUri + foodName);
+        Resource r = null;
+        ResIterator resIterator = modelToQuery.listResourcesWithProperty(FoodRdf.idRdf, foodId);
+        while (resIterator.hasNext()) {
+            r = resIterator.nextResource();
+        }
+        if (r == null) {
+            return null;
+        }
         FoodRdf foodRdf = fromRdfToFood(modelToQuery, r);
 //            addResourceToModel();
 //            newTempModel.create
@@ -97,10 +110,10 @@ public class FoodRepository implements IFoodRecommenderRepository {
     }
 
     @Override
-    public FoodRdf[] getAllFoodFromOntology() throws FileNotFoundException {
+    public FoodRdf[] getAllFoodFromOntology(String userId) throws FileNotFoundException {
         Model modelToQuery = ModelFactory.createDefaultModel();
         List<FoodRdf> foodRDFS = new ArrayList<>();
-        File file = new File("food.rdf");
+        File file = new File("food" + userId + ".rdf");
         if (file.exists()) {
             FileReader reader = new FileReader(file);
             modelToQuery.read(reader, null);
@@ -117,10 +130,10 @@ public class FoodRepository implements IFoodRecommenderRepository {
     }
 
     @Override
-    public FoodRdf update(FoodRdf foodRDF) throws FoodRdfNotFoundException, FileNotFoundException {
+    public FoodRdf update(FoodRdf foodRDF, String foodId, String userId) throws FileNotFoundException {
         Model modelToQuery = ModelFactory.createDefaultModel();
 
-        File file = new File("food.rdf");
+        File file = new File("food" + userId + ".rdf");
         if (file.exists()) {
             FileReader reader = new FileReader(file);
             modelToQuery.read(reader, null);
@@ -128,7 +141,14 @@ public class FoodRepository implements IFoodRecommenderRepository {
             return null;
         }
 
-        Resource r = modelToQuery.getResource(FoodRdf.foodUri + foodRDF.getName());
+        Resource r = null;
+        ResIterator resIterator = modelToQuery.listResourcesWithProperty(FoodRdf.idRdf, foodId);
+        while (resIterator.hasNext()) {
+            r = resIterator.nextResource();
+        }
+        if (r == null) {
+            return null;
+        }
         StmtIterator stmtIterator = r.listProperties();
 
         modelToQuery.remove(stmtIterator);
@@ -142,7 +162,7 @@ public class FoodRepository implements IFoodRecommenderRepository {
         newTempModel.write(writer, "RDF/XML");
         foodRDF.setRdfOutput(writer.toString());
 
-        try (OutputStream out = new FileOutputStream("food.rdf")) {
+        try (OutputStream out = new FileOutputStream("food" + userId + ".rdf")) {
             modelToQuery.write(out, "RDF/XML");
         } catch (IOException e) {
             e.printStackTrace();
@@ -184,11 +204,13 @@ public class FoodRepository implements IFoodRecommenderRepository {
         food.addProperty(FoodRdf.timeStampRdf, foodRDF.getTimeStamp().toString());
         food.addProperty(FoodRdf.imageUrlRdf, foodRDF.getImageUrl());
         food.addProperty(FoodRdf.typeRdf, foodRDF.getType());
+        food.addProperty(FoodRdf.idRdf, foodRDF.getId());
 
 
         for (String foodNameGoodWith : foodRDF.getGoodWith()) {
             String parsedFoodName = foodNameGoodWith.split(FoodRdf.foodUri)[0];
-            ResIterator rsIterator = model.listSubjectsWithProperty(FoodRdf.nameRdf, parsedFoodName);
+            String parsedFoodNameNoWhiteSpaces = parsedFoodName.replaceAll("\\s", "_");
+            ResIterator rsIterator = model.listSubjectsWithProperty(FoodRdf.nameRdf, parsedFoodNameNoWhiteSpaces);
             if (rsIterator.hasNext()) {
                 Resource r = rsIterator.nextResource();
                 Statement statement = ResourceFactory.createStatement(food, FoodRdf.isGoodWithRdf, r);
@@ -199,7 +221,7 @@ public class FoodRepository implements IFoodRecommenderRepository {
                     model.add(st);
                 }
             } else {
-                Resource foodNotYetCreated = model.createResource(FoodRdf.foodUri + parsedFoodName);
+                Resource foodNotYetCreated = model.createResource(FoodRdf.foodUri + parsedFoodNameNoWhiteSpaces);
                 Statement s = ResourceFactory.createStatement(food, FoodRdf.isGoodWithRdf, foodNotYetCreated);
                 model.add(s);
             }
@@ -207,7 +229,8 @@ public class FoodRepository implements IFoodRecommenderRepository {
         }
         for (String goodSynergyWith : foodRDF.getGoodSinergyWith()) {
             String parsedFoodName = goodSynergyWith.split(FoodRdf.foodUri)[0];
-            ResIterator rsIterator = model.listSubjectsWithProperty(FoodRdf.nameRdf, parsedFoodName);
+            String parsedFoodNameNoWhiteSpaces = parsedFoodName.replaceAll("\\s", "_");
+            ResIterator rsIterator = model.listSubjectsWithProperty(FoodRdf.nameRdf, parsedFoodNameNoWhiteSpaces);
             if (rsIterator.hasNext()) {
                 Resource r = rsIterator.nextResource();
                 Statement statement = ResourceFactory.createStatement(food, FoodRdf.goodSynergyWithRdf, r);
@@ -218,7 +241,7 @@ public class FoodRepository implements IFoodRecommenderRepository {
                     model.add(st);
                 }
             } else {
-                Resource foodNotYetCreated = model.createResource(FoodRdf.foodUri + parsedFoodName);
+                Resource foodNotYetCreated = model.createResource(FoodRdf.foodUri + parsedFoodNameNoWhiteSpaces);
                 Statement s = ResourceFactory.createStatement(food, FoodRdf.goodSynergyWithRdf, foodNotYetCreated);
                 model.add(s);
             }
@@ -226,7 +249,8 @@ public class FoodRepository implements IFoodRecommenderRepository {
         }
         for (String foodBestEatenAt : foodRDF.getBestEatenAt()) {
             String parsedFoodName = foodBestEatenAt.split(FoodRdf.foodUri)[0];
-            ResIterator rsIterator = model.listSubjectsWithProperty(FoodRdf.nameRdf, parsedFoodName);
+            String parsedFoodNameNoWhiteSpaces = parsedFoodName.replaceAll("\\s", "_");
+            ResIterator rsIterator = model.listSubjectsWithProperty(FoodRdf.nameRdf, parsedFoodNameNoWhiteSpaces);
             if (rsIterator.hasNext()) {
                 Resource r = rsIterator.nextResource();
                 Statement statement = ResourceFactory.createStatement(food, FoodRdf.bestEatenAtRdf, r);
@@ -237,7 +261,7 @@ public class FoodRepository implements IFoodRecommenderRepository {
                     model.add(st);
                 }
             } else {
-                Resource foodNotYetCreated = model.createResource(FoodRdf.foodUri + parsedFoodName);
+                Resource foodNotYetCreated = model.createResource(FoodRdf.foodUri + parsedFoodNameNoWhiteSpaces);
                 Statement s = ResourceFactory.createStatement(food, FoodRdf.bestEatenAtRdf, foodNotYetCreated);
                 model.add(s);
             }
@@ -262,6 +286,7 @@ public class FoodRepository implements IFoodRecommenderRepository {
             String imageUrl = r.getProperty(FoodRdf.imageUrlRdf).getObject().toString();
             Number timeStamp = Long.parseLong(r.getProperty(FoodRdf.timeStampRdf).getObject().toString());
             String type = r.getProperty(FoodRdf.typeRdf).getObject().toString();
+            String id = r.getProperty(FoodRdf.idRdf).getObject().toString();
             foodRdf.setName(name);
             foodRdf.setCaloriesPer100(caloriesPer100);
             foodRdf.setDescription(description);
@@ -273,6 +298,7 @@ public class FoodRepository implements IFoodRecommenderRepository {
             foodRdf.setImageUrl(imageUrl);
             foodRdf.setTimeStamp(timeStamp);
             foodRdf.setType(type);
+            foodRdf.setId(id);
             StmtIterator stmtIteratorGoodWith = modelToQuery.listStatements(r, FoodRdf.isGoodWithRdf, (RDFNode) null);
             StmtIterator stmtIteratorBestEatenAt = modelToQuery.listStatements(r, FoodRdf.bestEatenAtRdf, (RDFNode) null);
             StmtIterator stmtIteratorGoodSynergyWith = modelToQuery.listStatements(r, FoodRdf.goodSynergyWithRdf, (RDFNode) null);
@@ -280,22 +306,25 @@ public class FoodRepository implements IFoodRecommenderRepository {
             while (stmtIteratorGoodWith.hasNext()) {
                 Statement s = stmtIteratorGoodWith.nextStatement();
                 String goodWithName = s.getObject().toString().split(FoodRdf.foodUri)[1];
-                goodWiths.add(goodWithName);
+                String formattedName = goodWithName.replaceAll("_", " ");
+                goodWiths.add(formattedName);
 
             }
             List<String> bestEatenAt = new ArrayList<>();
             while (stmtIteratorBestEatenAt.hasNext()) {
                 Statement s = stmtIteratorBestEatenAt.nextStatement();
                 String bestEatenName = s.getObject().toString().split(FoodRdf.foodUri)[1];
-
-                bestEatenAt.add(bestEatenName);
+                String formattedName = bestEatenName.replaceAll("_", " ");
+                System.out.println(formattedName);
+                bestEatenAt.add(formattedName);
 
             }
             List<String> goodSinergyWith = new ArrayList<>();
             while (stmtIteratorGoodSynergyWith.hasNext()) {
                 Statement s = stmtIteratorGoodSynergyWith.nextStatement();
                 String goodSinergyName = s.getObject().toString().split(FoodRdf.foodUri)[1];
-                goodSinergyWith.add(goodSinergyName);
+                String formattedName = goodSinergyName.replaceAll("_", " ");
+                goodSinergyWith.add(formattedName);
 
             }
             foodRdf.setGoodSinergyWith(goodSinergyWith.toArray(new String[0]));

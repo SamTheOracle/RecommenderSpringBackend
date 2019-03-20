@@ -29,7 +29,9 @@ public class FoodRdf {
     public static final Property imageUrlRdf = model.createProperty(foodUri, "imageUrl");
     public static final Property timeStampRdf = model.createProperty(foodUri, "timeStamp");
     public static final Property typeRdf = model.createProperty(foodUri, "type");
-    private String name, description, type, imageUrl, rdfOutput;
+
+    public static final Property idRdf = model.createProperty(foodUri, "id");
+    private String name, description, type, imageUrl, rdfOutput, id;
     private Number proteins, fats, carbs, vitamins, salts, caloriesPer100, timeStamp;
     private String[] goodWith, goodSinergyWith, bestEatenAt;
 
@@ -38,6 +40,14 @@ public class FoodRdf {
 
     public String getName() {
         return name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setName(String name) {

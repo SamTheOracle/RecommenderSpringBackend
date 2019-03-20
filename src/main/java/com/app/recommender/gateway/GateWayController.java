@@ -40,6 +40,13 @@ public class GateWayController {
         CompletableFuture<User> userCompletableFuture = new CompletableFuture<>();
 
 
+        CompletableFuture<Map<String, Object>> result = dietCompletableFuture.thenCombine(userCompletableFuture, (diet, user) -> {
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("diet", diet);
+            map.put("user", user);
+            return map;
+        });
         if (dietMicroservice.isPresent()) {
 
             ServiceInstance dietMicroserviceInstance = dietMicroservice.get();
@@ -70,15 +77,6 @@ public class GateWayController {
 
             userCompletableFuture.complete(response.getBody());
         }
-
-        CompletableFuture<Map<String,Object>> result = dietCompletableFuture.thenCombine(userCompletableFuture,(diet,user)->{
-
-            Map<String,Object> map = new HashMap<>();
-            map.put("diet",diet);
-            map.put("user",user);
-            return map;
-        });
-
         if(result.get().isEmpty()){
             return ResponseEntity.status(400).body("Error");
 
