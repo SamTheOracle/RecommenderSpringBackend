@@ -1,6 +1,8 @@
 package com.app.recommender.foodrecommender;
 
 
+import org.apache.jena.rdf.model.Property;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -16,15 +18,5 @@ public interface IFoodRecommenderRepository {
 
     FoodRdf update(FoodRdf foodRDF, String foodId, String userId) throws FileNotFoundException;
 
-
-//    FoodRdf createRdfFood(FoodRdf foodRDF) throws FileNotFoundException;
-//
-//
-//    List<FoodRdf> getRdfFoodForRecommendation(String name) throws FileNotFoundException;
-//
-//    FoodRdf getFoodById(String foodName) throws IOException;
-//
-//    FoodRdf[] getAllFoodFromOntology() throws FileNotFoundException;
-//
-//    FoodRdf update(FoodRdf foodRDF, String previousName) throws FoodRdfNotFoundException, FileNotFoundException;
+    List<FoodRdf> getRdfFoodByStatement(Property property, String object, String userId) throws FileNotFoundException;
 }

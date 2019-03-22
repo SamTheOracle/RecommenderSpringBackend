@@ -100,8 +100,8 @@ public class Diet implements Comparator<Diet> {
         for(int i = 0; i < this.dailyFood.get(day).size();i++){
             List<Food> allFood = this.dailyFood.get(day).get(i).getAllFoodEntries();
 
-            for(int j = 0; j < allFood.size();j++){
-                dailyCaloriesCount += allFood.get(j).getCalories().doubleValue();
+            for (Food food : allFood) {
+                dailyCaloriesCount += food.getCalories().doubleValue();
             }
         }
         this.caloriesPerDay.put(day,dailyCaloriesCount);
@@ -109,10 +109,12 @@ public class Diet implements Comparator<Diet> {
 
         updateTotalCalories();
 
+
     }
 
     private void updateTotalCalories(){
-        this.getCaloriesPerDay().forEach((key, value) -> {
+        this.totalCalories = 0.0;
+        this.getCaloriesPerDay().forEach((day, value) -> {
             this.totalCalories+=value.doubleValue();
         });
     }

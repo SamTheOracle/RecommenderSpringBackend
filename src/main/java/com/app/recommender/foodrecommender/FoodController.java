@@ -1,6 +1,10 @@
 package com.app.recommender.foodrecommender;
 
+import com.app.recommender.Model.Diet;
+import com.app.recommender.Model.DietNotFoundException;
 import com.app.recommender.Model.FoodRdfNotFoundException;
+import com.app.recommender.Model.NoDietHistoryException;
+import com.app.recommender.diet.IDietService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +23,8 @@ public class FoodController {
     private IFoodService service;
     @Autowired
     private JmsTemplate template;
+    @Autowired
+    IDietService dietService;
 
     @GetMapping(value = "/testfood")
     public int test() {
@@ -43,11 +49,11 @@ public class FoodController {
 
     }
 
-    @GetMapping(value = "/{foodName}/recommendations/goodwiths", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getRecomendations(@PathVariable(value = "foodName") String foodName, @RequestParam(value = "userId") String userId) {
+    @GetMapping(value = "/{foodId}/recommendations/goodwiths", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getRecomendations(@PathVariable(value = "foodId") String foodId, @RequestParam(value = "userId") String userId) {
         List<FoodRdf> recommendedFood;
         try {
-            recommendedFood = service.recommendFood(foodName, userId);
+            recommendedFood = service.recommendFood(foodId, userId);
         } catch (FileNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -77,12 +83,13 @@ public class FoodController {
         } catch (FileNotFoundException | FoodRdfNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+
         return ResponseEntity.status(HttpStatus.OK).body(foodRDFS);
     }
 
     @PutMapping(value = "/properties/updates", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity modifyFoodProperty(@RequestBody FoodRdf foodRDF, @RequestParam(value = "foodId") String foodId
-            , @RequestParam(value = "userId") String userId) {
+    public ResponseEntity modifyFoodProperty(@RequestBody FoodRdf foodRDF, @RequestParam(value = "foodId") String foodId,
+                                             @RequestParam(value = "userId") String userId) {
 
         FoodRdf foodToSendBack = null;
         try {
@@ -111,6 +118,44 @@ public class FoodController {
 
         return ResponseEntity.status(200).body(foodToSendBack);
 
+    }
+
+    @GetMapping(value = "/{dietName}/suggestions/FruitsAndVegetables")
+    public ResponseEntity getGeneralSuggestions(@PathVariable(value = "dietName") String dietName,
+                                                @RequestParam(value = "userId") String userId) {
+        Diet diet;
+        List<FoodRdf> foodRdfList;
+        try {
+            diet = dietService.getDietByDietName(dietName, userId);
+        } catch (DietNotFoundException | NoDietHistoryException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        try {
+            foodRdfList = service.getGeneralFoodRecommendation(diet, userId);
+        } catch (FileNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(foodRdfList);
+    }
+
+    @GetMapping(value = "/{dietName}/suggestions/MeatAndFish")
+    public ResponseEntity getGeneralSuggestionsMeatAndFish(@PathVariable(value = "dietName") String dietName,
+                                                           @RequestParam(value = "userId") String userId,
+                                                           @RequestParam(value = "rightAmountOfProteins") Double rightAmountOfProteins) {
+        Diet diet;
+        List<FoodRdf> foodRdfList;
+        try {
+            diet = dietService.getDietByDietName(dietName, userId);
+        } catch (DietNotFoundException | NoDietHistoryException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        try {
+            foodRdfList = service.getGeneralFoodRecommendationForMeat(diet, userId, rightAmountOfProteins);
+        } catch (FileNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        foodRdfList.forEach(System.out::println);
+        return ResponseEntity.status(HttpStatus.OK).body(foodRdfList);
     }
 
 

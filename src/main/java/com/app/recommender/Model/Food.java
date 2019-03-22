@@ -10,23 +10,63 @@ public class Food {
 
     private Number calories;
 
-    private Number fats;
+    private Number fats, fatsPer100;
 
-    private Number vitamins;
+    private Number vitamins, vitaminsPer100;
 
-    private Number salts;
+    private Number salts, saltsPer100;
 
-    private Number carbs;
-
+    private Number carbs, carbsPer100;
 
     private Number quantity;
 
     private Number caloriesPer100;
 
-    private Number proteins;
+    private Number proteins, proteinsPer100;
 
 
-    public Food(){}
+    public Food() {
+    }
+
+    public Number getFatsPer100() {
+        return fatsPer100;
+    }
+
+    public void setFatsPer100(Number fatsPer100) {
+        this.fatsPer100 = fatsPer100;
+    }
+
+    public Number getVitaminsPer100() {
+        return vitaminsPer100;
+    }
+
+    public void setVitaminsPer100(Number vitaminsPer100) {
+        this.vitaminsPer100 = vitaminsPer100;
+    }
+
+    public Number getSaltsPer100() {
+        return saltsPer100;
+    }
+
+    public void setSaltsPer100(Number saltsPer100) {
+        this.saltsPer100 = saltsPer100;
+    }
+
+    public Number getCarbsPer100() {
+        return carbsPer100;
+    }
+
+    public void setCarbsPer100(Number carbsPer100) {
+        this.carbsPer100 = carbsPer100;
+    }
+
+    public Number getProteinsPer100() {
+        return proteinsPer100;
+    }
+
+    public void setProteinsPer100(Number proteinsPer100) {
+        this.proteinsPer100 = proteinsPer100;
+    }
 
     public String getId() {
         return id;

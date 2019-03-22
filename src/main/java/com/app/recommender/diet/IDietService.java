@@ -26,7 +26,7 @@ public interface IDietService {
 
     List<DietHistory> getDietsByYear(String userId, String year) throws DietNotFoundException, NoDietHistoryException;
 
-    Meal updateDiet(Food food, String dietName, String userId, String day,String mealType) throws UnexpectedException, NoDietHistoryException, DietNotFoundException;
+    Meal updateDiet(Food food, String dietName, String userId, String day, String mealType) throws UnexpectedException, NoDietHistoryException, DietNotFoundException;
 
     void updateDietValues(FoodRdf foodToUpdate, String userId);
 }

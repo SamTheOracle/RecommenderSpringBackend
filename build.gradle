@@ -33,6 +33,9 @@ ext {
 }
 
 dependencies {
+    implementation group: 'joda-time', name: 'joda-time', version: '2.3'
+
+
     implementation 'com.github.javadev:underscore:1.42'
     implementation group: 'org.apache.jena', name: 'apache-jena-libs', version: '3.10.0'
     implementation("org.springframework.boot:spring-boot-starter-activemq")

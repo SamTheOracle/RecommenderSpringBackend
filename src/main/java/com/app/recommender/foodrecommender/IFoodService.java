@@ -1,5 +1,6 @@
 package com.app.recommender.foodrecommender;
 
+import com.app.recommender.Model.Diet;
 import com.app.recommender.Model.FoodRdfNotFoundException;
 
 import java.io.FileNotFoundException;
@@ -16,6 +17,12 @@ public interface IFoodService {
     FoodRdf[] getAllFood(String userId) throws FileNotFoundException, FoodRdfNotFoundException;
 
     FoodRdf updateFood(FoodRdf foodRDF, String foodId, String userId) throws IOException, FoodRdfNotFoundException;
+
+    List<FoodRdf> getGeneralFoodRecommendation(Diet diet, String userId) throws FileNotFoundException;
+
+    List<FoodRdf> getGeneralFoodRecommendationForMeat(Diet diet, String userId, double rightAmountOfProteins) throws FileNotFoundException;
+
+    List<FoodRdf> getGeneralFoodRecommendationForCarbohydrates(Diet diet, String userId) throws FileNotFoundException;
 
 
 //    List<FoodRdf> recommendFood(String foodName) throws FileNotFoundException;

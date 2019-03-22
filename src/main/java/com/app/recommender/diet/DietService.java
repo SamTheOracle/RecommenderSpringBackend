@@ -177,7 +177,6 @@ public class DietService implements IDietService {
 
             meals.remove(mealToUpdate);
 
-
             mealToUpdate.getAllFoodEntries().removeIf(f -> f.getName().equalsIgnoreCase(food.getName()));
 
             mealToUpdate.getAllFoodEntries().add(food);
@@ -189,6 +188,7 @@ public class DietService implements IDietService {
             diet.setDailyFood(foodEntries);
 
             diet.updateCalories(day);
+
 
             this.dietRepository.save(diet);
 

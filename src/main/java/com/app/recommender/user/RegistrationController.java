@@ -45,7 +45,6 @@ public class RegistrationController {
 
         try {
             user.setCurrentGoal(null);
-            user.setOlderPhysicalActivities(null);
             userService.saveNewUser(user);
             return ResponseEntity.status(201).headers(responseHeaders).body(user);
         } catch (UserAlreadyExistException e) {

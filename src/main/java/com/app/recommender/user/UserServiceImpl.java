@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserService {
         try {
             User userToDelete = getUser(user.getEmail());
             repository.delete(userToDelete);
+            user.computeBMR();
             repository.insert(user);
             return user;
         } catch (ServerErrorException e) {
