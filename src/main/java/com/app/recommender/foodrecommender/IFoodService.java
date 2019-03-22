@@ -10,6 +10,7 @@ import java.util.List;
 public interface IFoodService {
     List<FoodRdf> recommendFood(String selectedFood, String userId) throws FileNotFoundException;
 
+
     FoodRdf getFoodByName(String foodName, String outputType, String userId) throws IOException;
 
     FoodRdf createNewRdfFood(FoodRdf foodRDF, String userId) throws IOException, FoodRdfAlreadyCreatedException;
