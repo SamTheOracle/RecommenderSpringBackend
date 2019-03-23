@@ -9,10 +9,10 @@
     <food:timeStamp>1553246231541</food:timeStamp>
     <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Afternoon_Break"/>
     <food:fats>0</food:fats>
-    <food:description>Molto dolce</food:description>
+    <food:name>Frutto della passione</food:name>
     <food:caloriesPer100>12</food:caloriesPer100>
     <food:imageUrl>https://api.adorable.io/avatars/120/0.1956215964498993.png</food:imageUrl>
-    <food:name>Frutto della passione</food:name>
+    <food:description>Molto dolce</food:description>
     <food:proteins>0</food:proteins>
     <food:isGoodWith>
       <rdf:Description rdf:about="http://temphost/ontologies/food#Patata">
@@ -66,8 +66,8 @@
     <food:proteins>0</food:proteins>
     <food:id>b9425b73-0805-01f0-e856-b5b5084dfd47</food:id>
     <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Patata"/>
-    <food:type>Fruits</food:type>
     <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Treadmill"/>
+    <food:type>Fruits</food:type>
     <food:imageUrl>https://api.adorable.io/avatars/120/0.549010810212212.png</food:imageUrl>
     <food:salts>0</food:salts>
     <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Dinner"/>
@@ -94,11 +94,11 @@
         <food:timeStamp>1553069870276</food:timeStamp>
         <food:fats>0</food:fats>
         <food:proteins>123</food:proteins>
-        <food:type>Meat</food:type>
         <food:caloriesPer100>24</food:caloriesPer100>
+        <food:type>Meat</food:type>
         <food:name>Maiale ai ferri</food:name>
-        <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Lattughina"/>
         <food:id>a81037ae-006a-8f11-584d-67fcb9c0f164</food:id>
+        <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Lattughina"/>
         <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Box"/>
       </rdf:Description>
     </food:isGoodWith>
@@ -138,10 +138,10 @@
         <food:proteins>0</food:proteins>
       </rdf:Description>
     </food:isGoodWith>
-    <food:caloriesPer100>12</food:caloriesPer100>
     <food:proteins>0</food:proteins>
-    <food:timeStamp>1553099455999</food:timeStamp>
+    <food:caloriesPer100>12</food:caloriesPer100>
     <food:carbs>0</food:carbs>
+    <food:timeStamp>1553099455999</food:timeStamp>
     <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Treadmill"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://temphost/ontologies/food#Cocomero">
@@ -164,8 +164,8 @@
     <food:id>8d7f0360-d86e-0f07-13b6-8df481657162</food:id>
   </rdf:Description>
   <rdf:Description rdf:about="http://temphost/ontologies/food#Kiwi">
-    <food:description>Schifo</food:description>
     <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Jogging"/>
+    <food:description>Schifo</food:description>
     <food:carbs>0</food:carbs>
     <food:caloriesPer100>14</food:caloriesPer100>
     <food:vitamins>0</food:vitamins>
@@ -197,25 +197,6 @@
     <food:salts>0</food:salts>
     <food:id>47a1d9ac-eb61-f244-2534-b777baef7869</food:id>
   </rdf:Description>
-  <rdf:Description rdf:about="http://temphost/ontologies/food#Arancia">
-    <food:salts>0</food:salts>
-    <food:imageUrl>https://api.adorable.io/avatars/120/0.6796108751534995.png</food:imageUrl>
-    <food:type>Fruits</food:type>
-    <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Lattughina"/>
-    <food:caloriesPer100>10</food:caloriesPer100>
-    <food:description>Start creating your new cool RDF semantic food</food:description>
-    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Morning_Break"/>
-    <food:carbs>0.12</food:carbs>
-    <food:id>82240bdb-4dd2-82f2-a4b5-eec7d27d46e2</food:id>
-    <food:proteins>0.01</food:proteins>
-    <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Box"/>
-    <food:timeStamp>1553015271061</food:timeStamp>
-    <food:vitamins>456</food:vitamins>
-    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Dinner"/>
-    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Breakfast"/>
-    <food:name>Arancia</food:name>
-    <food:fats>0.1</food:fats>
-  </rdf:Description>
   <rdf:Description rdf:about="http://temphost/ontologies/food#Pollo">
     <food:type>Meat</food:type>
     <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Dinner"/>
@@ -230,8 +211,8 @@
     <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Lunch"/>
     <food:vitamins>0</food:vitamins>
     <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Treadmill"/>
-    <food:timeStamp>1553069822119</food:timeStamp>
     <food:fats>0</food:fats>
+    <food:timeStamp>1553069822119</food:timeStamp>
   </rdf:Description>
   <rdf:Description rdf:about="http://temphost/ontologies/food#Banana">
     <food:isGoodWith>
@@ -319,6 +300,25 @@
     <food:timeStamp>1553259255875</food:timeStamp>
     <food:description>Start creating your new cool RDF semantic food</food:description>
     <food:carbs>0</food:carbs>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://temphost/ontologies/food#Arancie">
+    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Breakfast"/>
+    <food:id>82240bdb-4dd2-82f2-a4b5-eec7d27d46e2</food:id>
+    <food:caloriesPer100>10</food:caloriesPer100>
+    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Morning_Break"/>
+    <food:carbs>0.12</food:carbs>
+    <food:salts>0</food:salts>
+    <food:imageUrl>https://api.adorable.io/avatars/120/0.6796108751534995.png</food:imageUrl>
+    <food:description>Start creating your new cool RDF semantic food</food:description>
+    <food:timeStamp>1553015271061</food:timeStamp>
+    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Dinner"/>
+    <food:fats>0.1</food:fats>
+    <food:vitamins>456</food:vitamins>
+    <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Box"/>
+    <food:name>Arancie</food:name>
+    <food:proteins>0.01</food:proteins>
+    <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Lattughina"/>
+    <food:type>Fruits</food:type>
   </rdf:Description>
   <rdf:Description rdf:about="http://temphost/ontologies/food#Mandarino">
     <food:name>Mandarino</food:name>

@@ -25,16 +25,6 @@ public interface IFoodService {
 
     List<FoodRdf> getGeneralFoodRecommendationForCarbohydrates(Diet diet, String userId) throws FileNotFoundException;
 
-
-//    List<FoodRdf> recommendFood(String foodName) throws FileNotFoundException;
-//
-//    FoodRdf getFoodByName(String foodName, String outputType) throws IOException;
-//
-//    FoodRdf createNewRdfFood(FoodRdf foodRDF) throws IOException, FoodRdfAlreadyCreatedException;
-//
-//    FoodRdf[] getAllFood() throws FileNotFoundException, FoodRdfNotFoundException;
-//
-//    FoodRdf updateFood(FoodRdf foodRDF, String previousName) throws IOException, FoodRdfNotFoundException;
 }
 
 
