@@ -21,9 +21,6 @@ group = 'com.app'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
-springBoot {
-    mainClassName = "com.app.recommender.gateway.GateWay"
-}
 repositories {
     mavenCentral()
     maven { url "https://repo.spring.io/snapshot" }
@@ -36,7 +33,15 @@ ext {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-zuul
+    implementation group: 'joda-time', name: 'joda-time', version: '2.3'
+
+
+    implementation 'com.github.javadev:underscore:1.42'
+    implementation group: 'org.apache.jena', name: 'apache-jena-libs', version: '3.10.0'
+    implementation("org.springframework.boot:spring-boot-starter-activemq")
+    implementation("org.apache.activemq:activemq-broker")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+
     implementation("org.springframework.boot:spring-boot-starter-hateoas")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation('org.mongodb:mongodb-driver-async:3.9.0')
@@ -47,13 +52,9 @@ dependencies {
     implementation('org.springframework.cloud:spring-cloud-starter-config')
     implementation('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
     implementation('org.springframework.cloud:spring-cloud-stream-reactive')
-    // https://mvnrepository.com/artifact/org.apache.jena/jena-arq
-    compile group: 'org.apache.jena', name: 'jena-arq', version: '3.10.0'
-
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('org.springframework.cloud:spring-cloud-stream-test-support')
     testImplementation('junit:junit:4.12')
-
 }
 
 dependencyManagement {

@@ -19,7 +19,7 @@ public class RegistrationController {
     private UserService userService;
 
     @GetMapping("/testing")
-    public int testing(@RequestParam(value = "name", defaultValue = "World") String name) {
+    public int testing(@RequestParam(value = "nameRdf", defaultValue = "World") String name) {
 
 
         return new Random().nextInt();
@@ -45,7 +45,6 @@ public class RegistrationController {
 
         try {
             user.setCurrentGoal(null);
-            user.setOlderPhysicalActivities(null);
             userService.saveNewUser(user);
             return ResponseEntity.status(201).headers(responseHeaders).body(user);
         } catch (UserAlreadyExistException e) {

@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
             if (user == null) {
                 throw new UsernameNotFoundException("Error. User not found for email: " + email);
             }
-            return repository.findUserByEmail(email);
+            return user;
         } catch (UsernameNotFoundException e) {
             throw new UsernameNotFoundException(e.getErrorMessage());
         } catch (Exception e) {
@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserService {
         try {
             User userToDelete = getUser(user.getEmail());
             repository.delete(userToDelete);
+            user.computeBMR();
             repository.insert(user);
             return user;
         } catch (ServerErrorException e) {

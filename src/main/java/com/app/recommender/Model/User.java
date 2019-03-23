@@ -1,5 +1,7 @@
 package com.app.recommender.Model;
 
+import org.joda.time.LocalDate;
+import org.joda.time.Years;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
@@ -25,34 +27,12 @@ public class User {
 
     private PhysicalActivity currentGoal;
 
-    private PhysicalActivity[] olderPhysicalActivities;
-
-    private int BMIndex;
+    private double basicMetabolicRate;
 
 
     public User() {
     }
 
-    public User(String id, String userName, String email, String password, Date birthDate,
-                String gender, int weight, int height, PhysicalActivity currentGoal, PhysicalActivity[] olderPhysicalActivities) {
-        this.id = id;
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.birthDate = birthDate;
-        this.gender = gender;
-        this.weight = weight;
-        this.height = height;
-        this.currentGoal = currentGoal;
-        this.olderPhysicalActivities = olderPhysicalActivities;
-    }
-
-    public User(String id, String userName, String email, String password) {
-        this.id = id;
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-    }
 
     public String getId() {
         return id;
@@ -126,19 +106,24 @@ public class User {
         this.currentGoal = currentGoal;
     }
 
-    public PhysicalActivity[] getOlderPhysicalActivities() {
-        return olderPhysicalActivities;
+    public double getBasicMetabolicRate() {
+        return basicMetabolicRate;
     }
 
-    public void setOlderPhysicalActivities(PhysicalActivity[] olderPhysicalActivities) {
-        this.olderPhysicalActivities = olderPhysicalActivities;
+    public void setBasicMetabolicRate(double basicMetabolicRate) {
+        this.basicMetabolicRate = basicMetabolicRate;
     }
 
-    public int getBMIndex() {
-        return BMIndex;
-    }
-
-    public void setBMIndex(int BMIndex) {
-        this.BMIndex = BMIndex;
+    public void computeBMR() {
+        LocalDate now = LocalDate.now();
+        int age = Years.yearsBetween(LocalDate.fromDateFields(this.birthDate), now).getYears();
+        switch (this.gender) {
+            case "Male":
+                this.basicMetabolicRate = 10 * this.weight + 6.25 * this.height - 5 * age + 5;
+                break;
+            case "Female":
+                this.basicMetabolicRate = 10 * this.weight + 6.25 * this.height - 5 * age - 161;
+                break;
+        }
     }
 }

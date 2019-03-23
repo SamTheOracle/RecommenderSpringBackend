@@ -2,49 +2,94 @@ package com.app.recommender.Model;
 
 public class Food {
 
+    private String id;
+
     private String type;
 
     private String name;
 
     private Number calories;
 
-    private Number fat;
+    private Number fats, fatsPer100;
 
-    private Number carbs;
+    private Number vitamins, vitaminsPer100;
 
-    private String healthy;
+    private Number salts, saltsPer100;
 
-    private String[] mealTypes;
+    private Number carbs, carbsPer100;
 
     private Number quantity;
 
     private Number caloriesPer100;
 
-    private Number proteins;
+    private Number proteins, proteinsPer100;
 
-    public Food(String type, String name, Number calories, Number fat, Number carbs, String healthy, String[] mealTypes, Number quantity, Number caloriesPer100,Number proteins) {
-        this.type = type;
-        this.name = name;
-        this.calories = calories;
-        this.fat = fat;
-        this.carbs = carbs;
-        this.healthy = healthy;
-        this.mealTypes = mealTypes;
-        this.quantity = quantity;
-        this.caloriesPer100 = caloriesPer100;
-        this.proteins = proteins;
 
-    }
-    public Food(){}
-
-    public Number getProteins() {
-        return proteins;
+    public Food() {
     }
 
+    public Number getFatsPer100() {
+        return fatsPer100;
+    }
 
+    public void setFatsPer100(Number fatsPer100) {
+        this.fatsPer100 = fatsPer100;
+    }
 
-    public void setProteins(Number proteins) {
-        this.proteins = proteins;
+    public Number getVitaminsPer100() {
+        return vitaminsPer100;
+    }
+
+    public void setVitaminsPer100(Number vitaminsPer100) {
+        this.vitaminsPer100 = vitaminsPer100;
+    }
+
+    public Number getSaltsPer100() {
+        return saltsPer100;
+    }
+
+    public void setSaltsPer100(Number saltsPer100) {
+        this.saltsPer100 = saltsPer100;
+    }
+
+    public Number getCarbsPer100() {
+        return carbsPer100;
+    }
+
+    public void setCarbsPer100(Number carbsPer100) {
+        this.carbsPer100 = carbsPer100;
+    }
+
+    public Number getProteinsPer100() {
+        return proteinsPer100;
+    }
+
+    public void setProteinsPer100(Number proteinsPer100) {
+        this.proteinsPer100 = proteinsPer100;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Number getVitamins() {
+        return vitamins;
+    }
+
+    public void setVitamins(Number vitamins) {
+        this.vitamins = vitamins;
+    }
+
+    public Number getSalts() {
+        return salts;
+    }
+
+    public void setSalts(Number salts) {
+        this.salts = salts;
     }
 
     public String getType() {
@@ -71,12 +116,12 @@ public class Food {
         this.calories = calories;
     }
 
-    public Number getFat() {
-        return fat;
+    public Number getFats() {
+        return fats;
     }
 
-    public void setFat(Number fat) {
-        this.fat = fat;
+    public void setFats(Number fats) {
+        this.fats = fats;
     }
 
     public Number getCarbs() {
@@ -85,22 +130,6 @@ public class Food {
 
     public void setCarbs(Number carbs) {
         this.carbs = carbs;
-    }
-
-    public String getHealthy() {
-        return healthy;
-    }
-
-    public void setHealthy(String healthy) {
-        this.healthy = healthy;
-    }
-
-    public String[] getMealTypes() {
-        return mealTypes;
-    }
-
-    public void setMealTypes(String[] mealTypes) {
-        this.mealTypes = mealTypes;
     }
 
     public Number getQuantity() {
@@ -118,4 +147,14 @@ public class Food {
     public void setCaloriesPer100(Number caloriesPer100) {
         this.caloriesPer100 = caloriesPer100;
     }
+
+    public Number getProteins() {
+        return proteins;
+    }
+
+    public void setProteins(Number proteins) {
+        this.proteins = proteins;
+    }
+
+
 }
