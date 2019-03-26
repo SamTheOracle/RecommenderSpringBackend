@@ -1,6 +1,7 @@
 package com.app.recommender.foodrecommender;
 
 
+import com.app.recommender.Model.FoodRdf;
 import org.apache.jena.rdf.model.Property;
 
 import java.io.FileNotFoundException;

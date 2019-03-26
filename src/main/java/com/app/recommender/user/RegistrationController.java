@@ -1,14 +1,13 @@
 package com.app.recommender.user;
 
-import com.app.recommender.Model.ServerErrorException;
-import com.app.recommender.Model.User;
-import com.app.recommender.Model.UserAlreadyExistException;
-import com.app.recommender.Model.UsernameNotFoundException;
+import com.app.recommender.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Random;
 
 @CrossOrigin
@@ -26,15 +25,16 @@ public class RegistrationController {
     }
 
     @GetMapping(value = "registrations/{userId}")
-    public ResponseEntity getUser(@PathVariable(value = "userId") String userId){
+    public ResponseEntity getUser(@PathVariable(value = "userId") String userId) {
         try {
             return ResponseEntity.status(200).body(userService.getUserById(userId));
-        } catch (UsernameNotFoundException e) {
-            return ResponseEntity.status(400).body(e.getErrorMessage());
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
         } catch (ServerErrorException e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+
     @PostMapping(value = "/registrations/signup")
     @ResponseBody
     public ResponseEntity signUp(@RequestBody User user) {
@@ -44,7 +44,7 @@ public class RegistrationController {
         //responseHeaders.add();
 
         try {
-            user.setCurrentGoal(null);
+
             userService.saveNewUser(user);
             return ResponseEntity.status(201).headers(responseHeaders).body(user);
         } catch (UserAlreadyExistException e) {
@@ -55,16 +55,37 @@ public class RegistrationController {
 
     }
 
+    @GetMapping(value = "nutritionists/{nutritionistId}/patients/all")
+    public ResponseEntity getAllNutritionistsPatient(@PathVariable(value = "nutritionistId") String nutritionistId) {
+        List<User> patients;
+        try {
+            patients = this.userService.getAllNutritionistPatients(nutritionistId);
+        } catch (ServerErrorException | UserNotFoundException | PatientsNotFoundException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(patients);
+
+    }
+
+    @GetMapping(value = "patients/all")
+    public ResponseEntity getAllPatients() {
+        List<User> patients;
+        patients = this.userService.getAllPatients();
+        if (patients == null || patients.size() == 0) {
+            return ResponseEntity.status(400).body("No patient is present in the system");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(patients);
+    }
+
     @GetMapping(value = "registrations/signin/{email}")
     public ResponseEntity logIn(@PathVariable("email") String email) {
-        System.out.println("FETCHING FOR USER AT ID: " + email);
         try {
             User user = userService.getUser(email);
-            System.out.println("Sending User: " + user);
 
             return ResponseEntity.status(200).body(user);
-        } catch (UsernameNotFoundException e) {
-            return ResponseEntity.status(422).body(e.getErrorMessage());
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(422).body(e.getMessage());
         } catch (ServerErrorException e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }
@@ -75,11 +96,9 @@ public class RegistrationController {
 
         try {
             User updatedUser = userService.updateNewUser(user);
-            System.out.println(user.getBirthDate());
-            System.out.println(updatedUser.getBirthDate());
             return ResponseEntity.status(200).body(updatedUser);
-        } catch (UsernameNotFoundException e) {
-            return ResponseEntity.status(422).body(e.getErrorMessage());
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(422).body(e.getMessage());
         } catch (ServerErrorException e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }

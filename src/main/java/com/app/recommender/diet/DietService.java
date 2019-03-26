@@ -2,12 +2,13 @@ package com.app.recommender.diet;
 
 import com.app.recommender.Model.*;
 import com.app.recommender.diet.Persistence.DietRepository;
-import com.app.recommender.foodrecommender.FoodRdf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.rmi.UnexpectedException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
@@ -212,21 +213,36 @@ public class DietService implements IDietService {
                             .filter(mealName -> mealName.equalsIgnoreCase(mealType)).findFirst();
 
                     if (food.getId().equalsIgnoreCase(foodToUpdate.getId()) && mealRdf.isPresent()) {
-                        System.out.println("CIAONE");
                         food.setName(foodToUpdate.getName());
-                        food.setSalts(foodToUpdate.getSalts());
-                        food.setVitamins(foodToUpdate.getVitamins());
-                        food.setProteins(foodToUpdate.getProteins());
-                        food.setFats(foodToUpdate.getFats());
+                        food.setSaltsPer100(foodToUpdate.getSaltsPer100());
+                        food.setVitaminsPer100(foodToUpdate.getVitaminsPer100());
+                        food.setProteinsPer100(foodToUpdate.getProteinsPer100());
+                        food.setFatsPer100(foodToUpdate.getFatsPer100());
                         food.setCaloriesPer100(foodToUpdate.getCaloriesPer100());
-                        food.setCarbs(foodToUpdate.getCarbs());
+                        food.setCarbsPer100(foodToUpdate.getCarbsPer100());
+                        double totalCarbs, totalSalts, totalVitamins, totalProteins, totalFats, totalCalories;
+                        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
+                        decimalFormatSymbols.setDecimalSeparator('.');
+                        DecimalFormat df = new DecimalFormat(".##", decimalFormatSymbols);
+                        totalCarbs = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getCarbsPer100().doubleValue() / 100));
+                        totalSalts = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getSaltsPer100().doubleValue() / 100));
+                        totalVitamins = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getVitaminsPer100().doubleValue() / 100));
+                        totalProteins = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getProteinsPer100().doubleValue() / 100));
+                        totalFats = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getFatsPer100().doubleValue() / 100));
+                        totalCalories = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getCaloriesPer100().doubleValue() / 100));
+
+                        food.setCarbs(totalCarbs);
+                        food.setSalts(totalSalts);
+                        food.setFats(totalFats);
+                        food.setProteins(totalProteins);
+                        food.setVitamins(totalVitamins);
+                        food.setCalories(totalCalories);
+
                         food.setType(foodToUpdate.getType());
                         food.setName(foodToUpdate.getName());
-                        food.setCalories((foodToUpdate.getCaloriesPer100().doubleValue() * food.getQuantity().doubleValue()) / 100);
                     }
                     if (food.getId().equalsIgnoreCase(foodToUpdate.getId()) && !mealRdf.isPresent()) {
                         iterator.remove();
-                        System.out.println("CIAONE remove");
                     }
 
 

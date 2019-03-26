@@ -1,4 +1,6 @@
-package com.app.recommender.foodrecommender;
+package com.app.recommender.foodrecommender.DietUpdates;
+
+import com.app.recommender.Model.FoodRdf;
 
 public class DietUpdateMessage {
 

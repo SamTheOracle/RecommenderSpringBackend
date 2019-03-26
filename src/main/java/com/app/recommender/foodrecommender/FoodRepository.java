@@ -1,5 +1,6 @@
 package com.app.recommender.foodrecommender;
 
+import com.app.recommender.Model.FoodRdf;
 import org.apache.jena.rdf.model.*;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +23,14 @@ public class FoodRepository implements IFoodRecommenderRepository {
         if (file.exists()) {
             FileReader reader = new FileReader(file);
             model.read(reader, null);
+        } else {
+            try {
+                if (file.createNewFile()) {
+                    model.setNsPrefix(FoodRdf.NSPrefix, "http://temphost/ontologies/food");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         addResourceToModel(foodRDF, model);
@@ -132,7 +141,6 @@ public class FoodRepository implements IFoodRecommenderRepository {
     @Override
     public FoodRdf update(FoodRdf foodRDF, String foodId, String userId) throws FileNotFoundException {
         Model modelToQuery = ModelFactory.createDefaultModel();
-        List<FoodRdf> updatedFood = new ArrayList<>();
 
         File file = new File("food" + userId + ".rdf");
         if (file.exists()) {
@@ -208,12 +216,12 @@ public class FoodRepository implements IFoodRecommenderRepository {
         String foodName = foodRDF.getName().replaceAll("\\s", "_");
         Resource food = model.createResource(FoodRdf.foodUri + foodName);
         food.addProperty(FoodRdf.caloriesPer100Rdf, foodRDF.getCaloriesPer100().toString());
-        food.addProperty(FoodRdf.carbsRdf, foodRDF.getCarbs().toString());
-        food.addProperty(FoodRdf.fatsRdf, foodRDF.getFats().toString());
-        food.addProperty(FoodRdf.proteinsRdf, foodRDF.getProteins().toString());
+        food.addProperty(FoodRdf.carbsPer100Rdf, foodRDF.getCarbsPer100().toString());
+        food.addProperty(FoodRdf.fatsPer100Rdf, foodRDF.getFatsPer100().toString());
+        food.addProperty(FoodRdf.proteinsPer100Rdf, foodRDF.getProteinsPer100().toString());
         food.addProperty(FoodRdf.nameRdf, foodRDF.getName());
-        food.addProperty(FoodRdf.vitaminsRdf, foodRDF.getVitamins().toString());
-        food.addProperty(FoodRdf.saltsRdf, foodRDF.getSalts().toString());
+        food.addProperty(FoodRdf.vitaminsPer100Rdf, foodRDF.getVitaminsPer100().toString());
+        food.addProperty(FoodRdf.saltsPer100Rdf, foodRDF.getSaltsPer100().toString());
         food.addProperty(FoodRdf.descriptionRdf, foodRDF.getDescription());
         food.addProperty(FoodRdf.timeStampRdf, foodRDF.getTimeStamp().toString());
         food.addProperty(FoodRdf.imageUrlRdf, foodRDF.getImageUrl());
@@ -291,11 +299,11 @@ public class FoodRepository implements IFoodRecommenderRepository {
         if (r != null && stmtIterator.hasNext()) {
             String name = r.getProperty(FoodRdf.nameRdf).getObject().toString();
             String description = r.getProperty(FoodRdf.descriptionRdf).getObject().toString();
-            Number vitamins = Double.parseDouble(r.getProperty(FoodRdf.vitaminsRdf).getObject().toString());
-            Number proteins = Double.parseDouble(r.getProperty(FoodRdf.proteinsRdf).getObject().toString());
-            Number fats = Double.parseDouble(r.getProperty(FoodRdf.fatsRdf).getObject().toString());
-            Number salts = Double.parseDouble(r.getProperty(FoodRdf.saltsRdf).getObject().toString());
-            Number carbs = Double.parseDouble(r.getProperty(FoodRdf.carbsRdf).getObject().toString());
+            Number vitamins = Double.parseDouble(r.getProperty(FoodRdf.vitaminsPer100Rdf).getObject().toString());
+            Number proteins = Double.parseDouble(r.getProperty(FoodRdf.proteinsPer100Rdf).getObject().toString());
+            Number fats = Double.parseDouble(r.getProperty(FoodRdf.fatsPer100Rdf).getObject().toString());
+            Number salts = Double.parseDouble(r.getProperty(FoodRdf.saltsPer100Rdf).getObject().toString());
+            Number carbs = Double.parseDouble(r.getProperty(FoodRdf.carbsPer100Rdf).getObject().toString());
             Number caloriesPer100 = Double.parseDouble(r.getProperty(FoodRdf.caloriesPer100Rdf).getObject().toString());
             String imageUrl = r.getProperty(FoodRdf.imageUrlRdf).getObject().toString();
             Number timeStamp = Long.parseLong(r.getProperty(FoodRdf.timeStampRdf).getObject().toString());
@@ -304,11 +312,11 @@ public class FoodRepository implements IFoodRecommenderRepository {
             foodRdf.setName(name);
             foodRdf.setCaloriesPer100(caloriesPer100);
             foodRdf.setDescription(description);
-            foodRdf.setVitamins(vitamins);
-            foodRdf.setProteins(proteins);
-            foodRdf.setFats(fats);
-            foodRdf.setSalts(salts);
-            foodRdf.setCarbs(carbs);
+            foodRdf.setVitaminsPer100(vitamins);
+            foodRdf.setProteinsPer100(proteins);
+            foodRdf.setFatsPer100(fats);
+            foodRdf.setSaltsPer100(salts);
+            foodRdf.setCarbsPer100(carbs);
             foodRdf.setImageUrl(imageUrl);
             foodRdf.setTimeStamp(timeStamp);
             foodRdf.setType(type);

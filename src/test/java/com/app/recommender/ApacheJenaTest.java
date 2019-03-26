@@ -1,6 +1,6 @@
 package com.app.recommender;
 
-import com.app.recommender.foodrecommender.FoodRdf;
+import com.app.recommender.Model.FoodRdf;
 import junit.framework.TestCase;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.ReadWrite;

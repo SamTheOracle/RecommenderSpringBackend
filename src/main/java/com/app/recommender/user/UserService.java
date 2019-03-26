@@ -1,9 +1,8 @@
 package com.app.recommender.user;
 
-import com.app.recommender.Model.ServerErrorException;
-import com.app.recommender.Model.User;
-import com.app.recommender.Model.UserAlreadyExistException;
-import com.app.recommender.Model.UsernameNotFoundException;
+import com.app.recommender.Model.*;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -11,10 +10,13 @@ public interface UserService {
 
     User saveNewUser(User user) throws UserAlreadyExistException;
 
-    User getUser(String email) throws UsernameNotFoundException, ServerErrorException;
+    User getUser(String email) throws UserNotFoundException, ServerErrorException;
 
-    User getUserById(String id) throws UsernameNotFoundException, ServerErrorException;
+    User getUserById(String id) throws UserNotFoundException, ServerErrorException;
 
-    User updateNewUser(User user) throws UsernameNotFoundException, ServerErrorException;
+    User updateNewUser(User user) throws UserNotFoundException, ServerErrorException;
 
+    List<User> getAllNutritionistPatients(String nutritionistId) throws ServerErrorException, UserNotFoundException, PatientsNotFoundException;
+
+    List<User> getAllPatients();
 }

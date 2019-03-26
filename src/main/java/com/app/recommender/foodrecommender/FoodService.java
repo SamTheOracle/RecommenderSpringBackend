@@ -1,6 +1,8 @@
 package com.app.recommender.foodrecommender;
 
 import com.app.recommender.Model.Diet;
+import com.app.recommender.Model.FoodRdf;
+import com.app.recommender.Model.FoodRdfAlreadyCreatedException;
 import com.app.recommender.Model.FoodRdfNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,8 +95,7 @@ public class FoodService implements IFoodService {
         AtomicReference<Double> meatCalories = new AtomicReference<>(0.0);
         List<FoodRdf> allRecommendedFood = new ArrayList<>();
         diet.getDailyFood().forEach((day, meal) -> meal.forEach(m -> {
-            double totalMeatAndFishCaloriesCountPerMeal = m.getAllFoodEntries().stream().filter(f -> f.getType().equalsIgnoreCase("Meat")
-                    || f.getType().equalsIgnoreCase("Fish"))
+            double totalMeatAndFishCaloriesCountPerMeal = m.getAllFoodEntries().stream()
                     .mapToDouble(f -> f.getQuantity().doubleValue()).sum();
             meatCalories.updateAndGet(v -> v + totalMeatAndFishCaloriesCountPerMeal);
         }));

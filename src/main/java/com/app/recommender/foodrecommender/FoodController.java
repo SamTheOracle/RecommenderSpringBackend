@@ -1,10 +1,8 @@
 package com.app.recommender.foodrecommender;
 
-import com.app.recommender.Model.Diet;
-import com.app.recommender.Model.DietNotFoundException;
-import com.app.recommender.Model.FoodRdfNotFoundException;
-import com.app.recommender.Model.NoDietHistoryException;
+import com.app.recommender.Model.*;
 import com.app.recommender.diet.IDietService;
+import com.app.recommender.foodrecommender.DietUpdates.DietUpdateMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -99,12 +97,12 @@ public class FoodController {
         }
         FoodRdf foodRdfToUpdate = new FoodRdf();
         foodRdfToUpdate.setName(foodToSendBack.getName());
-        foodRdfToUpdate.setSalts(foodToSendBack.getSalts());
-        foodRdfToUpdate.setVitamins(foodToSendBack.getVitamins());
-        foodRdfToUpdate.setProteins(foodToSendBack.getProteins());
-        foodRdfToUpdate.setFats(foodToSendBack.getFats());
+        foodRdfToUpdate.setSaltsPer100(foodToSendBack.getSaltsPer100());
+        foodRdfToUpdate.setVitaminsPer100(foodToSendBack.getVitaminsPer100());
+        foodRdfToUpdate.setProteinsPer100(foodToSendBack.getProteinsPer100());
+        foodRdfToUpdate.setFatsPer100(foodToSendBack.getFatsPer100());
         foodRdfToUpdate.setCaloriesPer100(foodToSendBack.getCaloriesPer100());
-        foodRdfToUpdate.setCarbs(foodRdfToUpdate.getCarbs());
+        foodRdfToUpdate.setCarbsPer100(foodToSendBack.getCarbsPer100());
         foodRdfToUpdate.setBestEatenAt(foodToSendBack.getBestEatenAt());
         foodRdfToUpdate.setType(foodToSendBack.getType());
         foodRdfToUpdate.setName(foodToSendBack.getName());

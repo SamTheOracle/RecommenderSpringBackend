@@ -1,4 +1,4 @@
-package com.app.recommender.foodrecommender;
+package com.app.recommender.Model;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -11,11 +11,11 @@ public class FoodRdf {
     public static final String NSPrefix = "food";
     private static final Model model = ModelFactory.createDefaultModel();
     public static final Property caloriesPer100Rdf = model.createProperty(foodUri, "caloriesPer100");
-    public static final Property fatsRdf = model.createProperty(foodUri, "fats");
-    public static final Property carbsRdf = model.createProperty(foodUri, "carbs");
-    public static final Property proteinsRdf = model.createProperty(foodUri, "proteins");
-    public static final Property saltsRdf = model.createProperty(foodUri, "salts");
-    public static final Property vitaminsRdf = model.createProperty(foodUri, "vitamins");
+    public static final Property fatsPer100Rdf = model.createProperty(foodUri, "fatsPer100");
+    public static final Property carbsPer100Rdf = model.createProperty(foodUri, "carbsPer100");
+    public static final Property proteinsPer100Rdf = model.createProperty(foodUri, "proteinsPer100");
+    public static final Property saltsPer100Rdf = model.createProperty(foodUri, "saltsPer100");
+    public static final Property vitaminsPer100Rdf = model.createProperty(foodUri, "vitaminsPer100");
 
     public static final Property isGoodWithRdf = model.createProperty(foodUri, "isGoodWith");
     public static final Property goodSynergyWithRdf = model.createProperty(foodUri, "goodSynergyWith");
@@ -29,7 +29,7 @@ public class FoodRdf {
 
     public static final Property idRdf = model.createProperty(foodUri, "id");
     private String name, description, type, imageUrl, rdfOutput, id;
-    private Number proteins, fats, carbs, vitamins, salts, caloriesPer100, timeStamp;
+    private Number proteinsPer100, fatsPer100, carbsPer100, vitaminsPer100, saltsPer100, caloriesPer100, timeStamp;
     private String[] goodWith, goodSinergyWith, bestEatenAt;
 
     public FoodRdf() {
@@ -91,44 +91,44 @@ public class FoodRdf {
         this.rdfOutput = rdfOutput;
     }
 
-    public Number getProteins() {
-        return proteins;
+    public Number getProteinsPer100() {
+        return proteinsPer100;
     }
 
-    public void setProteins(Number proteins) {
-        this.proteins = proteins;
+    public void setProteinsPer100(Number proteinsPer100) {
+        this.proteinsPer100 = proteinsPer100;
     }
 
-    public Number getFats() {
-        return fats;
+    public Number getFatsPer100() {
+        return fatsPer100;
     }
 
-    public void setFats(Number fats) {
-        this.fats = fats;
+    public void setFatsPer100(Number fatsPer100) {
+        this.fatsPer100 = fatsPer100;
     }
 
-    public Number getCarbs() {
-        return carbs;
+    public Number getCarbsPer100() {
+        return carbsPer100;
     }
 
-    public void setCarbs(Number carbs) {
-        this.carbs = carbs;
+    public void setCarbsPer100(Number carbsPer100) {
+        this.carbsPer100 = carbsPer100;
     }
 
-    public Number getVitamins() {
-        return vitamins;
+    public Number getVitaminsPer100() {
+        return vitaminsPer100;
     }
 
-    public void setVitamins(Number vitamins) {
-        this.vitamins = vitamins;
+    public void setVitaminsPer100(Number vitaminsPer100) {
+        this.vitaminsPer100 = vitaminsPer100;
     }
 
-    public Number getSalts() {
-        return salts;
+    public Number getSaltsPer100() {
+        return saltsPer100;
     }
 
-    public void setSalts(Number salts) {
-        this.salts = salts;
+    public void setSaltsPer100(Number saltsPer100) {
+        this.saltsPer100 = saltsPer100;
     }
 
     public Number getCaloriesPer100() {

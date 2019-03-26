@@ -1,7 +1,6 @@
 package com.app.recommender.diet;
 
 import com.app.recommender.Model.*;
-import com.app.recommender.foodrecommender.FoodRdf;
 
 import java.rmi.UnexpectedException;
 import java.util.List;
@@ -29,4 +28,6 @@ public interface IDietService {
     Meal updateDiet(Food food, String dietName, String userId, String day, String mealType) throws UnexpectedException, NoDietHistoryException, DietNotFoundException;
 
     void updateDietValues(FoodRdf foodToUpdate, String userId);
+
+
 }

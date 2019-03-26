@@ -1,14 +1,14 @@
 package com.app.recommender.user;
 
-import com.app.recommender.Model.ServerErrorException;
-import com.app.recommender.Model.User;
-import com.app.recommender.Model.UserAlreadyExistException;
-import com.app.recommender.Model.UsernameNotFoundException;
+import com.app.recommender.Model.*;
 import com.app.recommender.user.Persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,6 +29,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User saveNewUser(User user) throws UserAlreadyExistException {
         if (!checkIfUserAlreadyExists(user.getEmail())) {
+            user.setPatients(new ArrayList<>());
+            user.setImageUrl("https://api.adorable.io/avatars/120/" + new Random().nextInt(5000) + ".png");
+            user.setCurrentPatient(null);
             repository.insert(user);
             return user;
         } else {
@@ -37,51 +40,59 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String email) throws UsernameNotFoundException, ServerErrorException {
+    public User getUser(String email) throws UserNotFoundException, ServerErrorException {
 
-        try {
-            User user = repository.findUserByEmail(email);
-            if (user == null) {
-                throw new UsernameNotFoundException("Error. User not found for email: " + email);
-            }
+        User user = repository.findUserByEmail(email);
+        if (user == null) {
+            throw new UserNotFoundException("Error. User not found for email: " + email);
+        }
+        return user;
+
+
+    }
+
+    @Override
+    public User getUserById(String id) throws UserNotFoundException, ServerErrorException {
+        User user = repository.findUserById(id);
+        if (user == null) {
+            throw new UserNotFoundException("Error. User not found");
+        } else {
             return user;
-        } catch (UsernameNotFoundException e) {
-            throw new UsernameNotFoundException(e.getErrorMessage());
-        } catch (Exception e) {
-            throw new ServerErrorException(e.getMessage(), e.getCause());
         }
-
 
     }
 
     @Override
-    public User getUserById(String id) throws UsernameNotFoundException, ServerErrorException {
-        try {
-            User user = repository.findUserById(id);
-            if (user == null) {
-                throw new UsernameNotFoundException("Error. User not found");
-            } else {
-                return user;
-            }
-        } catch (UsernameNotFoundException e) {
-            throw new UsernameNotFoundException(e.getErrorMessage());
-        } catch (Exception e) {
-            throw new ServerErrorException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public User updateNewUser(User user) throws UsernameNotFoundException, ServerErrorException {
-        try {
-            User userToDelete = getUser(user.getEmail());
-            repository.delete(userToDelete);
+    public User updateNewUser(User user) throws UserNotFoundException, ServerErrorException {
+        if (!user.getEmail().contains("nutrizionista")) {
             user.computeBMR();
-            repository.insert(user);
-            return user;
-        } catch (ServerErrorException e) {
-            throw new ServerErrorException(e.getMessage(), e);
-        } catch (UsernameNotFoundException e) {
-            throw new UsernameNotFoundException(e.getErrorMessage());
+
         }
+        User userToSendBack = repository.save(user);
+        return userToSendBack;
+
+    }
+
+    @Override
+    public List<User> getAllNutritionistPatients(String nutritionistId) throws ServerErrorException, UserNotFoundException, PatientsNotFoundException {
+        User nutritionist = getUserById(nutritionistId);
+        if (nutritionist != null && nutritionist.getEmail().contains("nutrizionista")) {
+            List<User> patients = new ArrayList<>(nutritionist.getPatients());
+            if (patients.size() == 0) {
+                throw new PatientsNotFoundException("Error. No patients for nutritionist " + nutritionist.getUserName());
+
+            }
+            return patients;
+        } else {
+            throw new UserNotFoundException("Error. Nutritionist not found for id " + nutritionistId);
+        }
+
+    }
+
+    @Override
+    public List<User> getAllPatients() {
+        List<User> users = this.repository.findAll();
+
+        return users.stream().filter(user -> !user.getEmail().contains("nutrizionista")).collect(Collectors.toList());
     }
 }

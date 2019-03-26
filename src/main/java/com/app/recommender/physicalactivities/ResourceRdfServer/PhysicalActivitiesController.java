@@ -1,6 +1,5 @@
-package com.app.recommender.physicalactivities;
+package com.app.recommender.physicalactivities.ResourceRdfServer;
 
-import com.app.recommender.Model.Cycling;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,11 +12,8 @@ public class PhysicalActivitiesController {
 
     @GetMapping(value = "/{physicalActivityName}")
     public ResponseEntity getPhysicalActivity(@PathVariable(value = "physicalActivityName") String physicalActivityName) {
-        return ResponseEntity.status(200).body(new Cycling());
+        return ResponseEntity.status(200).body("ciao");
     }
 
-    @GetMapping(value = "/uniquetestmapping")
-    public int test(){
-        return 2;
-    }
+
 }

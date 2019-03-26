@@ -5,6 +5,7 @@ import org.joda.time.Years;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
+import java.util.List;
 
 public class User {
 
@@ -25,14 +26,36 @@ public class User {
 
     private int height;
 
-    private PhysicalActivity currentGoal;
-
     private double basicMetabolicRate;
+
+    private User currentPatient;
+
+    private List<User> patients;
+    private String imageUrl;
 
 
     public User() {
     }
 
+    public User getCurrentPatient() {
+        return currentPatient;
+    }
+
+    public void setCurrentPatient(User currentPatient) {
+        this.currentPatient = currentPatient;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public List<User> getPatients() {
+        return patients;
+    }
 
     public String getId() {
         return id;
@@ -98,13 +121,7 @@ public class User {
         this.height = height;
     }
 
-    public PhysicalActivity getCurrentGoal() {
-        return currentGoal;
-    }
 
-    public void setCurrentGoal(PhysicalActivity currentGoal) {
-        this.currentGoal = currentGoal;
-    }
 
     public double getBasicMetabolicRate() {
         return basicMetabolicRate;
@@ -125,5 +142,9 @@ public class User {
                 this.basicMetabolicRate = 10 * this.weight + 6.25 * this.height - 5 * age - 161;
                 break;
         }
+    }
+
+    public void setPatients(List<User> patients) {
+        this.patients = patients;
     }
 }

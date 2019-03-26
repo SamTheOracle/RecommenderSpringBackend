@@ -1,4 +1,4 @@
-package com.app.recommender.foodrecommender;
+package com.app.recommender.Model;
 
 public class FoodRdfAlreadyCreatedException extends Exception {
     private String message;

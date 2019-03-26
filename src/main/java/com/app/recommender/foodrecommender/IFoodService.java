@@ -1,6 +1,8 @@
 package com.app.recommender.foodrecommender;
 
 import com.app.recommender.Model.Diet;
+import com.app.recommender.Model.FoodRdf;
+import com.app.recommender.Model.FoodRdfAlreadyCreatedException;
 import com.app.recommender.Model.FoodRdfNotFoundException;
 
 import java.io.FileNotFoundException;

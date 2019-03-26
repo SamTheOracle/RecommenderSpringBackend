@@ -18,6 +18,8 @@ public class Diet implements Comparator<Diet> {
 
     private String name;
 
+    private String physicalActivityId;
+
     private Map<String, List<Meal>> dailyFood;
 
     private Map<String, Number> caloriesPerDay;
@@ -28,9 +30,17 @@ public class Diet implements Comparator<Diet> {
 
 
 
+
     public Diet() {
     }
 
+    public String getPhysicalActivityId() {
+        return physicalActivityId;
+    }
+
+    public void setPhysicalActivityId(String physicalActivityId) {
+        this.physicalActivityId = physicalActivityId;
+    }
 
     public void setTimeStamp(LocalDate timeStamp) {
         this.timeStamp = timeStamp;
