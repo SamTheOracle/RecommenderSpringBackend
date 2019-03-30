@@ -1,4 +1,4 @@
-package com.app.recommender.foodrecommender.DietUpdates;
+package com.app.recommender.Model.DietUpdates;
 
 import com.app.recommender.diet.IDietService;
 import org.springframework.beans.factory.annotation.Autowired;

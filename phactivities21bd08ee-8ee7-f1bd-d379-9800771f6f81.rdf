@@ -1,0 +1,81 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:phyact="http://temphost/ontologies/physicalActivity#">
+  <rdf:Description rdf:about="http://temphost/ontologies/physicalActivity#Tennis">
+    <phyact:imageUrl>./assets/tennis.svg</phyact:imageUrl>
+    <phyact:description>Tennis is cool</phyact:description>
+    <phyact:endDate>2019-03-27</phyact:endDate>
+    <phyact:startDate>2019-03-27</phyact:startDate>
+    <phyact:caloriesPerHour rdf:datatype="http://www.w3.org/2001/XMLSchema#double"
+    >120.0</phyact:caloriesPerHour>
+    <phyact:userId>21bd08ee-8ee7-f1bd-d379-9800771f6f81</phyact:userId>
+    <phyact:name>Tennis</phyact:name>
+    <phyact:id>0dbf22dd-31c3-2884-a27f-96de3739c80d</phyact:id>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://temphost/ontologies/physicalActivity#Basket">
+    <phyact:imageUrl>./assets/basketball.svg</phyact:imageUrl>
+    <phyact:description>Basket is cool</phyact:description>
+    <phyact:endDate>2019-04-10</phyact:endDate>
+    <phyact:startDate>2019-03-27</phyact:startDate>
+    <phyact:caloriesPerHour rdf:datatype="http://www.w3.org/2001/XMLSchema#double"
+    >123.0</phyact:caloriesPerHour>
+    <phyact:userId>21bd08ee-8ee7-f1bd-d379-9800771f6f81</phyact:userId>
+    <phyact:name>Basket</phyact:name>
+    <phyact:id>3db14437-4bec-e077-bc93-aab3c672d0e1</phyact:id>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://temphost/ontologies/physicalActivity#Biking">
+    <phyact:id>077822f0-5e91-73a6-93be-a49d8478f1fd</phyact:id>
+    <phyact:name>Biking</phyact:name>
+    <phyact:userId>21bd08ee-8ee7-f1bd-d379-9800771f6f81</phyact:userId>
+    <phyact:caloriesPerHour rdf:datatype="http://www.w3.org/2001/XMLSchema#double"
+    >134.0</phyact:caloriesPerHour>
+    <phyact:startDate>2019-03-27</phyact:startDate>
+    <phyact:endDate>2019-03-27</phyact:endDate>
+    <phyact:description>ora servono la targa e l'assicurazione LOL</phyact:description>
+    <phyact:imageUrl>./assets/bike.svg</phyact:imageUrl>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://temphost/ontologies/physicalActivity#Box">
+    <phyact:imageUrl>./assets/box.svg</phyact:imageUrl>
+    <phyact:description>Adrianaaaa gay</phyact:description>
+    <phyact:endDate>2019-03-27</phyact:endDate>
+    <phyact:startDate>2019-03-20</phyact:startDate>
+    <phyact:caloriesPerHour rdf:datatype="http://www.w3.org/2001/XMLSchema#double"
+    >145.0</phyact:caloriesPerHour>
+    <phyact:userId>21bd08ee-8ee7-f1bd-d379-9800771f6f81</phyact:userId>
+    <phyact:name>Box</phyact:name>
+    <phyact:id>a1dbdfac-e08d-0a39-afc1-621f408fb4cf</phyact:id>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://temphost/ontologies/physicalActivity#Treadmill">
+    <phyact:id>0aa9ae2e-1845-b98c-bbaf-7612c652ff5c</phyact:id>
+    <phyact:name>Treadmill</phyact:name>
+    <phyact:userId>21bd08ee-8ee7-f1bd-d379-9800771f6f81</phyact:userId>
+    <phyact:caloriesPerHour rdf:datatype="http://www.w3.org/2001/XMLSchema#double"
+    >1233.0</phyact:caloriesPerHour>
+    <phyact:startDate>2019-03-12</phyact:startDate>
+    <phyact:endDate>2019-04-04</phyact:endDate>
+    <phyact:description>Boring as hell</phyact:description>
+    <phyact:imageUrl>./assets/treadmill.svg</phyact:imageUrl>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://temphost/ontologies/physicalActivity#Rugby">
+    <phyact:id>9af2f93a-698a-195d-78b7-2129757c65f9</phyact:id>
+    <phyact:name>Rugby</phyact:name>
+    <phyact:userId>21bd08ee-8ee7-f1bd-d379-9800771f6f81</phyact:userId>
+    <phyact:caloriesPerHour rdf:datatype="http://www.w3.org/2001/XMLSchema#double"
+    >1235.0</phyact:caloriesPerHour>
+    <phyact:startDate>2019-03-27</phyact:startDate>
+    <phyact:endDate>2019-03-27</phyact:endDate>
+    <phyact:description>Divertente</phyact:description>
+    <phyact:imageUrl>./assets/rugby.svg</phyact:imageUrl>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://temphost/ontologies/physicalActivity#Running">
+    <phyact:id>b5cee88e-3bef-8a55-c60c-bf2c770ed190</phyact:id>
+    <phyact:name>Running</phyact:name>
+    <phyact:userId>21bd08ee-8ee7-f1bd-d379-9800771f6f81</phyact:userId>
+    <phyact:caloriesPerHour rdf:datatype="http://www.w3.org/2001/XMLSchema#double"
+    >123123.0</phyact:caloriesPerHour>
+    <phyact:startDate>2019-03-05</phyact:startDate>
+    <phyact:endDate>2019-03-28</phyact:endDate>
+    <phyact:description>Running from zombies</phyact:description>
+    <phyact:imageUrl>./assets/runner.svg</phyact:imageUrl>
+  </rdf:Description>
+</rdf:RDF>

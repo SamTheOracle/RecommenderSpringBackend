@@ -1,6 +1,8 @@
 package com.app.recommender.diet;
 
 import com.app.recommender.Model.*;
+import com.app.recommender.physicalactivities.GoalServer.DietUpdateGoalMessage;
+import com.app.recommender.physicalactivities.ResourceRdfServer.DietUpdatePaMessage;
 
 import java.rmi.UnexpectedException;
 import java.util.List;
@@ -13,7 +15,7 @@ public interface IDietService {
 
     Food getFood(String name);
 
-    Diet updateDiet(Diet diet);
+    Diet updateDiet(Diet diet) throws NoDietHistoryException;
 
     Diet removeFood(Diet food);
 
@@ -30,4 +32,7 @@ public interface IDietService {
     void updateDietValues(FoodRdf foodToUpdate, String userId);
 
 
+    void updateDietCurrentPhysicalActivity(DietUpdatePaMessage dietUpdateMessage);
+
+    void updateDietCurrentGoal(DietUpdateGoalMessage dietUpdateGoalMessage);
 }

@@ -2,6 +2,7 @@ package com.app.recommender.diet;
 
 import com.app.recommender.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ import java.util.Random;
 public class DietController {
 
     @Autowired
-    private IDietService IDietService;
+    private IDietService dietService;
 
     @GetMapping(value = "/random")
     public int getRandomInt() {
@@ -50,7 +51,7 @@ public class DietController {
                                           @RequestParam(value = "userId") String userId) {
         Meal updatedMeal;
         try {
-            updatedMeal = IDietService.updateDiet(food, dietName, userId, day, mealType);
+            updatedMeal = dietService.updateDiet(food, dietName, userId, day, mealType);
         } catch (DietNotFoundException | NoDietHistoryException | UnexpectedException e) {
             return ResponseEntity.status(403).body(e.getMessage());
         }
@@ -66,7 +67,7 @@ public class DietController {
                                               @RequestParam(value = "foodName") String foodName) {
         Diet diet;
         try {
-            diet = this.IDietService.getDietByDietName(dietName, userId);
+            diet = this.dietService.getDietByDietName(dietName, userId);
             Map<String, List<Meal>> foodEntries = diet.getDailyFood();
 
             List<Meal> meals = foodEntries.get(day);
@@ -89,7 +90,7 @@ public class DietController {
 
                     diet.updateCalories(day);
 
-                    IDietService.updateDiet(diet);
+                    dietService.updateDiet(diet);
                     return ResponseEntity.status(201).body(foodToRemove.get());
 
                 }
@@ -111,7 +112,7 @@ public class DietController {
         Diet diet;
 //        String foodName = "mrfdda";
         try {
-            diet = this.IDietService.getDietByDietName(dietName, userId);
+            diet = this.dietService.getDietByDietName(dietName, userId);
             Map<String, List<Meal>> foodEntries = diet.getDailyFood();
 
             List<Meal> meals = foodEntries.get(day);
@@ -128,11 +129,12 @@ public class DietController {
                 } else {
                     ResponseEntity.status(400).body("Bad request: no food with nameRdf " + foodName + " was found in day " + day + " for diet " + dietName);
                 }
+
                 meals.add(mealToUpdate);
                 foodEntries.put(day, meals);
                 diet.setDailyFood(foodEntries);
                 diet.updateCalories(day);
-                Diet d = this.IDietService.updateDiet(diet);
+                Diet d = this.dietService.updateDiet(diet);
                 mealToUpdate.getAllFoodEntries().forEach(f -> System.out.println(f.getCalories()));
 
             }
@@ -142,11 +144,24 @@ public class DietController {
         return ResponseEntity.status(201).body(food);
     }
 
+    @PutMapping(value = "/{dietName}/updates")
+    public ResponseEntity updateDiet(@PathVariable String dietName,
+                                     @RequestBody Diet diet,
+                                     @RequestParam(value = "userId") String userId) {
+        System.out.println("CIAONEEE");
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(this.dietService.updateDiet(diet));
+        } catch (NoDietHistoryException e) {
+            return ResponseEntity.status(403).body(e.getMessage());
+        }
+
+    }
+
     @PostMapping(value = "/create")
     public ResponseEntity createDiet(@RequestBody Diet diet) {
         try {
 
-            this.IDietService.createNewDiet(diet);
+            this.dietService.createNewDiet(diet);
         } catch (DietAlreadyExistException e) {
             return ResponseEntity.status(403).body(e.getMessage());
         }
@@ -157,7 +172,7 @@ public class DietController {
     public ResponseEntity getDiet(@RequestParam String userId) {
         Diet diet;
         try {
-            diet = this.IDietService.getCurrentDietByUserId(userId);
+            diet = this.dietService.getCurrentDietByUserId(userId);
         } catch (NoDietHistoryException e) {
             return ResponseEntity.status(403).body(e.getMessage());
         }
@@ -170,7 +185,7 @@ public class DietController {
                                         @RequestParam String userId) {
         Diet diet;
         try {
-            diet = this.IDietService.getDietByDietName(dietName, userId);
+            diet = this.dietService.getDietByDietName(dietName, userId);
 
         } catch (NoDietHistoryException | DietNotFoundException e) {
             return ResponseEntity.status(400).body(e.getMessage());
@@ -181,7 +196,8 @@ public class DietController {
     @GetMapping(value = "/years/{year}/months/{monthName}")
     public ResponseEntity getAllDietByName(@RequestParam String userId, @PathVariable String year, @PathVariable String monthName) {
         try {
-            return ResponseEntity.status(200).body(this.IDietService.getRecentDiets(monthName, userId, year));
+            List<DietHistory> diets = this.dietService.getRecentDiets(monthName,userId,year);
+            return ResponseEntity.status(200).body(diets);
         } catch (DietNotFoundException | NoDietHistoryException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         }
@@ -192,7 +208,7 @@ public class DietController {
 
         List<DietHistory> dietHistories;
         try {
-            dietHistories = this.IDietService.getDietsByYear(userId, year);
+            dietHistories = this.dietService.getDietsByYear(userId, year);
         } catch (DietNotFoundException | NoDietHistoryException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         }

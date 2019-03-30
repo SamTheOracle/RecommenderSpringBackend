@@ -18,7 +18,7 @@ public class Diet implements Comparator<Diet> {
 
     private String name;
 
-    private String physicalActivityId;
+    private PhysicalActivityRdf physicalActivity;
 
     private Map<String, List<Meal>> dailyFood;
 
@@ -28,18 +28,28 @@ public class Diet implements Comparator<Diet> {
 
     private Double totalCalories;
 
+    private Goal goal;
+
 
 
 
     public Diet() {
     }
 
-    public String getPhysicalActivityId() {
-        return physicalActivityId;
+    public PhysicalActivityRdf getPhysicalActivity() {
+        return physicalActivity;
     }
 
-    public void setPhysicalActivityId(String physicalActivityId) {
-        this.physicalActivityId = physicalActivityId;
+    public Goal getGoal() {
+        return goal;
+    }
+
+    public void setGoal(Goal goal) {
+        this.goal = goal;
+    }
+
+    public void setPhysicalActivity(PhysicalActivityRdf physicalActivity) {
+        this.physicalActivity = physicalActivity;
     }
 
     public void setTimeStamp(LocalDate timeStamp) {
@@ -97,6 +107,7 @@ public class Diet implements Comparator<Diet> {
     public void setTotalCalories(Double totalCalories) {
         this.totalCalories = totalCalories;
     }
+
 
 
 

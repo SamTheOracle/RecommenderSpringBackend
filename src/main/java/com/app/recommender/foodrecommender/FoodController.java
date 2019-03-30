@@ -2,7 +2,7 @@ package com.app.recommender.foodrecommender;
 
 import com.app.recommender.Model.*;
 import com.app.recommender.diet.IDietService;
-import com.app.recommender.foodrecommender.DietUpdates.DietUpdateMessage;
+import com.app.recommender.Model.DietUpdates.DietUpdateMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,7 +32,9 @@ public class FoodController {
     }
 
     @GetMapping(value = "/{foodName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getFood(@PathVariable String foodName, @RequestParam String outputType, @RequestParam(value = "userId") String userId) {
+    public ResponseEntity getFood(@PathVariable String foodName,
+                                  @RequestParam String outputType,
+                                  @RequestParam(value = "userId") String userId) {
 
         try {
 

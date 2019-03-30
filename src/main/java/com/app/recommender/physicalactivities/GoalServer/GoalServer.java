@@ -1,5 +1,8 @@
-package com.app.recommender.physicalactivities.ResourceRdfServer;
+package com.app.recommender.physicalactivities.GoalServer;
 
+import com.app.recommender.diet.DietController;
+import com.app.recommender.diet.Persistence.DietRepository;
+import com.app.recommender.physicalactivities.ResourceRdfServer.PhysicalActivitiesServer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
@@ -9,12 +12,15 @@ import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFac
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.jms.ConnectionFactory;
 import java.time.LocalDate;
@@ -23,17 +29,19 @@ import java.time.format.DateTimeFormatter;
 @EnableDiscoveryClient
 @SpringBootApplication
 @EnableJms
-@ComponentScan({"com.app.recommender.physicalactivities.ResourceRdfServer","com.app.recommender.diet"})
-public class PhysicalActivitiesServer {
+@EnableMongoRepositories(basePackageClasses = GoalRepository.class)
+@ComponentScan(value = {"com.app.recommender.physicalactivities.GoalServer", "com.app.recommender.diet"},
+        excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern="com.app.recommender.diet.DietController"))
+public class GoalServer {
 
     public static void main(String[] args) {
-        System.setProperty("spring.config.name", "physicalactivities-server");
-
-        SpringApplication.run(PhysicalActivitiesServer.class, args);
+        System.setProperty("spring.config.name", "goal-server");
+        SpringApplication.run(GoalServer.class, args);
     }
+
     @Bean
-    public JmsListenerContainerFactory<?> paFactory(ConnectionFactory connectionFactory,
-                                                    DefaultJmsListenerContainerFactoryConfigurer configurer) {
+    public JmsListenerContainerFactory<?> goalFactory(ConnectionFactory connectionFactory,
+                                                      DefaultJmsListenerContainerFactoryConfigurer configurer) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         // This provides all boot's default to this factory, including the message converter
         configurer.configure(factory, connectionFactory);
@@ -42,7 +50,7 @@ public class PhysicalActivitiesServer {
     }
 
     @Bean // Serialize message content to json using TextMessage
-    public MessageConverter jacksonJmsMessageConverterPa() {
+    public MessageConverter jacksonJmsMessageConverterGoals() {
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
         converter.setTargetType(MessageType.TEXT);
         converter.setTypeIdPropertyName("_type");
@@ -55,5 +63,4 @@ public class PhysicalActivitiesServer {
         converter.setObjectMapper(mapper);
         return converter;
     }
-
 }

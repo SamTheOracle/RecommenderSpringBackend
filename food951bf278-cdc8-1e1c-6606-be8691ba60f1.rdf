@@ -1,0 +1,20 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:food="http://temphost/ontologies/food#">
+  <rdf:Description rdf:about="http://temphost/ontologies/food#Pollo">
+    <food:type>Meat</food:type>
+    <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Box"/>
+    <food:description>Start creating your new cool RDF semantic food</food:description>
+    <food:name>Pollo</food:name>
+    <food:fatsPer100>0</food:fatsPer100>
+    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Breakfast"/>
+    <food:carbsPer100>0</food:carbsPer100>
+    <food:proteinsPer100>0</food:proteinsPer100>
+    <food:timeStamp>1553632217387</food:timeStamp>
+    <food:imageUrl>https://api.adorable.io/avatars/120/0.9026260106203863.png</food:imageUrl>
+    <food:vitaminsPer100>0</food:vitaminsPer100>
+    <food:id>1f3c2deb-9c7a-583b-fbb6-420838c219c1</food:id>
+    <food:saltsPer100>10</food:saltsPer100>
+    <food:caloriesPer100>123</food:caloriesPer100>
+  </rdf:Description>
+</rdf:RDF>

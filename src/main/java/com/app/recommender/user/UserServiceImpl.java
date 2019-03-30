@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     public User saveNewUser(User user) throws UserAlreadyExistException {
         if (!checkIfUserAlreadyExists(user.getEmail())) {
             user.setPatients(new ArrayList<>());
-            user.setImageUrl("https://api.adorable.io/avatars/120/" + new Random().nextInt(5000) + ".png");
+//            user.setImageUrl("https://api.adorable.io/avatars/120/" + new Random().nextInt(5000) + ".png");
             user.setCurrentPatient(null);
             repository.insert(user);
             return user;

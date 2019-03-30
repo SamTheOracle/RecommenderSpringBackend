@@ -20,7 +20,8 @@ import javax.jms.ConnectionFactory;
 @EnableDiscoveryClient
 @SpringBootApplication
 @EnableJms
-@ComponentScan({"com.app.recommender.foodrecommender", "com.app.recommender.diet"})
+@ComponentScan({"com.app.recommender.foodrecommender", "com.app.recommender.diet",
+        "com.app.recommender.com.app.recommender.Model.DietUpdates"})
 public class FoodServer {
 
     public static void main(String[] args) {

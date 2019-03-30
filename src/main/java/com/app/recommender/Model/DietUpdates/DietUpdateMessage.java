@@ -1,14 +1,24 @@
-package com.app.recommender.foodrecommender.DietUpdates;
+package com.app.recommender.Model.DietUpdates;
 
 import com.app.recommender.Model.FoodRdf;
+import com.app.recommender.Model.PhysicalActivityRdf;
 
 public class DietUpdateMessage {
 
     private FoodRdf foodToUpdate;
     private String userId;
+    private PhysicalActivityRdf physicalActivityRdf;
 
     public DietUpdateMessage() {
 
+    }
+
+    public PhysicalActivityRdf getPhysicalActivityRdf() {
+        return physicalActivityRdf;
+    }
+
+    public void setPhysicalActivityRdf(PhysicalActivityRdf physicalActivityRdf) {
+        this.physicalActivityRdf = physicalActivityRdf;
     }
 
     public String getUserId() {

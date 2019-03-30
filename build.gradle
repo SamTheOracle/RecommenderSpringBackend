@@ -34,6 +34,10 @@ ext {
 
 dependencies {
     implementation group: 'joda-time', name: 'joda-time', version: '2.3'
+// https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
+    // https://mvnrepository.com/artifact/org.springframework.amqp/spring-amqp
+
+
 
 
     implementation 'com.github.javadev:underscore:1.42'
