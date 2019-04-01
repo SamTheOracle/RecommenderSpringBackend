@@ -1,4 +1,4 @@
-package com.app.recommender.physicalactivities.ResourceRdfServer;
+package com.app.recommender.records;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
@@ -23,17 +23,17 @@ import java.time.format.DateTimeFormatter;
 @EnableDiscoveryClient
 @SpringBootApplication
 @EnableJms
-@ComponentScan({"com.app.recommender.physicalactivities.ResourceRdfServer","com.app.recommender.diet"})
-public class PhysicalActivitiesServer {
+@EnableMongoRepositories(basePackageClasses = RecordRepository.class)
+public class RecordServer {
 
     public static void main(String[] args) {
-        System.setProperty("spring.config.name", "physicalactivities-server");
-
-        SpringApplication.run(PhysicalActivitiesServer.class, args);
+        System.setProperty("spring.config.name", "record-server");
+        SpringApplication.run(RecordServer.class, args);
     }
+
     @Bean
-    public JmsListenerContainerFactory<?> paFactory(ConnectionFactory connectionFactory,
-                                                    DefaultJmsListenerContainerFactoryConfigurer configurer) {
+    public JmsListenerContainerFactory<?> recordFactory(ConnectionFactory connectionFactory,
+                                                      DefaultJmsListenerContainerFactoryConfigurer configurer) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         // This provides all boot's default to this factory, including the message converter
         configurer.configure(factory, connectionFactory);
@@ -42,7 +42,7 @@ public class PhysicalActivitiesServer {
     }
 
     @Bean // Serialize message content to json using TextMessage
-    public MessageConverter jacksonJmsMessageConverterPa() {
+    public MessageConverter jacksonJmsMessageConverterRecords() {
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
         converter.setTargetType(MessageType.TEXT);
         converter.setTypeIdPropertyName("_type");
@@ -55,5 +55,4 @@ public class PhysicalActivitiesServer {
         converter.setObjectMapper(mapper);
         return converter;
     }
-
 }

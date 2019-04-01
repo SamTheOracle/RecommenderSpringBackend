@@ -1,8 +1,8 @@
 package com.app.recommender.diet;
 
 import com.app.recommender.Model.*;
-import com.app.recommender.physicalactivities.GoalServer.DietUpdateGoalMessage;
-import com.app.recommender.physicalactivities.ResourceRdfServer.DietUpdatePaMessage;
+import com.app.recommender.goals.DietUpdateGoalMessage;
+import com.app.recommender.physicalactivities.DietUpdatePaMessage;
 
 import java.rmi.UnexpectedException;
 import java.util.List;

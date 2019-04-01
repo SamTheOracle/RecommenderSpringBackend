@@ -1,4 +1,4 @@
-package com.app.recommender.physicalactivities.GoalServer;
+package com.app.recommender.goals;
 
 import com.app.recommender.Model.Goal;
 import com.app.recommender.Model.GoalNotFoundException;
@@ -27,7 +27,7 @@ public class GoalController {
         return ResponseEntity.status(HttpStatus.OK).body(new Random().nextInt());
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "/weekly")
     public ResponseEntity getGoal(@RequestParam(value = "userId") String userId,
                                   @RequestParam(value = "dietId") String dietId) {
         Goal toSendBack;
@@ -40,12 +40,12 @@ public class GoalController {
         return ResponseEntity.status(HttpStatus.OK).body(toSendBack);
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "/weekly")
     public ResponseEntity postGoal(@RequestBody Goal goal) {
         Goal g = this.service.createNewGoal(goal);
         return ResponseEntity.status(HttpStatus.CREATED).body(g);
     }
-    @PutMapping(value = "/")
+    @PutMapping(value = "/weekly")
     public ResponseEntity updateGoal(@RequestBody Goal goal) {
         Goal g = null;
         try {
@@ -58,7 +58,7 @@ public class GoalController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(g);
     }
-    @PutMapping(value="/{goalId}/adherence")
+    @PutMapping(value="/weekly/{goalId}/adherence")
     public ResponseEntity updateAdherence(@PathVariable(value = "goalId") String goalId,
                                           @RequestBody List<PhysicalActivityRecord> goals){
         Goal toSendBack;

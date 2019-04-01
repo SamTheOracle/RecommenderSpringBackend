@@ -1,4 +1,4 @@
-package com.app.recommender.physicalactivities.GoalServer;
+package com.app.recommender.goals;
 
 import com.app.recommender.Model.Goal;
 import com.app.recommender.Model.GoalNotFoundException;
@@ -50,8 +50,7 @@ public class GoalServiceImpl implements GoalService {
         if (goals.isEmpty()) {
             throw new NoGoalFoundException("Error: no goal for diet: " + dietId);
         }
-        Optional<Goal> optionalGoal = goals.stream().filter(g -> g.getDietId().equalsIgnoreCase(dietId)
-                && g.getUserId().equalsIgnoreCase(userId)).findFirst();
+        Optional<Goal> optionalGoal = goals.stream().filter(g -> g.getUserId().equalsIgnoreCase(userId)).findFirst();
         if (optionalGoal.isPresent()) {
             return optionalGoal.get();
         }

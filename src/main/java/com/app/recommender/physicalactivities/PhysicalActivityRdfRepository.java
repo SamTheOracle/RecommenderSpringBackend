@@ -1,6 +1,5 @@
-package com.app.recommender.physicalactivities.ResourceRdfServer;
+package com.app.recommender.physicalactivities;
 
-import com.app.recommender.Model.FoodRdf;
 import com.app.recommender.Model.PhysicalActivityRdf;
 import org.apache.jena.rdf.model.*;
 import org.springframework.stereotype.Repository;

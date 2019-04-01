@@ -1,4 +1,4 @@
-package com.app.recommender.physicalactivities.ResourceRdfServer;
+package com.app.recommender.physicalactivities;
 
 import com.app.recommender.diet.IDietService;
 import org.springframework.beans.factory.annotation.Autowired;

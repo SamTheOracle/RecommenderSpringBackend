@@ -1,4 +1,4 @@
-package com.app.recommender.physicalactivities.RecordServer;
+package com.app.recommender.records;
 
 import com.app.recommender.Model.PhysicalActivityRecord;
 import org.springframework.data.mongodb.repository.MongoRepository;

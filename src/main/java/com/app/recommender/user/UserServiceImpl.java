@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -67,8 +68,17 @@ public class UserServiceImpl implements UserService {
         if (!user.getEmail().contains("nutrizionista")) {
             user.computeBMR();
 
+
         }
         User userToSendBack = repository.save(user);
+        List<User> users = repository.findAll();
+        users.stream().filter(u -> u.getPatients() != null && u.getPatients().size() > 0).forEach(u -> {
+            Optional<User> optionalUser = u.getPatients().stream().filter(queryUser -> queryUser.getId().equalsIgnoreCase(user.getId())).findAny();
+            optionalUser.ifPresent(userToUpdate -> userToUpdate.setImageUrl(user.getImageUrl()));
+            User currentPatient = u.getCurrentPatient();
+            currentPatient.setImageUrl(user.getImageUrl());
+            User debugPurposes = this.repository.save(u);
+        });
         return userToSendBack;
 
     }

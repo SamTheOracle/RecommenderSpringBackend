@@ -1,0 +1,15 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:phyact="http://temphost/ontologies/physicalActivity#">
+  <rdf:Description rdf:about="http://temphost/ontologies/physicalActivity#Jogging">
+    <phyact:imageUrl>./assets/runner.svg</phyact:imageUrl>
+    <phyact:description>Fly.... I mean, run! you fools</phyact:description>
+    <phyact:endDate>2019-04-02</phyact:endDate>
+    <phyact:startDate>2019-03-27</phyact:startDate>
+    <phyact:caloriesPerHour rdf:datatype="http://www.w3.org/2001/XMLSchema#double"
+    >123.0</phyact:caloriesPerHour>
+    <phyact:userId>951bf278-cdc8-1e1c-6606-be8691ba60f1</phyact:userId>
+    <phyact:name>Jogging</phyact:name>
+    <phyact:id>adf37f0c-236c-d259-9c25-d68e9d7d0f4c</phyact:id>
+  </rdf:Description>
+</rdf:RDF>

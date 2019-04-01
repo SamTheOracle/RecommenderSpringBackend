@@ -1,8 +1,5 @@
-package com.app.recommender.physicalactivities.GoalServer;
+package com.app.recommender.goals;
 
-import com.app.recommender.diet.DietController;
-import com.app.recommender.diet.Persistence.DietRepository;
-import com.app.recommender.physicalactivities.ResourceRdfServer.PhysicalActivitiesServer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
@@ -20,7 +17,6 @@ import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.jms.ConnectionFactory;
 import java.time.LocalDate;
@@ -30,7 +26,7 @@ import java.time.format.DateTimeFormatter;
 @SpringBootApplication
 @EnableJms
 @EnableMongoRepositories(basePackageClasses = GoalRepository.class)
-@ComponentScan(value = {"com.app.recommender.physicalactivities.GoalServer", "com.app.recommender.diet"},
+@ComponentScan(value = {"com.app.recommender.goals", "com.app.recommender.diet"},
         excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern="com.app.recommender.diet.DietController"))
 public class GoalServer {
 

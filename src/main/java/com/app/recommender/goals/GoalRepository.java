@@ -1,4 +1,4 @@
-package com.app.recommender.physicalactivities.GoalServer;
+package com.app.recommender.goals;
 
 import com.app.recommender.Model.Goal;
 import org.springframework.data.mongodb.repository.MongoRepository;

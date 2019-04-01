@@ -2,8 +2,8 @@ package com.app.recommender.diet;
 
 import com.app.recommender.Model.*;
 import com.app.recommender.diet.Persistence.DietRepository;
-import com.app.recommender.physicalactivities.GoalServer.DietUpdateGoalMessage;
-import com.app.recommender.physicalactivities.ResourceRdfServer.DietUpdatePaMessage;
+import com.app.recommender.goals.DietUpdateGoalMessage;
+import com.app.recommender.physicalactivities.DietUpdatePaMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;

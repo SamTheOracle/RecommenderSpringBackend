@@ -1,4 +1,4 @@
-package com.app.recommender.physicalactivities.GoalServer;
+package com.app.recommender.goals;
 
 import com.app.recommender.diet.IDietService;
 import org.springframework.beans.factory.annotation.Autowired;
