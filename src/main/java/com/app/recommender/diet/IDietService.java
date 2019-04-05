@@ -35,4 +35,6 @@ public interface IDietService {
     void updateDietCurrentPhysicalActivity(DietUpdatePaMessage dietUpdateMessage);
 
     void updateDietCurrentGoal(DietUpdateGoalMessage dietUpdateGoalMessage);
+
+    Goal updateDietCurrentGoal(Goal goal) throws NoDietHistoryException;
 }

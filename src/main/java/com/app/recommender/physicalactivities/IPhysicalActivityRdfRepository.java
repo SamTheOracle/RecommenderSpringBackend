@@ -13,5 +13,5 @@ public interface IPhysicalActivityRdfRepository {
 
     List<PhysicalActivityRdf> getAllPhysicalActivityRdf(String userId) throws FileNotFoundException;
 
-    PhysicalActivityRdf getPhysicalActivityById(String physicalActivityId, String userId);
+    PhysicalActivityRdf getPhysicalActivityById(String physicalActivityId, String userId) throws FileNotFoundException;
 }

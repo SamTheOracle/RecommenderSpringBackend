@@ -1,16 +1,16 @@
 package com.app.recommender.goals;
 
-import com.app.recommender.Model.Goal;
-import com.app.recommender.Model.GoalNotFoundException;
-import com.app.recommender.Model.NoGoalFoundException;
-import com.app.recommender.Model.PhysicalActivityRecord;
+import com.app.recommender.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.http.*;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.ws.rs.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -22,6 +22,8 @@ public class GoalController {
 
     @Autowired
     private JmsTemplate template;
+    @Autowired
+    private DiscoveryClient discoveryClient;
     @GetMapping(value = "/testgoals")
     public ResponseEntity test() {
         return ResponseEntity.status(HttpStatus.OK).body(new Random().nextInt());
@@ -52,7 +54,24 @@ public class GoalController {
             g = this.service.updateGoal(goal);
             DietUpdateGoalMessage goalMessage = new DietUpdateGoalMessage();
             goalMessage.setGoal(g);
-            this.template.convertAndSend("diet-updates-goal",goalMessage);
+            List<ServiceInstance> instances = this.discoveryClient.getInstances("diets-microservice");
+            if(!instances.isEmpty()){
+                ServiceInstance instance = instances.stream().findFirst().get();
+                RestTemplate dietClient = new RestTemplate();
+
+
+
+
+
+                String uri = "http://"+instance.getHost()+":"+instance.getPort()+"/goals";
+
+                HttpEntity<Goal> entity = new HttpEntity<>(g);
+
+                ResponseEntity<Goal> response = dietClient.exchange(uri, HttpMethod.PUT, entity, Goal.class);
+                g = response.getBody();
+
+            }
+            //this.template.convertAndSend("diet-updates-goal",goalMessage);
         } catch (NoGoalFoundException | GoalNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

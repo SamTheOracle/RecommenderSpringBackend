@@ -58,9 +58,23 @@ public class PhysicalActivitiesController {
 
     }
 
+    @GetMapping(value = "/customizations/{physicalActivityId}")
+    public ResponseEntity getPhRdf(@PathVariable(value = "physicalActivityId") String physicalActivityId,
+                                   @RequestParam("userId") String userId) {
+
+        PhysicalActivityRdf physicalActivityRdf;
+        try {
+            physicalActivityRdf = this.physicalActivityRdfService.getPhysicalActivityById(physicalActivityId, userId);
+        } catch (FileNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(physicalActivityRdf);
+
+    }
+
     @PutMapping(value = "/customizations")
     public ResponseEntity updatePhysicalActivity(@RequestBody PhysicalActivityRdf physicalActivityRdf,
-
                                                  @RequestParam(value = "userId") String userId) {
         PhysicalActivityRdf physicalActivityRdfToSendBack;
         try {
@@ -75,7 +89,6 @@ public class PhysicalActivitiesController {
 
 
     }
-
 
 
 }

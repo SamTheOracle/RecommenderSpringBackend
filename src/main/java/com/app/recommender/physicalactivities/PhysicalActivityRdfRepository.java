@@ -139,8 +139,37 @@ public class PhysicalActivityRdfRepository implements IPhysicalActivityRdfReposi
     }
 
     @Override
-    public PhysicalActivityRdf getPhysicalActivityById(String physicalActivityId, String userId) {
-        return null;
+    public PhysicalActivityRdf getPhysicalActivityById(String physicalActivityId, String userId) throws FileNotFoundException {
+        Model modelToQuery = ModelFactory.createDefaultModel();
+        PhysicalActivityRdf toSendBack;
+        File file = new File(FILE_PREFIX + userId + FILE_SUFFIX);
+        if (file.exists()) {
+            FileReader reader = new FileReader(file);
+            modelToQuery.read(reader, null);
+            Resource r = null;
+            ResIterator resIterator = modelToQuery.listResourcesWithProperty(PhysicalActivityRdf.idRdf, physicalActivityId);
+            while (resIterator.hasNext()) {
+                r = resIterator.nextResource();
+            }
+            if (r == null) {
+                return null;
+            }
+            toSendBack = fromRdfToPhysicalActivity(r, modelToQuery);
+//            addResourceToModel();
+//            newTempModel.create
+            if (toSendBack == null) {
+                return null;
+            }
+            Model newTempModel = ModelFactory.createDefaultModel();
+
+            addPhysicalActivityResourceToModel(toSendBack, newTempModel);
+            StringWriter writer = new StringWriter();
+            newTempModel.write(writer, "RDF/XML");
+            toSendBack.setRdfOutput(writer.toString());
+            return toSendBack;
+        } else {
+            return null;
+        }
     }
 
     private Resource addPhysicalActivityResourceToModel(PhysicalActivityRdf physicalActivityRdf, Model model) {

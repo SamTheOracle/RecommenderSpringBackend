@@ -28,7 +28,7 @@ public class PhysicalActivityRdfService implements IPhysicalActivityRdfService {
     }
 
     @Override
-    public PhysicalActivityRdf getPhysicalActivityById(String physicalActivityId, String userId) {
-        return null;
+    public PhysicalActivityRdf getPhysicalActivityById(String physicalActivityId, String userId) throws FileNotFoundException {
+        return this.physicalActivityRdfRepository.getPhysicalActivityById(physicalActivityId,userId);
     }
 }

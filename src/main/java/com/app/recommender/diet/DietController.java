@@ -157,6 +157,19 @@ public class DietController {
 
     }
 
+    @PutMapping(value = "/goals")
+    public ResponseEntity updateDietGoal(@RequestBody Goal goal) {
+        Goal toSendBack;
+        try {
+            toSendBack = this.dietService.updateDietCurrentGoal(goal);
+        } catch (NoDietHistoryException e) {
+            return ResponseEntity.status(403).body(e.getMessage());
+
+        }
+        return ResponseEntity.status(200).body(toSendBack);
+
+    }
+
     @PostMapping(value = "/create")
     public ResponseEntity createDiet(@RequestBody Diet diet) {
         try {
@@ -196,7 +209,7 @@ public class DietController {
     @GetMapping(value = "/years/{year}/months/{monthName}")
     public ResponseEntity getAllDietByName(@RequestParam String userId, @PathVariable String year, @PathVariable String monthName) {
         try {
-            List<DietHistory> diets = this.dietService.getRecentDiets(monthName,userId,year);
+            List<DietHistory> diets = this.dietService.getRecentDiets(monthName, userId, year);
             return ResponseEntity.status(200).body(diets);
         } catch (DietNotFoundException | NoDietHistoryException e) {
             return ResponseEntity.status(400).body(e.getMessage());

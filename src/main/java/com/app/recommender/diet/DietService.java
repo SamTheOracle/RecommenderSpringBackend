@@ -30,7 +30,6 @@ public class DietService implements IDietService {
 
             List<Diet> diets = this.dietRepository.findByUserId(diet.getUserId());
             if (diets.isEmpty()) {
-                diet.setTimeStamp(LocalDate.now());
                 Map<String, List<Meal>> meals = new HashMap<>();
                 for (DayOfWeek day : DayOfWeek.values()) {
                     List<Meal> mealsArr = new ArrayList<>();
@@ -77,6 +76,7 @@ public class DietService implements IDietService {
             }
             diet.setTimeStamp(LocalDate.now());
             diet.setPhysicalActivity(null);
+            diet.setTotalCalories(0.0);
             dietRepository.insert(diet);
             return diet;
 
@@ -103,6 +103,7 @@ public class DietService implements IDietService {
         Diet d = getCurrentDietByUserId(diet.getUserId());
         d.setPhysicalActivity(diet.getPhysicalActivity());
         d.setTimeStamp(LocalDate.now());
+        d.setGoal(diet.getGoal());
 
         return this.dietRepository.save(d);
     }
@@ -134,7 +135,11 @@ public class DietService implements IDietService {
         if (!diet.isPresent()) {
             throw new DietNotFoundException("No diet with nameRdf: " + dietName + " has been found for user " + userId);
         }
-        return diet.get();
+        Diet d = diet.get();
+        d.setTimeStamp(LocalDate.now());
+        Diet toSendBack = this.dietRepository.save(d);
+
+        return toSendBack;
 
     }
 
@@ -276,7 +281,7 @@ public class DietService implements IDietService {
     public void updateDietCurrentPhysicalActivity(DietUpdatePaMessage dietUpdateMessage) {
         try {
             Diet d = getCurrentDietByUserId(dietUpdateMessage.getPhysicalActivityRdf().getUserId());
-            if(d.getPhysicalActivity().getId().equalsIgnoreCase(dietUpdateMessage.getPhysicalActivityRdf().getId())){
+            if (d.getPhysicalActivity().getId().equalsIgnoreCase(dietUpdateMessage.getPhysicalActivityRdf().getId())) {
                 d.setPhysicalActivity(dietUpdateMessage.getPhysicalActivityRdf());
                 d.setTimeStamp(LocalDate.now());
 
@@ -293,10 +298,10 @@ public class DietService implements IDietService {
 
     @Override
     public void updateDietCurrentGoal(DietUpdateGoalMessage dietUpdateGoalMessage) {
-        System.out.println("updating goal.." +dietUpdateGoalMessage.getGoal().getWeeklyGoal());
+        System.out.println("updating goal.." + dietUpdateGoalMessage.getGoal().getWeeklyGoal());
         try {
             Diet d = getCurrentDietByUserId(dietUpdateGoalMessage.getGoal().getUserId());
-            if(d.getPhysicalActivity().getId().equalsIgnoreCase(dietUpdateGoalMessage.getGoal().getId())){
+            if (d.getPhysicalActivity().getId().equalsIgnoreCase(dietUpdateGoalMessage.getGoal().getId())) {
                 d.setGoal(dietUpdateGoalMessage.getGoal());
                 d.setTimeStamp(LocalDate.now());
 
@@ -308,6 +313,21 @@ public class DietService implements IDietService {
         } catch (NoDietHistoryException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Goal updateDietCurrentGoal(Goal goal) throws NoDietHistoryException {
+        System.out.println("updating goal.." + goal.getWeeklyGoal());
+        Goal toSendBack;
+        Diet d = getCurrentDietByUserId(goal.getUserId());
+        d.setGoal(goal);
+        d.setTimeStamp(LocalDate.now());
+
+        Diet newD = dietRepository.save(d);
+        toSendBack = newD.getGoal();
+        return toSendBack;
+
+
     }
 
 }
