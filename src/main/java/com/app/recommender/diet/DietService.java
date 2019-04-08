@@ -5,14 +5,21 @@ import com.app.recommender.diet.Persistence.DietRepository;
 import com.app.recommender.goals.DietUpdateGoalMessage;
 import com.app.recommender.physicalactivities.DietUpdatePaMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.rmi.UnexpectedException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,6 +29,8 @@ public class DietService implements IDietService {
 
     @Autowired
     private DietRepository dietRepository;
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     @Override
 
@@ -47,7 +56,7 @@ public class DietService implements IDietService {
                     diet.setDailyFood(meals);
 
                 }
-                diet.setTimeStamp(LocalDate.now());
+                diet.setTimeStamp(LocalDateTime.now());
                 diet.setPhysicalActivity(null);
                 dietRepository.insert(diet);
                 return diet;
@@ -56,7 +65,8 @@ public class DietService implements IDietService {
             if (d.isPresent()) {
                 throw new DietAlreadyExistException("Diet with nameRdf " + diet.getName() + " already exists");
             }
-            diet.setTimeStamp(LocalDate.now());
+            diet.setTimeStamp(LocalDateTime.now());
+
             Map<String, List<Meal>> meals = new HashMap<>();
             for (DayOfWeek day : DayOfWeek.values()) {
                 List<Meal> mealsArr = new ArrayList<>();
@@ -74,7 +84,7 @@ public class DietService implements IDietService {
                 diet.setDailyFood(meals);
 
             }
-            diet.setTimeStamp(LocalDate.now());
+            diet.setTimeStamp(LocalDateTime.now());
             diet.setPhysicalActivity(null);
             diet.setTotalCalories(0.0);
             dietRepository.insert(diet);
@@ -101,12 +111,23 @@ public class DietService implements IDietService {
     public Diet updateDiet(Diet diet) throws NoDietHistoryException {
 
         Diet d = getCurrentDietByUserId(diet.getUserId());
-        d.setPhysicalActivity(diet.getPhysicalActivity());
-        d.setTimeStamp(LocalDate.now());
-        d.setGoal(diet.getGoal());
+        d.setTimeStamp(LocalDateTime.now());
+        if (diet.getPhysicalActivity() != null) {
+            d.setPhysicalActivity(diet.getPhysicalActivity());
+            if (d.getGoal() != null) {
+                d.getGoal().setPhysicalActivityId(diet.getPhysicalActivity().getId());
 
-        return this.dietRepository.save(d);
+            }
+
+        }
+
+        Diet toSendBack = this.dietRepository.save(d);
+
+        
+
+        return toSendBack;
     }
+
 
     @Override
     public Diet removeFood(Diet food) {
@@ -136,7 +157,6 @@ public class DietService implements IDietService {
             throw new DietNotFoundException("No diet with nameRdf: " + dietName + " has been found for user " + userId);
         }
         Diet d = diet.get();
-        d.setTimeStamp(LocalDate.now());
         Diet toSendBack = this.dietRepository.save(d);
 
         return toSendBack;
@@ -207,7 +227,7 @@ public class DietService implements IDietService {
             diet.updateCalories(day);
 
 
-            diet.setTimeStamp(LocalDate.now());
+            diet.setTimeStamp(LocalDateTime.now());
             this.dietRepository.save(diet);
 
             return mealToUpdate;
@@ -219,62 +239,63 @@ public class DietService implements IDietService {
 
     @Override
     public void updateDietValues(FoodRdf foodToUpdate, String userId) {
-        List<Diet> diets = dietRepository.findByUserId(userId);
-        diets.forEach(diet -> {
-            diet.getDailyFood().forEach((day, meals) -> meals.forEach(meal -> {
-                Iterator<Food> iterator = meal.getAllFoodEntries().iterator();
-                while (iterator.hasNext()) {
-                    Food food = iterator.next();
-                    String mealType = meal.getMealType();
-                    Optional<String> mealRdf = new ArrayList<>(Arrays.asList(foodToUpdate.getBestEatenAt())).stream()
-                            .filter(mealName -> mealName.equalsIgnoreCase(mealType)).findFirst();
+        try {
+            List<Diet> diets = dietRepository.findByUserId(userId);
+            diets.forEach(diet -> {
+                diet.getDailyFood().forEach((day, meals) -> meals.forEach(meal -> {
+                    Iterator<Food> iterator = meal.getAllFoodEntries().iterator();
+                    while (iterator.hasNext()) {
+                        Food food = iterator.next();
+                        String mealType = meal.getMealType();
+                        Optional<String> mealRdf = new ArrayList<>(Arrays.asList(foodToUpdate.getBestEatenAt())).stream()
+                                .filter(mealName -> mealName.equalsIgnoreCase(mealType)).findFirst();
 
-                    if (food.getId().equalsIgnoreCase(foodToUpdate.getId()) && mealRdf.isPresent()) {
-                        food.setName(foodToUpdate.getName());
-                        food.setSaltsPer100(foodToUpdate.getSaltsPer100());
-                        food.setVitaminsPer100(foodToUpdate.getVitaminsPer100());
-                        food.setProteinsPer100(foodToUpdate.getProteinsPer100());
-                        food.setFatsPer100(foodToUpdate.getFatsPer100());
-                        food.setCaloriesPer100(foodToUpdate.getCaloriesPer100());
-                        food.setCarbsPer100(foodToUpdate.getCarbsPer100());
-                        double totalCarbs, totalSalts, totalVitamins, totalProteins, totalFats, totalCalories;
-                        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
-                        decimalFormatSymbols.setDecimalSeparator('.');
-                        DecimalFormat df = new DecimalFormat(".##", decimalFormatSymbols);
-                        totalCarbs = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getCarbsPer100().doubleValue() / 100));
-                        totalSalts = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getSaltsPer100().doubleValue() / 100));
-                        totalVitamins = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getVitaminsPer100().doubleValue() / 100));
-                        totalProteins = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getProteinsPer100().doubleValue() / 100));
-                        totalFats = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getFatsPer100().doubleValue() / 100));
-                        totalCalories = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getCaloriesPer100().doubleValue() / 100));
+                        if (food.getId().equalsIgnoreCase(foodToUpdate.getId()) && mealRdf.isPresent()) {
+                            food.setName(foodToUpdate.getName());
+                            food.setSaltsPer100(foodToUpdate.getSaltsPer100());
+                            food.setVitaminsPer100(foodToUpdate.getVitaminsPer100());
+                            food.setProteinsPer100(foodToUpdate.getProteinsPer100());
+                            food.setFatsPer100(foodToUpdate.getFatsPer100());
+                            food.setCaloriesPer100(foodToUpdate.getCaloriesPer100());
+                            food.setCarbsPer100(foodToUpdate.getCarbsPer100());
+                            double totalCarbs, totalSalts, totalVitamins, totalProteins, totalFats, totalCalories;
+                            DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
+                            decimalFormatSymbols.setDecimalSeparator('.');
+                            DecimalFormat df = new DecimalFormat(".##", decimalFormatSymbols);
+                            totalCarbs = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getCarbsPer100().doubleValue() / 100));
+                            totalSalts = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getSaltsPer100().doubleValue() / 100));
+                            totalVitamins = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getVitaminsPer100().doubleValue() / 100));
+                            totalProteins = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getProteinsPer100().doubleValue() / 100));
+                            totalFats = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getFatsPer100().doubleValue() / 100));
+                            totalCalories = Double.parseDouble(df.format(food.getQuantity().doubleValue() * food.getCaloriesPer100().doubleValue() / 100));
 
-                        food.setCarbs(totalCarbs);
-                        food.setSalts(totalSalts);
-                        food.setFats(totalFats);
-                        food.setProteins(totalProteins);
-                        food.setVitamins(totalVitamins);
-                        food.setCalories(totalCalories);
+                            food.setCarbs(totalCarbs);
+                            food.setSalts(totalSalts);
+                            food.setFats(totalFats);
+                            food.setProteins(totalProteins);
+                            food.setVitamins(totalVitamins);
+                            food.setCalories(totalCalories);
 
-                        food.setType(foodToUpdate.getType());
-                        food.setName(foodToUpdate.getName());
+                            food.setType(foodToUpdate.getType());
+                            food.setName(foodToUpdate.getName());
+                        }
+                        if (food.getId().equalsIgnoreCase(foodToUpdate.getId()) && !mealRdf.isPresent()) {
+                            iterator.remove();
+                        }
+
+
                     }
-                    if (food.getId().equalsIgnoreCase(foodToUpdate.getId()) && !mealRdf.isPresent()) {
-                        iterator.remove();
-                    }
+                }));
+                diet.setTimeStamp(LocalDateTime.now());
 
 
-                }
-                meal.getAllFoodEntries().forEach(food -> {
+                dietRepository.save(diet);
 
-                });
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-
-            }));
-            diet.setTimeStamp(LocalDate.now());
-
-            dietRepository.save(diet);
-
-        });
     }
 
     @Override
@@ -283,7 +304,7 @@ public class DietService implements IDietService {
             Diet d = getCurrentDietByUserId(dietUpdateMessage.getPhysicalActivityRdf().getUserId());
             if (d.getPhysicalActivity().getId().equalsIgnoreCase(dietUpdateMessage.getPhysicalActivityRdf().getId())) {
                 d.setPhysicalActivity(dietUpdateMessage.getPhysicalActivityRdf());
-                d.setTimeStamp(LocalDate.now());
+                d.setTimeStamp(LocalDateTime.now());
 
                 Diet newD = dietRepository.save(d);
                 System.out.println(newD.getPhysicalActivity().getDescription());
@@ -303,7 +324,8 @@ public class DietService implements IDietService {
             Diet d = getCurrentDietByUserId(dietUpdateGoalMessage.getGoal().getUserId());
             if (d.getPhysicalActivity().getId().equalsIgnoreCase(dietUpdateGoalMessage.getGoal().getId())) {
                 d.setGoal(dietUpdateGoalMessage.getGoal());
-                d.setTimeStamp(LocalDate.now());
+                d.setTimeStamp(LocalDateTime.now());
+
 
                 Diet newD = dietRepository.save(d);
                 System.out.println(newD.getGoal().getWeeklyGoal());
@@ -321,7 +343,7 @@ public class DietService implements IDietService {
         Goal toSendBack;
         Diet d = getCurrentDietByUserId(goal.getUserId());
         d.setGoal(goal);
-        d.setTimeStamp(LocalDate.now());
+        d.setTimeStamp(LocalDateTime.now());
 
         Diet newD = dietRepository.save(d);
         toSendBack = newD.getGoal();

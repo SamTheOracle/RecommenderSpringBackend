@@ -13,6 +13,6 @@ public class DietPhysicalActvityReceiver {
     public void updateDietCurrentPhysicalActivity(DietUpdatePaMessage dietUpdatePaMessage){
 
 
-        dietService.updateDietCurrentPhysicalActivity(dietUpdatePaMessage);
+            dietService.updateDietCurrentPhysicalActivity(dietUpdatePaMessage);
     }
 }

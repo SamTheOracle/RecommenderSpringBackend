@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class FoodController {
 
     }
 
-    @GetMapping(value = "/{foodId}/recommendations/goodwiths", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{foodId}/goodwiths", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getRecomendations(@PathVariable(value = "foodId") String foodId, @RequestParam(value = "userId") String userId) {
         List<FoodRdf> recommendedFood;
         try {

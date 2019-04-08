@@ -30,13 +30,14 @@ public class RecordController {
         return 12.45;
     }
 
-    @PostMapping(value = "/{userId}/activities/{physicalActivityId}")
+    @PostMapping(value = "/{userId}/diets/{dietId}/activities/{physicalActivityId}")
     public ResponseEntity postRecord(@PathVariable(value = "userId") String userId,
                                      @PathVariable(value = "physicalActivityId") String physicalActivityId,
+                                     @PathVariable(value = "dietId") String dietId,
                                      @RequestBody PhysicalActivityRecord record) {
         record.setUserId(userId);
         record.setPhysicalActivityId(physicalActivityId);
-
+        record.setDietId(dietId);
 
         List<ServiceInstance> instances = discoveryClient.getInstances("physicalactivity-microservice");
         if (!instances.isEmpty()) {
@@ -73,11 +74,12 @@ public class RecordController {
     public ResponseEntity getRecordsAmongDates(@PathVariable(value = "userId") String userId,
                                                @PathVariable(value = "physicalActivityId") String physicalActivityId,
                                                @RequestParam(value = "startDate") String startDate,
-                                               @RequestParam(value = "endDate") String endDate) {
+                                               @RequestParam(value = "endDate") String endDate,
+                                               @RequestParam(value = "dietId") String dietId) {
         List<PhysicalActivityRecord> records;
         try {
 
-            records = this.recordService.getAllRecordsBetweenDates(userId, startDate, endDate, physicalActivityId);
+            records = this.recordService.getAllRecordsBetweenDates(userId, startDate, endDate, physicalActivityId, dietId);
         } catch (RecordsNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

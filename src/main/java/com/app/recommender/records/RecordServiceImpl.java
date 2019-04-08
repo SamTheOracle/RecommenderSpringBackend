@@ -27,11 +27,12 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
-    public List<PhysicalActivityRecord> getAllRecordsBetweenDates(String userId, String startDate, String endDate, String physicalActivityId) throws RecordsNotFoundException {
+    public List<PhysicalActivityRecord> getAllRecordsBetweenDates(String userId, String startDate, String endDate, String physicalActivityId, String dietId) throws RecordsNotFoundException {
         List<PhysicalActivityRecord> records = this.recordRepository.findByUserId(userId);
         if (records.isEmpty()) {
             throw new RecordsNotFoundException("Error. Records for user " + userId + " not found");
         }
+        records = records.stream().filter(record -> record.getDietId().equalsIgnoreCase(dietId)).collect(Collectors.toList());
         String pattern = "dd/MM/yyyy HH:mm:ss";
         DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern(pattern);
 

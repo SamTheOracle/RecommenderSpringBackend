@@ -20,6 +20,7 @@ public class Goal {
         return adherence;
     }
 
+
     public String getPhysicalActivityId() {
         return physicalActivityId;
     }

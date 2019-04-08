@@ -1,9 +1,6 @@
 package com.app.recommender.foodrecommender;
 
-import com.app.recommender.Model.Diet;
-import com.app.recommender.Model.FoodRdf;
-import com.app.recommender.Model.FoodRdfAlreadyCreatedException;
-import com.app.recommender.Model.FoodRdfNotFoundException;
+import com.app.recommender.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Service("foodservice")
 public class FoodService implements IFoodService {
@@ -82,8 +80,15 @@ public class FoodService implements IFoodService {
         if (fruitsAndVeggiesCalories.get() < 600.0) {
             List<FoodRdf> foodRdfListVegetables = rdfRepository.getRdfFoodByStatement(FoodRdf.typeRdf, "Vegetables", userId);
             List<FoodRdf> foodRdfListFruits = rdfRepository.getRdfFoodByStatement(FoodRdf.typeRdf, "Fruits", userId);
+            List<Food> allDietFood = new ArrayList<>();
+            diet.getDailyFood().forEach((day,meals)->{
+                meals.forEach(meal->allDietFood.addAll(meal.getAllFoodEntries()));
+            });
+
             allRecommendedFood.addAll(foodRdfListFruits);
             allRecommendedFood.addAll(foodRdfListVegetables);
+            allRecommendedFood = allRecommendedFood.stream().filter(foodRdf -> allDietFood.stream().noneMatch(f->f.getId().equalsIgnoreCase(foodRdf.getId()))).collect(Collectors.toList());
+
             return allRecommendedFood;
         }
 
@@ -103,9 +108,15 @@ public class FoodService implements IFoodService {
         if (averageAmountOfProteins < rightAmountOfProteins) {
             List<FoodRdf> foodRdfListMeat = rdfRepository.getRdfFoodByStatement(FoodRdf.typeRdf, "Meat", userId);
             List<FoodRdf> foodRdfListFish = rdfRepository.getRdfFoodByStatement(FoodRdf.typeRdf, "Fish", userId);
-
+            List<Food> allDietFood = new ArrayList<>();
+            diet.getDailyFood().forEach((day,meals)->{
+                meals.forEach(meal->allDietFood.addAll(meal.getAllFoodEntries()));
+            });
             allRecommendedFood.addAll(foodRdfListMeat);
             allRecommendedFood.addAll(foodRdfListFish);
+            allRecommendedFood = allRecommendedFood.stream().filter(foodRdf -> allDietFood.stream().noneMatch(f->
+                    f.getId().equalsIgnoreCase(foodRdf.getId()))).collect(Collectors.toList());
+
             return allRecommendedFood;
         }
 

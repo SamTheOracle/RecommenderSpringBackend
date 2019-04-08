@@ -13,7 +13,6 @@ public class MessageReceiver {
 
     @JmsListener(destination = "diet-updates")
     public void receiveMessage(DietUpdateMessage dietUpdateMessage) {
-
         service.updateDietValues(dietUpdateMessage.getFoodToUpdate(), dietUpdateMessage.getUserId());
 
     }

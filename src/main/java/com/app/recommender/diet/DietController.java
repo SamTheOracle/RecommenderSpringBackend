@@ -2,6 +2,7 @@ package com.app.recommender.diet;
 
 import com.app.recommender.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,8 @@ public class DietController {
 
     @Autowired
     private IDietService dietService;
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     @GetMapping(value = "/random")
     public int getRandomInt() {
@@ -52,7 +55,8 @@ public class DietController {
         Meal updatedMeal;
         try {
             updatedMeal = dietService.updateDiet(food, dietName, userId, day, mealType);
-        } catch (DietNotFoundException | NoDietHistoryException | UnexpectedException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(403).body(e.getMessage());
         }
         return ResponseEntity.status(201).body(updatedMeal);
@@ -96,7 +100,8 @@ public class DietController {
                 }
             }
             return ResponseEntity.status(403).body(diet);
-        } catch (DietNotFoundException | NoDietHistoryException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(403).body(e.getMessage());
         }
 
@@ -138,8 +143,9 @@ public class DietController {
                 mealToUpdate.getAllFoodEntries().forEach(f -> System.out.println(f.getCalories()));
 
             }
-        } catch (NoDietHistoryException | DietNotFoundException e) {
-            ResponseEntity.status(400).body(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(403).body(e.getMessage());
         }
         return ResponseEntity.status(201).body(food);
     }
@@ -151,7 +157,8 @@ public class DietController {
         System.out.println("CIAONEEE");
         try {
             return ResponseEntity.status(HttpStatus.OK).body(this.dietService.updateDiet(diet));
-        } catch (NoDietHistoryException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(403).body(e.getMessage());
         }
 
@@ -162,9 +169,9 @@ public class DietController {
         Goal toSendBack;
         try {
             toSendBack = this.dietService.updateDietCurrentGoal(goal);
-        } catch (NoDietHistoryException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(403).body(e.getMessage());
-
         }
         return ResponseEntity.status(200).body(toSendBack);
 
@@ -175,7 +182,8 @@ public class DietController {
         try {
 
             this.dietService.createNewDiet(diet);
-        } catch (DietAlreadyExistException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(403).body(e.getMessage());
         }
         return ResponseEntity.status(201).body(diet);
@@ -186,7 +194,8 @@ public class DietController {
         Diet diet;
         try {
             diet = this.dietService.getCurrentDietByUserId(userId);
-        } catch (NoDietHistoryException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(403).body(e.getMessage());
         }
 
@@ -200,8 +209,9 @@ public class DietController {
         try {
             diet = this.dietService.getDietByDietName(dietName, userId);
 
-        } catch (NoDietHistoryException | DietNotFoundException e) {
-            return ResponseEntity.status(400).body(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(403).body(e.getMessage());
         }
         return ResponseEntity.status(200).body(diet);
     }
@@ -211,8 +221,9 @@ public class DietController {
         try {
             List<DietHistory> diets = this.dietService.getRecentDiets(monthName, userId, year);
             return ResponseEntity.status(200).body(diets);
-        } catch (DietNotFoundException | NoDietHistoryException e) {
-            return ResponseEntity.status(400).body(e.getMessage());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(403).body(e.getMessage());
         }
     }
 
@@ -222,8 +233,9 @@ public class DietController {
         List<DietHistory> dietHistories;
         try {
             dietHistories = this.dietService.getDietsByYear(userId, year);
-        } catch (DietNotFoundException | NoDietHistoryException e) {
-            return ResponseEntity.status(400).body(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(403).body(e.getMessage());
         }
 
 

@@ -78,6 +78,7 @@ public class UserServiceImpl implements UserService {
             User currentPatient = u.getCurrentPatient();
             currentPatient.setImageUrl(user.getImageUrl());
             User debugPurposes = this.repository.save(u);
+
         });
         return userToSendBack;
 

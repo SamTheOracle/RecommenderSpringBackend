@@ -10,7 +10,7 @@ public class PhysicalActivityRecord {
     @Id
     private String id;
 
-    private String userId, physicalActivityId;
+    private String userId, physicalActivityId,dietId;
 
     private double burntCalories;
 
@@ -62,5 +62,13 @@ public class PhysicalActivityRecord {
 
     public void setSessionTimeEnd(LocalDateTime sessionTimeEnd) {
         this.sessionTimeEnd = sessionTimeEnd;
+    }
+
+    public String getDietId() {
+        return dietId;
+    }
+
+    public void setDietId(String dietId) {
+        this.dietId = dietId;
     }
 }

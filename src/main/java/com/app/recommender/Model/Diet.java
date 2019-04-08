@@ -3,7 +3,9 @@ package com.app.recommender.Model;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +26,7 @@ public class Diet implements Comparator<Diet> {
 
     private Map<String, Number> caloriesPerDay;
 
-    private LocalDate timeStamp;
+    private LocalDateTime timeStamp;
 
     private Double totalCalories;
 
@@ -52,7 +54,7 @@ public class Diet implements Comparator<Diet> {
         this.physicalActivity = physicalActivity;
     }
 
-    public void setTimeStamp(LocalDate timeStamp) {
+    public void setTimeStamp(LocalDateTime timeStamp) {
         this.timeStamp = timeStamp;
     }
 
@@ -88,7 +90,7 @@ public class Diet implements Comparator<Diet> {
         this.caloriesPerDay = caloriesPerDay;
     }
 
-    public LocalDate getTimeStamp() {
+    public LocalDateTime getTimeStamp() {
         return timeStamp;
     }
 

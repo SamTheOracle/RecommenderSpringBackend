@@ -156,5 +156,9 @@ public class Food {
         this.proteins = proteins;
     }
 
-
+    @Override
+    public boolean equals(Object obj) {
+        Food toCompare = (Food)obj;
+        return this.id.equalsIgnoreCase(toCompare.getId());
+    }
 }
