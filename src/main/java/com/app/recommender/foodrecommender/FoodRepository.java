@@ -212,9 +212,13 @@ public class FoodRepository implements IFoodRecommenderRepository {
 
 
     private Resource addResourceToModel(FoodRdf foodRDF, Model model) {
+        /*impostazione del namespace*/
         model.setNsPrefix(FoodRdf.NSPrefix, FoodRdf.foodUri);
+        /*se il nome è composto da più parole, ogni spazio bianco va rimpiazzato con un underscore*/
         String foodName = foodRDF.getName().replaceAll("\\s", "_");
+        /*creazione della risorsa. L'argomento è l'uri univoco del cibo*/
         Resource food = model.createResource(FoodRdf.foodUri + foodName);
+        /*le proprietà java vengono mappate in proprietà rdf*/
         food.addProperty(FoodRdf.caloriesPer100Rdf, foodRDF.getCaloriesPer100().toString());
         food.addProperty(FoodRdf.carbsPer100Rdf, foodRDF.getCarbsPer100().toString());
         food.addProperty(FoodRdf.fatsPer100Rdf, foodRDF.getFatsPer100().toString());
@@ -229,12 +233,15 @@ public class FoodRepository implements IFoodRecommenderRepository {
         food.addProperty(FoodRdf.idRdf, foodRDF.getId());
 
 
+        /*Per ogni foodName della lista goodWith, vengono creati gli appositi statement*/
         for (String foodNameGoodWith : foodRDF.getGoodWith()) {
             String parsedFoodName = foodNameGoodWith.split(FoodRdf.foodUri)[0];
             String parsedFoodNameNoWhiteSpaces = parsedFoodName.replaceAll("\\s", "_");
             ResIterator rsIterator = model.listSubjectsWithProperty(FoodRdf.nameRdf, parsedFoodNameNoWhiteSpaces);
             if (rsIterator.hasNext()) {
                 Resource r = rsIterator.nextResource();
+                /*creazione di uno statement con soggetto la risorsa, la proprietà isGoodWith e come oggetto
+                * la risorsa trovata dalla lista*/
                 Statement statement = ResourceFactory.createStatement(food, FoodRdf.isGoodWithRdf, r);
                 model.add(statement);
                 while (rsIterator.hasNext()) {

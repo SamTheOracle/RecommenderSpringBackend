@@ -195,7 +195,6 @@ public class DietController {
         Diet diet;
         try {
             diet = this.dietService.getCurrentDietByUserId(userId);
-            System.out.println("Hello!");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(403).body(e.getMessage());
