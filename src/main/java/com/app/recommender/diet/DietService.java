@@ -2,23 +2,16 @@ package com.app.recommender.diet;
 
 import com.app.recommender.Model.*;
 import com.app.recommender.diet.Persistence.DietRepository;
-import com.app.recommender.goals.DietUpdateGoalMessage;
 import com.app.recommender.physicalactivities.DietUpdatePaMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.rmi.UnexpectedException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.*;
@@ -110,18 +103,9 @@ public class DietService implements IDietService {
     @Override
     public Diet updateDiet(Diet diet) throws NoDietHistoryException {
 
-        Diet d = getCurrentDietByUserId(diet.getUserId());
-        d.setTimeStamp(LocalDateTime.now());
-        if (diet.getPhysicalActivity() != null) {
-            d.setPhysicalActivity(diet.getPhysicalActivity());
-            if (d.getGoal() != null) {
-                d.getGoal().setPhysicalActivityId(diet.getPhysicalActivity().getId());
 
-            }
 
-        }
-
-        Diet toSendBack = this.dietRepository.save(d);
+        Diet toSendBack = this.dietRepository.save(diet);
 
         
 
@@ -275,7 +259,6 @@ public class DietService implements IDietService {
                             food.setProteins(totalProteins);
                             food.setVitamins(totalVitamins);
                             food.setCalories(totalCalories);
-
                             food.setType(foodToUpdate.getType());
                             food.setName(foodToUpdate.getName());
                         }
@@ -317,25 +300,27 @@ public class DietService implements IDietService {
 
     }
 
-    @Override
-    public void updateDietCurrentGoal(DietUpdateGoalMessage dietUpdateGoalMessage) {
-        System.out.println("updating goal.." + dietUpdateGoalMessage.getGoal().getWeeklyGoal());
-        try {
-            Diet d = getCurrentDietByUserId(dietUpdateGoalMessage.getGoal().getUserId());
-            if (d.getPhysicalActivity().getId().equalsIgnoreCase(dietUpdateGoalMessage.getGoal().getId())) {
-                d.setGoal(dietUpdateGoalMessage.getGoal());
-                d.setTimeStamp(LocalDateTime.now());
 
 
-                Diet newD = dietRepository.save(d);
-                System.out.println(newD.getGoal().getWeeklyGoal());
-            }
-
-
-        } catch (NoDietHistoryException e) {
-            e.printStackTrace();
-        }
-    }
+//    @Override
+//    public void updateDietCurrentGoal(DietUpdateGoalMessage dietUpdateGoalMessage) {
+//        System.out.println("updating goal.." + dietUpdateGoalMessage.getGoal().getWeeklyGoal());
+//        try {
+//            Diet d = getCurrentDietByUserId(dietUpdateGoalMessage.getGoal().getUserId());
+//            if (d.getPhysicalActivity().getId().equalsIgnoreCase(dietUpdateGoalMessage.getGoal().getId())) {
+//                d.setGoal(dietUpdateGoalMessage.getGoal());
+//                d.setTimeStamp(LocalDateTime.now());
+//
+//
+//                Diet newD = dietRepository.save(d);
+//                System.out.println(newD.getGoal().getWeeklyGoal());
+//            }
+//
+//
+//        } catch (NoDietHistoryException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public Goal updateDietCurrentGoal(Goal goal) throws NoDietHistoryException {

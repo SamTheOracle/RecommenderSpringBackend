@@ -4,7 +4,7 @@
   <rdf:Description rdf:about="http://temphost/ontologies/physicalActivity#Jogging">
     <phyact:imageUrl>./assets/runner.svg</phyact:imageUrl>
     <phyact:description>Fly.... I mean, run! you fools</phyact:description>
-    <phyact:endDate>2019-04-02</phyact:endDate>
+    <phyact:endDate>2019-04-19</phyact:endDate>
     <phyact:startDate>2019-03-27</phyact:startDate>
     <phyact:caloriesPerHour rdf:datatype="http://www.w3.org/2001/XMLSchema#double"
     >123.0</phyact:caloriesPerHour>

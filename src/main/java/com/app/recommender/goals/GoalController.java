@@ -20,10 +20,7 @@ public class GoalController {
     @Autowired
     private GoalService service;
 
-    @Autowired
-    private JmsTemplate template;
-    @Autowired
-    private DiscoveryClient discoveryClient;
+
     @GetMapping(value = "/testgoals")
     public ResponseEntity test() {
         return ResponseEntity.status(HttpStatus.OK).body(new Random().nextInt());
@@ -49,28 +46,29 @@ public class GoalController {
     }
     @PutMapping(value = "/weekly")
     public ResponseEntity updateGoal(@RequestBody Goal goal) {
-        Goal g = null;
+        Goal g;
         try {
             g = this.service.updateGoal(goal);
-            DietUpdateGoalMessage goalMessage = new DietUpdateGoalMessage();
-            goalMessage.setGoal(g);
-            List<ServiceInstance> instances = this.discoveryClient.getInstances("diets-microservice");
-            if(!instances.isEmpty()){
-                ServiceInstance instance = instances.stream().findFirst().get();
-                RestTemplate dietClient = new RestTemplate();
-
-
-
-
-
-                String uri = "http://"+instance.getHost()+":"+instance.getPort()+"/goals";
-
-                HttpEntity<Goal> entity = new HttpEntity<>(g);
-
-                ResponseEntity<Goal> response = dietClient.exchange(uri, HttpMethod.PUT, entity, Goal.class);
-                g = response.getBody();
-
-            }
+//            DietUpdateGoalMessage goalMessage = new DietUpdateGoalMessage();
+//            goalMessage.setGoal(g);
+//            List<ServiceInstance> instances = this.discoveryClient.getInstances("diets-microservice");
+            /*update diet's goal*/
+//            if(!instances.isEmpty()){
+//                ServiceInstance instance = instances.stream().findFirst().get();
+//                RestTemplate dietClient = new RestTemplate();
+//
+//
+//
+//
+//
+//                String uri = "http://"+instance.getHost()+":"+instance.getPort()+"/goals";
+//
+//                HttpEntity<Goal> entity = new HttpEntity<>(g);
+//
+//                ResponseEntity<Goal> response = dietClient.exchange(uri, HttpMethod.PUT, entity, Goal.class);
+//                g = response.getBody();
+//
+//            }
             //this.template.convertAndSend("diet-updates-goal",goalMessage);
         } catch (NoGoalFoundException | GoalNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

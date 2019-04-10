@@ -2,6 +2,7 @@ package com.app.recommender.diet;
 
 import com.app.recommender.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,7 @@ public class DietController {
 
     @Autowired
     private IDietService dietService;
-    @Autowired
-    private DiscoveryClient discoveryClient;
+
 
     @GetMapping(value = "/random")
     public int getRandomInt() {
@@ -124,7 +124,8 @@ public class DietController {
             Optional<Meal> m = meals.stream().filter(mealToCheck -> mealToCheck.getMealType().equals(mealType)).findAny();
             if (m.isPresent()) {
                 Meal mealToUpdate = m.get();
-                meals.remove(mealToUpdate);
+
+//                meals.remove(mealToUpdate);
                 Optional<Food> optionalFood = mealToUpdate.getAllFoodEntries().stream().filter(f -> f.getName().equals(foodName)).findAny();
                 if (optionalFood.isPresent()) {
                     Food foodToUpdate = optionalFood.get();
@@ -135,9 +136,9 @@ public class DietController {
                     ResponseEntity.status(400).body("Bad request: no food with nameRdf " + foodName + " was found in day " + day + " for diet " + dietName);
                 }
 
-                meals.add(mealToUpdate);
-                foodEntries.put(day, meals);
-                diet.setDailyFood(foodEntries);
+//                meals.add(mealToUpdate);
+//                foodEntries.put(day, meals);
+//                diet.setDailyFood(foodEntries);
                 diet.updateCalories(day);
                 Diet d = this.dietService.updateDiet(diet);
                 mealToUpdate.getAllFoodEntries().forEach(f -> System.out.println(f.getCalories()));
@@ -150,32 +151,32 @@ public class DietController {
         return ResponseEntity.status(201).body(food);
     }
 
-    @PutMapping(value = "/{dietName}/updates")
-    public ResponseEntity updateDiet(@PathVariable String dietName,
-                                     @RequestBody Diet diet,
-                                     @RequestParam(value = "userId") String userId) {
-        System.out.println("CIAONEEE");
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(this.dietService.updateDiet(diet));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(403).body(e.getMessage());
-        }
+//    @PutMapping(value = "/{dietName}/updates")
+//    public ResponseEntity updateDiet(@PathVariable String dietName,
+//                                     @RequestBody Diet diet,
+//                                     @RequestParam(value = "userId") String userId) {
+//
+//        try {
+//            return ResponseEntity.status(HttpStatus.OK).body(this.dietService.updateDiet(diet));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(403).body(e.getMessage());
+//        }
+//
+//    }
 
-    }
-
-    @PutMapping(value = "/goals")
-    public ResponseEntity updateDietGoal(@RequestBody Goal goal) {
-        Goal toSendBack;
-        try {
-            toSendBack = this.dietService.updateDietCurrentGoal(goal);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(403).body(e.getMessage());
-        }
-        return ResponseEntity.status(200).body(toSendBack);
-
-    }
+//    @PutMapping(value = "/goals")
+//    public ResponseEntity updateDietGoal(@RequestBody Goal goal) {
+//        Goal toSendBack;
+//        try {
+//            toSendBack = this.dietService.updateDietCurrentGoal(goal);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(403).body(e.getMessage());
+//        }
+//        return ResponseEntity.status(200).body(toSendBack);
+//
+//    }
 
     @PostMapping(value = "/create")
     public ResponseEntity createDiet(@RequestBody Diet diet) {
@@ -194,6 +195,7 @@ public class DietController {
         Diet diet;
         try {
             diet = this.dietService.getCurrentDietByUserId(userId);
+            System.out.println("Hello!");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(403).body(e.getMessage());

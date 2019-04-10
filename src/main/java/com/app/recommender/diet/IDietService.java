@@ -1,7 +1,6 @@
 package com.app.recommender.diet;
 
 import com.app.recommender.Model.*;
-import com.app.recommender.goals.DietUpdateGoalMessage;
 import com.app.recommender.physicalactivities.DietUpdatePaMessage;
 
 import java.rmi.UnexpectedException;
@@ -33,8 +32,6 @@ public interface IDietService {
 
 
     void updateDietCurrentPhysicalActivity(DietUpdatePaMessage dietUpdateMessage);
-
-    void updateDietCurrentGoal(DietUpdateGoalMessage dietUpdateGoalMessage);
 
     Goal updateDietCurrentGoal(Goal goal) throws NoDietHistoryException;
 }

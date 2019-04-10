@@ -39,7 +39,12 @@ public class GoalServiceImpl implements GoalService {
         Optional<Goal> optionalGoal = goals.stream().filter(g -> g.getDietId().equalsIgnoreCase(goal.getDietId())
                 && g.getUserId().equalsIgnoreCase(goal.getUserId())).findFirst();
         if (optionalGoal.isPresent()) {
-            return this.goalRepository.save(goal);
+            Goal toUpdate = optionalGoal.get();
+            toUpdate.setAdherence(goal.getAdherence());
+            toUpdate.setPhysicalActivityId(goal.getPhysicalActivityId());
+            toUpdate.setWeeklyGoal(goal.getWeeklyGoal());
+            Goal toSendBack = this.goalRepository.save(toUpdate);
+            return toSendBack;
         }
         throw new GoalNotFoundException("Error: goal for diet " + goal.getDietId() + " not found. Userid: " + goal.getUserId());
     }

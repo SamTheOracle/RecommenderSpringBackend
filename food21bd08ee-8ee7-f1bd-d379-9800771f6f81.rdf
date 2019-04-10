@@ -90,13 +90,21 @@
     <food:carbsPer100>0</food:carbsPer100>
     <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Treadmill"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://temphost/ontologies/food#Albicocca">
-    <food:carbsPer100>0</food:carbsPer100>
-    <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Box"/>
-    <food:proteinsPer100>45</food:proteinsPer100>
-    <food:type>Fruits</food:type>
-    <food:caloriesPer100>79</food:caloriesPer100>
-    <food:vitaminsPer100>0</food:vitaminsPer100>
+  <rdf:Description rdf:about="http://temphost/ontologies/food#Maiale_ai_ferri">
+    <food:imageUrl>https://api.adorable.io/avatars/120/0.44964435498691047.png</food:imageUrl>
+    <food:vitaminsPer100>56</food:vitaminsPer100>
+    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Afternoon_Break"/>
+    <food:proteinsPer100>234</food:proteinsPer100>
+    <food:description>Maiale bbq</food:description>
+    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Lunch"/>
+    <food:timeStamp>1553069870276</food:timeStamp>
+    <food:caloriesPer100>532</food:caloriesPer100>
+    <food:fatsPer100>12</food:fatsPer100>
+    <food:type>Meat</food:type>
+    <food:carbsPer100>78</food:carbsPer100>
+    <food:name>Maiale ai ferri</food:name>
+    <food:saltsPer100>123</food:saltsPer100>
+    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Dinner"/>
     <food:isGoodWith>
       <rdf:Description rdf:about="http://temphost/ontologies/food#Patata">
         <food:name>Patata</food:name>
@@ -115,6 +123,17 @@
         <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Morning_Break"/>
       </rdf:Description>
     </food:isGoodWith>
+    <food:id>a81037ae-006a-8f11-584d-67fcb9c0f164</food:id>
+    <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Box"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://temphost/ontologies/food#Albicocca">
+    <food:carbsPer100>0</food:carbsPer100>
+    <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Box"/>
+    <food:proteinsPer100>45</food:proteinsPer100>
+    <food:type>Fruits</food:type>
+    <food:caloriesPer100>79</food:caloriesPer100>
+    <food:vitaminsPer100>0</food:vitaminsPer100>
+    <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Patata"/>
     <food:description>buona nei succhi di frutta</food:description>
     <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Breakfast"/>
     <food:imageUrl>https://api.adorable.io/avatars/120/0.39475599424953955.png</food:imageUrl>
@@ -292,24 +311,6 @@
     <food:vitaminsPer100>0</food:vitaminsPer100>
     <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Treadmill"/>
     <food:carbsPer100>0</food:carbsPer100>
-    <food:isGoodWith>
-      <rdf:Description rdf:about="http://temphost/ontologies/food#Maiale_ai_ferri">
-        <food:imageUrl>https://api.adorable.io/avatars/120/0.44964435498691047.png</food:imageUrl>
-        <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Afternoon_Break"/>
-        <food:description>Maiale bbq</food:description>
-        <food:saltsPer100>0</food:saltsPer100>
-        <food:carbsPer100>0</food:carbsPer100>
-        <food:vitaminsPer100>0</food:vitaminsPer100>
-        <food:timeStamp>1553069870276</food:timeStamp>
-        <food:caloriesPer100>24</food:caloriesPer100>
-        <food:type>Meat</food:type>
-        <food:name>Maiale ai ferri</food:name>
-        <food:fatsPer100>0</food:fatsPer100>
-        <food:proteinsPer100>0</food:proteinsPer100>
-        <food:id>a81037ae-006a-8f11-584d-67fcb9c0f164</food:id>
-        <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Box"/>
-      </rdf:Description>
-    </food:isGoodWith>
   </rdf:Description>
   <rdf:Description rdf:about="http://temphost/ontologies/food#Mandarino">
     <food:name>Mandarino</food:name>
