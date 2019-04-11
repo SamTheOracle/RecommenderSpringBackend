@@ -20,7 +20,10 @@ public class Goal {
         return adherence;
     }
 
+    public double computeAdherence(double totalBurntCalories) {
+        return (100 / this.weeklyGoal) * totalBurntCalories;
 
+    }
     public String getPhysicalActivityId() {
         return physicalActivityId;
     }
@@ -68,4 +71,6 @@ public class Goal {
     public void setId(String id) {
         this.id = id;
     }
+
+
 }

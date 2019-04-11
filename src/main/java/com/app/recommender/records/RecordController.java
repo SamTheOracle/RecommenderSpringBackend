@@ -9,6 +9,7 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -42,23 +43,24 @@ public class RecordController {
         List<ServiceInstance> instances = discoveryClient.getInstances("physicalactivity-microservice");
         if (!instances.isEmpty()) {
             ServiceInstance instance = instances.stream().findFirst().get();
-            RestTemplate dietClient = new RestTemplate();
+            RestTemplate physicalActivityClient = new RestTemplate();
 
 
-            String uri = "http://" + instance.getHost() + ":" + instance.getPort() + "/customizations/" + physicalActivityId+"?userId="+userId;
+            String uri = "http://" + instance.getHost() + ":" + instance.getPort() + "/customizations/" + physicalActivityId + "/caloriesPerHour?userId=" + userId;
 
-
-            ResponseEntity<PhysicalActivityRdf> response = dietClient.getForEntity(uri, PhysicalActivityRdf.class);
-            PhysicalActivityRdf physicalActivityRdf = response.getBody();
-            if (physicalActivityRdf != null) {
+            System.out.println("URI " + uri);
+            ResponseEntity<String> response = physicalActivityClient.getForEntity(uri, String.class);
+            String caloriesPerHourString = response.getBody();
+            if (caloriesPerHourString != null) {
+                double caloriesPerHour = Double.parseDouble(caloriesPerHourString);
                 LocalDateTime start = record.getSessionTimeStart();
                 LocalDateTime end = record.getSessionTimeEnd();
                 double timeDiffHour = Math.abs(end.getHour() - start.getHour());
                 double timeDiffMinute = Math.abs(end.getMinute() - start.getMinute());
-                double timeDiffSecond = Math.abs(end.getSecond()-start.getSecond());
-                double caloriesHourDiff = physicalActivityRdf.getCaloriesPerHour() * timeDiffHour;
-                double caloriesMinuteDiff = physicalActivityRdf.getCaloriesPerHour() * timeDiffMinute / 60;
-                double caloriesSecondDiff = physicalActivityRdf.getCaloriesPerHour() *timeDiffSecond/3600;
+                double timeDiffSecond = Math.abs(end.getSecond() - start.getSecond());
+                double caloriesHourDiff = caloriesPerHour * timeDiffHour;
+                double caloriesMinuteDiff = caloriesPerHour * timeDiffMinute / 60;
+                double caloriesSecondDiff = caloriesPerHour * timeDiffSecond / 3600;
                 record.setBurntCalories(caloriesHourDiff + caloriesMinuteDiff + caloriesSecondDiff);
             }
 
@@ -84,5 +86,21 @@ public class RecordController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
         return ResponseEntity.status(HttpStatus.OK).body(records);
+    }
+
+    @GetMapping(value = "/{userId}/activities/{physicalActivityId}/calories", produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity getTotalCalories(@PathVariable(value = "userId") String userId,
+                                           @PathVariable(value = "physicalActivityId") String physicalActivityId,
+                                           @RequestParam(value = "startDate") String startDate,
+                                           @RequestParam(value = "endDate") String endDate,
+                                           @RequestParam(value = "dietId") String dietId) {
+        double totalCaloriesBurntInPeriod;
+        try {
+            totalCaloriesBurntInPeriod = this.recordService.getTotalBurntCaloriesInPeriod(userId, startDate, endDate, physicalActivityId, dietId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(Double.toString(totalCaloriesBurntInPeriod));
     }
 }

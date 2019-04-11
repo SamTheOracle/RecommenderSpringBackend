@@ -11,4 +11,6 @@ public interface RecordService {
     PhysicalActivityRecord createNewPhysicalActivityRecord(PhysicalActivityRecord record);
 
     List<PhysicalActivityRecord> getAllRecordsBetweenDates(String userId, String startDate, String endDate, String physicalActivityId, String dietId) throws RecordsNotFoundException;
+
+    double getTotalBurntCaloriesInPeriod(String userId, String startDate, String endDate, String physicalActivityId, String dietId) throws RecordsNotFoundException;
 }

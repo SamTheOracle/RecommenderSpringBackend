@@ -5,7 +5,12 @@ import com.app.recommender.Model.GoalNotFoundException;
 import com.app.recommender.Model.NoGoalFoundException;
 import com.app.recommender.Model.PhysicalActivityRecord;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +20,9 @@ public class GoalServiceImpl implements GoalService {
 
     @Autowired
     private GoalRepository goalRepository;
+
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     @Override
     public Goal createNewGoal(Goal goal) {
@@ -74,5 +82,29 @@ public class GoalServiceImpl implements GoalService {
             return toSendBack;
         }
 
+    }
+
+    @Override
+    public Goal updateGoalAdherence(Goal goal, String startDate, String endDate) throws Exception {
+
+        List<ServiceInstance> serviceInstances = discoveryClient.getInstances("records-microservice");
+        if (!serviceInstances.isEmpty()) {
+            ServiceInstance instance = serviceInstances.stream().findAny().get();
+            RestTemplate recordTemplate = new RestTemplate();
+            String uri = "http://" + instance.getHost() + ":" + instance.getPort() + "/" + goal.getUserId() + "/activities/" + goal.getPhysicalActivityId()
+                    + "/calories?startDate={startDate}&endDate={endDate}&dietId={dietId}";
+
+            @SuppressWarnings("ConstantConditions")
+            String totalBurntCaloriesString = recordTemplate.getForObject(uri, String.class, startDate, endDate, goal.getDietId());
+
+            double totalBurntCalories = Double.parseDouble(totalBurntCaloriesString);
+            double adherence = goal.computeAdherence(totalBurntCalories);
+            goal.setAdherence(adherence);
+            Goal toSendBack = this.goalRepository.save(goal);
+            return toSendBack;
+
+
+        }
+        throw new Exception("no instances found for records microservices");
     }
 }

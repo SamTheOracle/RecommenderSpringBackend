@@ -16,4 +16,6 @@ public interface GoalService {
     Goal getGoal(String dietId, String userId) throws GoalNotFoundException, NoGoalFoundException;
 
     Goal updateGoalAdherence(String goalId, List<PhysicalActivityRecord> records) throws GoalNotFoundException;
+
+    Goal updateGoalAdherence(Goal goal, String startDate, String endDate) throws Exception;
 }

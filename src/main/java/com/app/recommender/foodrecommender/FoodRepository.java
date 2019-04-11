@@ -250,6 +250,7 @@ public class FoodRepository implements IFoodRecommenderRepository {
                     model.add(st);
                 }
             } else {
+                /*Se la risorsa non esiste, crearne una temporanea*/
                 Resource foodNotYetCreated = model.createResource(FoodRdf.foodUri + parsedFoodNameNoWhiteSpaces);
                 Statement s = ResourceFactory.createStatement(food, FoodRdf.isGoodWithRdf, foodNotYetCreated);
                 model.add(s);

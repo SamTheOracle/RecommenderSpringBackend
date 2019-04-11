@@ -18,6 +18,7 @@
         <food:type>Fruits</food:type>
         <food:carbsPer100>0</food:carbsPer100>
         <food:timeStamp>1553245066852</food:timeStamp>
+        <food:proteinsPer100>0</food:proteinsPer100>
         <food:isGoodWith>
           <rdf:Description rdf:about="http://temphost/ontologies/food#Cheesecake">
             <food:type>Sweets</food:type>
@@ -31,12 +32,11 @@
             <food:imageUrl>https://api.adorable.io/avatars/120/0.6611574828734985.png</food:imageUrl>
             <food:id>78c99bb6-215c-f5c4-8060-5d95dbfe8186</food:id>
             <food:carbsPer100>0</food:carbsPer100>
-            <food:saltsPer100>0</food:saltsPer100>
-            <food:vitaminsPer100>0</food:vitaminsPer100>
             <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Dinner"/>
+            <food:vitaminsPer100>0</food:vitaminsPer100>
+            <food:saltsPer100>0</food:saltsPer100>
           </rdf:Description>
         </food:isGoodWith>
-        <food:proteinsPer100>0</food:proteinsPer100>
         <food:name>Kiwi</food:name>
         <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Biking"/>
         <food:id>47a1d9ac-eb61-f244-2534-b777baef7869</food:id>
@@ -45,10 +45,10 @@
     <food:id>418245c3-17a9-8dba-0841-f30940e26bab</food:id>
     <food:vitaminsPer100>0</food:vitaminsPer100>
     <food:proteinsPer100>0</food:proteinsPer100>
-    <food:timeStamp>1553023336756</food:timeStamp>
+    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Morning_Break"/>
     <food:type>Vegetables</food:type>
     <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Treadmill"/>
-    <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Morning_Break"/>
+    <food:timeStamp>1553023336756</food:timeStamp>
     <food:fatsPer100>0</food:fatsPer100>
     <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Afternoon_Break"/>
     <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Lunch"/>
@@ -97,11 +97,11 @@
     <food:proteinsPer100>234</food:proteinsPer100>
     <food:description>Maiale bbq</food:description>
     <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Lunch"/>
-    <food:timeStamp>1553069870276</food:timeStamp>
-    <food:caloriesPer100>532</food:caloriesPer100>
     <food:fatsPer100>12</food:fatsPer100>
-    <food:type>Meat</food:type>
+    <food:caloriesPer100>532</food:caloriesPer100>
+    <food:timeStamp>1553069870276</food:timeStamp>
     <food:carbsPer100>78</food:carbsPer100>
+    <food:type>Meat</food:type>
     <food:name>Maiale ai ferri</food:name>
     <food:saltsPer100>123</food:saltsPer100>
     <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Dinner"/>
@@ -191,11 +191,11 @@
         <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Dinner"/>
         <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Afternoon_Break"/>
         <food:imageUrl>https://api.adorable.io/avatars/120/0.9784513760758016.png</food:imageUrl>
-        <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Lunch"/>
         <food:carbsPer100>0</food:carbsPer100>
+        <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Lunch"/>
         <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Morning_Break"/>
-        <food:id>8d7f0360-d86e-0f07-13b6-8df481657162</food:id>
         <food:proteinsPer100>0</food:proteinsPer100>
+        <food:id>8d7f0360-d86e-0f07-13b6-8df481657162</food:id>
       </rdf:Description>
     </food:isGoodWith>
     <food:saltsPer100>1234</food:saltsPer100>
@@ -214,8 +214,8 @@
     <food:fatsPer100>0</food:fatsPer100>
     <food:saltsPer100>0</food:saltsPer100>
     <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Patata"/>
-    <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Melone"/>
     <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Box"/>
+    <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Melone"/>
     <food:vitaminsPer100>0</food:vitaminsPer100>
     <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Filetto_di_pesce_spada"/>
     <food:timeStamp>1553015271061</food:timeStamp>
@@ -226,9 +226,9 @@
         <food:proteinsPer100>0</food:proteinsPer100>
         <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Lunch"/>
         <food:caloriesPer100>20</food:caloriesPer100>
-        <food:saltsPer100>0</food:saltsPer100>
-        <food:id>12beaed5-fa8b-7462-e10e-d92216df2afc</food:id>
         <food:type>Fish</food:type>
+        <food:id>12beaed5-fa8b-7462-e10e-d92216df2afc</food:id>
+        <food:saltsPer100>0</food:saltsPer100>
         <food:carbsPer100>0</food:carbsPer100>
         <food:imageUrl>https://api.adorable.io/avatars/120/0.9420811892769341.png</food:imageUrl>
         <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Jogging"/>
@@ -299,15 +299,15 @@
   <rdf:Description rdf:about="http://temphost/ontologies/food#Noci">
     <food:saltsPer100>0</food:saltsPer100>
     <food:name>Noci</food:name>
-    <food:fatsPer100>0</food:fatsPer100>
     <food:imageUrl>https://api.adorable.io/avatars/120/0.6821367865021584.png</food:imageUrl>
     <food:timeStamp>1553245477262</food:timeStamp>
+    <food:fatsPer100>0</food:fatsPer100>
     <food:caloriesPer100>16</food:caloriesPer100>
     <food:id>5790cd8a-2ace-1000-4289-8365d7716367</food:id>
     <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Dinner"/>
     <food:type>Fruits</food:type>
-    <food:proteinsPer100>0</food:proteinsPer100>
     <food:description>Frutta secca yummy</food:description>
+    <food:proteinsPer100>0</food:proteinsPer100>
     <food:vitaminsPer100>0</food:vitaminsPer100>
     <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Treadmill"/>
     <food:carbsPer100>0</food:carbsPer100>
@@ -316,13 +316,15 @@
     <food:name>Mandarino</food:name>
     <food:carbsPer100>0</food:carbsPer100>
     <food:saltsPer100>0</food:saltsPer100>
+    <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Melone"/>
     <food:proteinsPer100>0</food:proteinsPer100>
+    <food:isGoodWith rdf:resource="http://temphost/ontologies/food#Filetto_di_pesce_spada"/>
     <food:goodSynergyWith rdf:resource="http://temphost/ontologies/food#Jogging"/>
     <food:caloriesPer100>8</food:caloriesPer100>
     <food:fatsPer100>0</food:fatsPer100>
-    <food:timeStamp>1553245221454</food:timeStamp>
-    <food:imageUrl>https://api.adorable.io/avatars/120/0.4626080415538769.png</food:imageUrl>
     <food:id>aa52aff5-5a27-e27f-43bc-a59d7b5e8998</food:id>
+    <food:imageUrl>https://api.adorable.io/avatars/120/0.4626080415538769.png</food:imageUrl>
+    <food:timeStamp>1553245221454</food:timeStamp>
     <food:vitaminsPer100>0</food:vitaminsPer100>
     <food:bestEatenAt rdf:resource="http://temphost/ontologies/food#Afternoon_Break"/>
     <food:type>Fruits</food:type>

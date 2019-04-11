@@ -46,4 +46,26 @@ public class RecordServiceImpl implements RecordService {
                 .reversed()).collect(Collectors.toList());
         return recordsBetweenDates;
     }
+
+    @Override
+    public double getTotalBurntCaloriesInPeriod(String userId, String startDate, String endDate, String physicalActivityId, String dietId) throws RecordsNotFoundException {
+        List<PhysicalActivityRecord> records = this.recordRepository.findByUserId(userId);
+        if (records.isEmpty()) {
+            throw new RecordsNotFoundException("Error. Records for user " + userId + " not found");
+        }
+        records = records.stream().filter(record -> record.getDietId().equalsIgnoreCase(dietId)).collect(Collectors.toList());
+        String pattern = "dd/MM/yyyy HH:mm:ss";
+        DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern(pattern);
+
+        LocalDateTime localDateStart = LocalDateTime.parse(startDate, simpleDateFormat);
+        LocalDateTime localDateEnd = LocalDateTime.parse(endDate,simpleDateFormat);
+
+
+        List<PhysicalActivityRecord> recordsBetweenDates = records.stream().filter(record -> record.getSessionTimeStart().isAfter(localDateStart)
+                && record.getSessionTimeEnd().isBefore(localDateEnd)
+                && record.getPhysicalActivityId().equalsIgnoreCase(physicalActivityId)).sorted(Comparator.comparing(PhysicalActivityRecord::getSessionTimeStart)
+                .reversed()).collect(Collectors.toList());
+        double total = recordsBetweenDates.stream().mapToDouble(PhysicalActivityRecord::getBurntCalories).sum();
+        return total;
+    }
 }

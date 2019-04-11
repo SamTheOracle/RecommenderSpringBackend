@@ -141,6 +141,7 @@ public class DietService implements IDietService {
             throw new DietNotFoundException("No diet with nameRdf: " + dietName + " has been found for user " + userId);
         }
         Diet d = diet.get();
+        d.setTimeStamp(LocalDateTime.now());
         Diet toSendBack = this.dietRepository.save(d);
 
         return toSendBack;

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +24,8 @@ public class PhysicalActivitiesController {
     IPhysicalActivityRdfService physicalActivityRdfService;
     @Autowired
     private JmsTemplate template;
-    @Autowired
-    private DiscoveryClient discoveryClient;
+//    @Autowired
+//    private DiscoveryClient discoveryClient;
 
     @GetMapping(value = "/testpa")
     public ResponseEntity getPhysicalActivity() {
@@ -72,6 +73,20 @@ public class PhysicalActivitiesController {
         return ResponseEntity.status(HttpStatus.OK).body(physicalActivityRdf);
 
     }
+    @GetMapping(value = "/customizations/{physicalActivityId}/caloriesPerHour",produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity getPACaloriesPerHour(@PathVariable(value = "physicalActivityId") String physicalActivityId,
+                                   @RequestParam("userId") String userId) {
+
+        PhysicalActivityRdf physicalActivityRdf;
+        try {
+            physicalActivityRdf = this.physicalActivityRdfService.getPhysicalActivityById(physicalActivityId, userId);
+        } catch (FileNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(Double.toString(physicalActivityRdf.getCaloriesPerHour()));
+
+    }
 
     @PutMapping(value = "/customizations")
     public ResponseEntity updatePhysicalActivity(@RequestBody PhysicalActivityRdf physicalActivityRdf,
@@ -79,9 +94,9 @@ public class PhysicalActivitiesController {
         PhysicalActivityRdf physicalActivityRdfToSendBack;
         try {
             physicalActivityRdfToSendBack = physicalActivityRdfService.updatePhysicalActivityRdf(physicalActivityRdf, userId);
-            DietUpdatePaMessage dietUpdateMessage = new DietUpdatePaMessage();
-            dietUpdateMessage.setPhysicalActivityRdf(physicalActivityRdfToSendBack);
-            template.convertAndSend("diet-updates-pa", dietUpdateMessage);
+//            DietUpdatePaMessage dietUpdateMessage = new DietUpdatePaMessage();
+//            dietUpdateMessage.setPhysicalActivityRdf(physicalActivityRdfToSendBack);
+            //template.convertAndSend("diet-updates-pa", dietUpdateMessage);
         } catch (FileNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

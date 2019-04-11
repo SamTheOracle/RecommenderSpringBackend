@@ -44,6 +44,7 @@ public class GoalController {
         Goal g = this.service.createNewGoal(goal);
         return ResponseEntity.status(HttpStatus.CREATED).body(g);
     }
+
     @PutMapping(value = "/weekly")
     public ResponseEntity updateGoal(@RequestBody Goal goal) {
         Goal g;
@@ -75,16 +76,23 @@ public class GoalController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(g);
     }
-    @PutMapping(value="/weekly/{goalId}/adherence")
-    public ResponseEntity updateAdherence(@PathVariable(value = "goalId") String goalId,
-                                          @RequestBody List<PhysicalActivityRecord> goals){
+
+    @PutMapping(value = "/weekly/adherence")
+//    public ResponseEntity updateAdherence(@PathVariable(value = "goalId") String goalId,
+//                                          @RequestBody Goal goal){
+    public ResponseEntity updateAdherence(@RequestParam(value = "startDate") String startDate,
+                                          @RequestParam(value = "endDate") String endDate,
+                                          @RequestBody Goal goal) {
         Goal toSendBack;
         try {
-            toSendBack = this.service.updateGoalAdherence(goalId,goals);
-        } catch (GoalNotFoundException e) {
+            toSendBack = this.service.updateGoalAdherence(goal,startDate,endDate);
+            System.out.println(toSendBack.getAdherence());
+        } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(toSendBack);
     }
+
 
 }
