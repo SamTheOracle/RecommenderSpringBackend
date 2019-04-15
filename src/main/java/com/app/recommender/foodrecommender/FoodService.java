@@ -87,7 +87,8 @@ public class FoodService implements IFoodService {
 
             allRecommendedFood.addAll(foodRdfListFruits);
             allRecommendedFood.addAll(foodRdfListVegetables);
-            allRecommendedFood = allRecommendedFood.stream().filter(foodRdf -> allDietFood.stream().noneMatch(f->f.getId().equalsIgnoreCase(foodRdf.getId()))).collect(Collectors.toList());
+
+           // allRecommendedFood = allRecommendedFood.stream().filter(foodRdf -> allDietFood.stream().noneMatch(f->f.getId().equalsIgnoreCase(foodRdf.getId()))).collect(Collectors.toList());
 
             return allRecommendedFood;
         }
@@ -114,8 +115,8 @@ public class FoodService implements IFoodService {
             });
             allRecommendedFood.addAll(foodRdfListMeat);
             allRecommendedFood.addAll(foodRdfListFish);
-            allRecommendedFood = allRecommendedFood.stream().filter(foodRdf -> allDietFood.stream().noneMatch(f->
-                    f.getId().equalsIgnoreCase(foodRdf.getId()))).collect(Collectors.toList());
+            //allRecommendedFood = allRecommendedFood.stream().filter(foodRdf -> allDietFood.stream().noneMatch(f->
+             //       f.getId().equalsIgnoreCase(foodRdf.getId()))).collect(Collectors.toList());
 
             return allRecommendedFood;
         }

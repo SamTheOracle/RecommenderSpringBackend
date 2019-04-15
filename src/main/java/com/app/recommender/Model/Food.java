@@ -159,6 +159,7 @@ public class Food {
     @Override
     public boolean equals(Object obj) {
         Food toCompare = (Food)obj;
+        toCompare.id = ((Food) obj).id;
         return this.id.equalsIgnoreCase(toCompare.getId());
     }
 }
